@@ -1,0 +1,35 @@
+<div data-role="view" data-title="View"  data-init="viewInit" data-layout="main" data-model="app.purchaseHistoryView" data-show="app.purchaseHistoryView.onShow" data-after-show="app.purchaseHistoryView.afterShow" id="purchaseHistoryViewScreen" class="screen">
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+
+            <span data-bind="text: strings.purchaseHistoryView.title"></span>
+
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+
+        </div>
+    </header>
+
+ <a data-role="button"  >Recent Purchases</a>
+    <!-- START_CUSTOM_CODE_purchaseHistoryView -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_purchaseHistoryView -->
+    <ul class="masterDetailView" id="listView" data-role="listview" data-auto-bind="false" data-click="listViewClick" data-style="inset" data-template="purchaseHistoryViewModelTemplate" data-bind="source: purchaseHistoryViewModel.dataSource, events: {click: purchaseHistoryViewModel.itemClick}" data-pull-to-refresh="true"
+    data-endless-scroll="false">
+    </ul>
+
+
+    <!-- START_CUSTOM_CODE_purchaseHistoryViewModel -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_purchaseHistoryViewModel -->
+    <script type="text/x-kendo-template" id="purchaseHistoryViewModelTemplate">
+        <div class="image-with-text">
+            # data = app.purchaseHistoryView.purchaseHistoryViewModel.fixHierarchicalData(data); #
+
+            <img src="#: data['ProductUrl'] #">
+            <h3>#: data['Product'] #</h3>
+
+        </div>
+    </script>
+</div>

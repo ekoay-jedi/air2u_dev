@@ -1,0 +1,45 @@
+{
+  "ProjectName": "Air2U_dev",
+  "ProjectGuid": "3b8f6517-956d-4245-963c-a3416b784dca",
+  "projectVersion": 1,
+  "AppIdentifier": "com.telerik.Air2Udev",
+  "DisplayName": "Air2U_dev",
+  "Author": "",
+  "Description": "Air2U_dev",
+  "BundleVersion": "1.0",
+  "AndroidVersionCode": "1",
+  "iOSDeviceFamily": [
+    "1",
+    "2"
+  ],
+  "iOSBackgroundMode": [],
+  "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
+  "FrameworkVersion": "4.0.0",
+  "AndroidPermissions": [
+    "android.permission.INTERNET"
+  ],
+  "DeviceOrientations": [
+    "Portrait",
+    "Landscape"
+  ],
+  "AndroidHardwareAcceleration": "true",
+  "iOSStatusBarStyle": "Default",
+  "Framework": "Cordova",
+  "WP8TileTitle": "",
+  "WP8Publisher": "",
+  "WP8Capabilities": [
+    "ID_CAP_NETWORKING",
+    "ID_CAP_WEBBROWSERCOMPONENT"
+  ],
+  "WP8Requirements": [],
+  "WP8PublisherID": "{4898ecad-37b6-44c5-a502-ff40311779e8}",
+  "WP8ProductID": "{75d7a241-7f99-407d-9e2a-f9f306cb742c}",
+  "WPSdk": "8.0",
+  "WP8PackageIdentityName": "1234Telerik.Air2Udev",
+  "WP8WindowsPublisherName": "CN=Telerik",
+  "WP8SupportedResolutions": [
+    "ID_RESOLUTION_WVGA",
+    "ID_RESOLUTION_WXGA",
+    "ID_RESOLUTION_HD720P"
+  ]
+}
