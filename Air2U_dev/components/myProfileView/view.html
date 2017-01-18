@@ -1,9 +1,4 @@
-<style>
-.span-img { display: inline-block;  padding-left:20px; padding-top:10px; }
-.span-tip { padding-left:6px; vertical-align: top; display: inline-block; padding-top:80px;}
- li {list-style: none;}
- input{width:100%;height:40px;}
-</style>
+
 
 <div data-role="view" data-title="View" data-layout="main" data-model="app.myProfileView" data-show="app.myProfileView.onShow" data-after-show="app.myProfileView.afterShow" id="myProfileViewScreen" class="screen">
     <header data-role="header">
@@ -16,54 +11,98 @@
         </div>
     </header>
 
-<div id="box">
-	<span class="span-img">
-		<img src="http://img.mukewang.com/52da54ed0001ecfa04120172.jpg" height="100px" width="100px"/>
-	</span>
-	
-	<span class="span-tip">
-		<li>
-			<a >username</a>
-		</li>
-		<li>
-			<a >viewpoint</a>
-		</li>
-		
-	</span>
-	
-</div>
 
-<form style=" padding-top:20px; padding-left:20px; padding-right:20px; " >
-Address
-	<li >
+   <div id="example">
+                <ul id="panelbar">
+                <li class="k-state-active">
+                    <span class="k-link k-state-selected">My Teammates</span>
+                    <div style="padding: 10px;">
+                        <div class="teamMate">
+                            <img src="http://img.mukewang.com/52da54ed0001ecfa04120172.jpg" alt="Andrew Fuller">
+                            <div class="details">
+                                <h2>Andrew Fuller</h2>
+                                <p>Team Lead</p>
+                            </div>
+                        </div>
+                        <div class="teamMate">
+                            <img src="http://img.mukewang.com/52da54ed0001ecfa04120172.jpg" alt="Nancy Leverling">
+                            <div class="details">
+                                <h2>Nancy Leverling</h2>
+                                <p>Sales Associate</p>
+                            </div>
+                        </div>
+                        <div class="teamMate">
+                            <img src="http://img.mukewang.com/52da54ed0001ecfa04120172.jpg" alt="Robert King">
+                            <div class="details">
+                                <h2>Robert King</h2>
+                                <p>Business System Analyst</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    Projects
+                    <ul>
+                        <li>New Business Plan</li>
+                        <li>
+                            Sales Forecasts
+                            <ul>
+                                <li>Q1 Forecast</li>
+                                <li>Q2 Forecast</li>
+                                <li>Q3 Forecast</li>
+                                <li>Q4 Forecast</li>
+                            </ul>
+                        </li>
+                        <li>Sales Reports</li>
+                    </ul>
 
-		<input type="text" name="address1" id="address1" >
-	</li>
-	<li style=" padding-top:10px;">
-		<input type="text" name="address2" id="address2">
-	</li>
-	<li style=" padding-top:10px;">
-		<input type="text" name="address3" id="address3">
-	</li>
-<br/>
-
-   Phone
-	<li>
-		
-		<input type="text" name="phone">
-	</li>
-<br/>
-<li><label>State</label> <input style="vertical-align: right; " type="checkbox" name="state" value="state" checked="checked" /> </li>
-
-</form>
-<div style="padding-left:20px; padding-right:20px; ">
-<button style="width: 100%;" data-role="button" data-bind="click:Save">Save</button>
-</div>
-
-    <!-- START_CUSTOM_CODE_myProfileView -->
-    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
-
-    <!-- END_CUSTOM_CODE_myProfileView -->
+                </li>
+                <li>
+                    Programs
+                    <ul>
+                        <li>Monday</li>
+                        <li>Tuesday</li>
+                        <li>Wednesday</li>
+                        <li>Thursday</li>
+                        <li>Friday</li>
+                    </ul>
+                </li>
+                <li disabled="disabled">
+                    Communication
+                </li>
+            </ul>
+            <style>
+                #panelbar {
+                    max-width: 400px;
+                    margin: 0 auto;
+                }                
+                .teamMate h2 {
+                    font-size: 1.4em;
+                    font-weight: normal;
+                    padding-top: 20px;
+                }
+                .teamMate p {
+                    margin: 0;
+                }
+                .teamMate img {
+                    display: inline-block;
+                    margin: 5px 15px 5px 5px;
+                    border: 1px solid #ccc;
+                    border-radius: 50%;
+                }
+                .details {
+                    display: inline-block;
+                    vertical-align: top;
+                }
+            </style>
+            <script>
+                $(document).ready(function() {
+                    $("#panelbar").kendoPanelBar({
+                        expandMode: "single"
+                    });
+                });
+            </script>
+        </div>
 </div>
 
 <!-- START_CUSTOM_CODE_myProfileViewModel -->

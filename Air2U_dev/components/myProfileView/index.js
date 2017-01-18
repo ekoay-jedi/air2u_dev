@@ -6,11 +6,11 @@ app.myProfileView = kendo.observable({
 		var data = el.data('Users');
 		data.getById('f701bc80-db33-11e6-ba7d-ed8ffe6e33d3')
 			.then(function (data) {							
-				alert(JSON.stringify(data));
+				//alert(JSON.stringify(data));
 				
 			},
 			function (error) {
-				alert(JSON.stringify(error));
+				//alert(JSON.stringify(error));
 			});
 	},
 	afterShow: function () { }
