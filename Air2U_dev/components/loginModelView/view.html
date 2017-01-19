@@ -19,8 +19,8 @@
 			<li> <button style="width: 100%" data-role="button" data-bind="click: submit">Log In</button> </li>
 		</ul>
 	</form>
-	<div style="text-align:center; padding-top:20px"><a href="#register">Don't have a Air2U Account? Register for FREE!</a></div>
-	<div style="text-align:center; padding-top:20px"><a href="#password">Forgot Password?</a>
+	<div style="text-align:center; padding-top:25px"><a href="#register">Don't have a Air2U Account? Register for FREE!</a></div>
+	<div style="text-align:center; padding-top:25px"><a href="#password">Forgot Password?</a>
 	</div>
 	<!-- START_CUSTOM_CODE_loginModelView -->
 	<!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
@@ -57,4 +57,18 @@
                 <li> <button style="width: 100%" data-role="button" data-bind="click: submit">Reset</button> </li>
             </ul>
         </form>
+</div>
+<div data-role="view" id="userinfo" data-model="app.userinfoView" data-title="Welcome to Air2U!">
+    <div data-role="navbar">
+        <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+        <a data-role="button" href="#loginModelViewScreen" data-align="right" data-bind="click: logout">Logout</a>
+        <span data-role="view-title"></span>
+    </div>
+    <form>
+        <ul data-role="listview" data-style="inset">
+            <li> <label>
+                Dear Customer, <br/>welcome to Air2U Mobile App!
+            </label> </li>
+        </ul>
+    </form>
 </div>
