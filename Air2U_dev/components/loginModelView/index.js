@@ -18,7 +18,6 @@ app.loginModelView = kendo.observable({
             el.Users.login(this.username, this.password,
                 function (data) {
                     window.location.href = "#list";
-
 					app.mobileApp.navigate('components/home/view.html');
                 }, function () {
                     navigator.notification.alert("Unfortunately we could not find your account.");
