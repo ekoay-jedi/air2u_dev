@@ -1,19 +1,30 @@
 'use strict';
-
+var userid;
 app.purchaseHistoryView = kendo.observable({
-    onShow: function() {},
+    onShow: function() {
+        el.Users.currentUser().then(
+            function (data) {
+                for (var item in data) {
+                    if (item == 'result') {
+                        if (data[item] == null) {
+                            alert("You do not login,Please login first.");
+                            //app.mobileApp.navigate('components/loginModelView/view.html');
+                        } else {
+                            var datainside = data[item];
+                            for (var iteminside in datainside) {
+                                if (iteminside == 'Id') {
+                                    userid = datainside[iteminside];
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+    })},
     afterShow: function() {}
-	
 });
-function viewInit(e) {
-    e.view.element.find("#listView").kendoMobileListView({
-        dataSource: [ "foo", "bar", "car", "dar", "ear", "qar" ],
-        filterable:  true
-    });
-}
-function listViewClick(e) {
-    console.log(e.item); // The clicked item as a jQuery object
-}
 app.localization.registerView('purchaseHistoryView');
 
 // START_CUSTOM_CODE_purchaseHistoryView
@@ -74,16 +85,13 @@ app.localization.registerView('purchaseHistoryView');
         dataSourceOptions = {
             type: 'everlive',
             transport: {
-                typeName: 'ProductOrder',
+                typeName: 'Order',
                 dataProvider: dataProvider
             },
             change: function(e) {
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
-
-                    dataItem['ProductUrl'] =
-                        processImage(dataItem['Product']);
 
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);
@@ -106,8 +114,12 @@ app.localization.registerView('purchaseHistoryView');
             schema: {
                 model: {
                     fields: {
-                        'Product': {
-                            field: 'Product',
+                        'OrderNumber': {
+                            field: 'OrderNumber',
+                            defaultValue: ''
+                        },
+                        'OrderStatus': {
+                            field: 'OrderStatus',
                             defaultValue: ''
                         },
                     }
@@ -173,11 +185,11 @@ app.localization.registerView('purchaseHistoryView');
             itemClick: function(e) {
                 var dataItem = e.dataItem || purchaseHistoryViewModel.originalItem;
 
-                app.mobileApp.navigate('components/subCategoryView/view.html?filter=' + encodeURIComponent(JSON.stringify({
-                    field: 'ParentCategory',
-                    value: dataItem.Id,
-                    operator: 'eq'
-                })));
+                app.mobileApp.navigate('components/orderDetailView/view.html?filter=' + encodeURIComponent(JSON.stringify({
+                        field: 'OrderNumber',
+                        value: dataItem.Id,
+                        operator: 'eq'
+                    })));
 
             },
             detailsShow: function(e) {
@@ -195,8 +207,8 @@ app.localization.registerView('purchaseHistoryView');
                     dataSource = purchaseHistoryViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item);
 
-                if (!itemModel.Product) {
-                    itemModel.Product = String.fromCharCode(160);
+                if (!itemModel.OrderNumber) {
+                    itemModel.OrderNumber = String.fromCharCode(160);
                 }
 
                 /// start detail form initialization

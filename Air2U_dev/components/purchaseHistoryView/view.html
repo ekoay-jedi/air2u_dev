@@ -1,4 +1,4 @@
-<div data-role="view" data-title="View"  data-init="viewInit" data-layout="main" data-model="app.purchaseHistoryView" data-show="app.purchaseHistoryView.onShow" data-after-show="app.purchaseHistoryView.afterShow" id="purchaseHistoryViewScreen" class="screen">
+<div data-role="view" data-title="View" data-layout="main" data-model="app.purchaseHistoryView" data-show="app.purchaseHistoryView.onShow" data-after-show="app.purchaseHistoryView.afterShow" id="purchaseHistoryViewScreen" class="screen">
     <header data-role="header">
         <div data-role="navbar" class="header-text">
 
@@ -9,13 +9,13 @@
         </div>
     </header>
 
- <a data-role="button"  >Recent Purchases</a>
+
     <!-- START_CUSTOM_CODE_purchaseHistoryView -->
     <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
 
     <!-- END_CUSTOM_CODE_purchaseHistoryView -->
-    <ul class="masterDetailView" id="listView" data-role="listview" data-auto-bind="false" data-click="listViewClick" data-style="inset" data-template="purchaseHistoryViewModelTemplate" data-bind="source: purchaseHistoryViewModel.dataSource, events: {click: purchaseHistoryViewModel.itemClick}" data-pull-to-refresh="true"
-    data-endless-scroll="false">
+    <ul class="masterDetailView" data-role="listview" data-auto-bind="false" data-style="inset" data-template="purchaseHistoryViewModelTemplate" data-bind="source: purchaseHistoryViewModel.dataSource, events: {click: purchaseHistoryViewModel.itemClick}" data-pull-to-refresh="true"
+        data-endless-scroll="false">
     </ul>
 
 
@@ -27,9 +27,9 @@
         <div class="image-with-text">
             # data = app.purchaseHistoryView.purchaseHistoryViewModel.fixHierarchicalData(data); #
 
-            <img src="#: data['ProductUrl'] #">
-            <h3>#: data['Product'] #</h3>
-
+            <h3>#: data['OrderNumber'] #</h3>
+            <p>#: data['Created at'] #</p>
+            <p>#: data['OrderStatus'] #</p>
         </div>
     </script>
 </div>
