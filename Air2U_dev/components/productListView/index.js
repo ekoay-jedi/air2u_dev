@@ -1,6 +1,5 @@
 'use strict';
-
-app.productListView = kendo.observable({	
+app.productListView = kendo.observable({
     onShow: function() {},
     afterShow: function() {}
 });
@@ -14,6 +13,7 @@ app.localization.registerView('productListView');
     var dataProvider = app.data.backendServices,
         /// start global model properties
         /// end global model properties
+
         fetchFilteredData = function(paramFilter, searchFilter) {
             var model = parent.get('productListViewModel'),
                 dataSource;
@@ -71,9 +71,9 @@ app.localization.registerView('productListView');
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
-
+                    var item = dataItem['ProductImages'];
                     dataItem['ProductImagesUrl'] =
-                        processImage(dataItem['ProductImages']);
+                        processImage(item[0]);
 
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);
@@ -106,6 +106,14 @@ app.localization.registerView('productListView');
                         },
                         'ProductImages': {
                             field: 'ProductImages',
+                            defaultValue: ''
+                        },
+                        'ProductID': {
+                            field: 'ProductID',
+                            defaultValue: ''
+                        },
+                        'QTY': {
+                            field: 'QTY',
                             defaultValue: ''
                         },
                     }
@@ -170,8 +178,7 @@ app.localization.registerView('productListView');
             },
             itemClick: function(e) {
                 var dataItem = e.dataItem || productListViewModel.originalItem;
-
-                app.mobileApp.navigate('#components/productListView/details.html?uid=' + dataItem.uid);
+                app.mobileApp.navigate('#components/productListView/details.html?uid=' + dataItem.uid+'&productId='+dataItem.productId);
 
             },
             detailsShow: function(e) {
@@ -188,7 +195,10 @@ app.localization.registerView('productListView');
                 var item = uid,
                     dataSource = productListViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item);
-                itemModel.ProductImagesUrl = processImage(itemModel.ProductImages);
+                var imgitem = itemModel.ProductImages;
+                if (imgitem.count>0){
+                    itemModel.ProductImagesUrl = processImage(imgitem[0]);
+                }
 
                 if (!itemModel.ProductName) {
                     itemModel.ProductName = String.fromCharCode(160);
@@ -197,6 +207,13 @@ app.localization.registerView('productListView');
                 /// start detail form initialization
                 /// end detail form initialization
 
+                var descitem = itemModel.ProductDescription;
+                if (!descitem.count>0) {
+                    productListViewModel.set("productDesc",descitem[0]);
+                }
+                if (!itemModel.ProductID) {
+                    productListViewModel.set("ProductID",itemModel.ProductID);
+                }
                 productListViewModel.set('originalItem', itemModel);
                 productListViewModel.set('currentItem',
                     productListViewModel.fixHierarchicalData(itemModel));
@@ -256,32 +273,28 @@ app.localization.registerView('productListView');
 // START_CUSTOM_CODE_productListViewModel
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 app.productListView.productListViewModel = kendo.observable({
-	addtoCart: function() {
-				alert("Click Add to Cart!");
-		var el = new Everlive('o6yuauaw7f5m56jb');
-		var cartData = el.data('ProductCart');
-		// var query = new Everlive.Query();
-		// query.where().eq('productId', productId);
-		// cartData.get(query)
-		// .then(function(data){
-			// if (JSON.stringify(data).count > 0) {
-				// cartData.update({ 'productId' : 'productId', 'Qty' : qty, 'userId' : userId },
-    		// 	function(data){
-        	// 		alert(JSON.stringify(data));
-    		// 	},
-    		// 	function(error){
-        	// 		alert(JSON.stringify(error));
-    		// 	});
-			// } else{
-        		cartData.create({ 'productId' : '16548956321', 'qty' : 5, 'userId' : null },
-    			function(data){
-        			alert(JSON.stringify(data));
-    			},
-    			function(error){
-        			alert(JSON.stringify(error));
-    			});
-			// }
-		// }
+    addtoCart: function() {
+        $("[data-click=addtoCart]").click(function() {
+            var el = new Everlive('o6yuauaw7f5m56jb');
+            var cartData = el.data('ProductCart');
+            var query = new Everlive.Query();
+            query.where().eq('productId', itemModel.productId);
+            cartData.get(query).then(function (data) {
+                if (JSON.stringify(data).count > 0) {
+                } else {
+                    cartData.create({'productId': itemModel.productId, 'qty': 1, 'userId': null},
+                        function (data) {
+                            navigator.notification.alert('Add to cart successfully!');
+                        },
+                        function (error) {
+                            navigator.notification.alert('Fail to add to cart!');
+                        });
+                }
+            });
+        });
 	},
+    // onshow: function () {
+    //     app.productListView.productListViewModel.cash
+    // },
 });
 // END_CUSTOM_CODE_productListViewModel

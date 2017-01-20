@@ -1,0 +1,34 @@
+<div data-role="view" data-title="View" data-layout="main-nonav" data-model="app.orderDetailView" data-show="app.orderDetailView.onShow" data-after-show="app.orderDetailView.afterShow" id="orderDetailViewScreen" class="screen">
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+
+            <span data-bind="text: strings.orderDetailView.title"></span>
+
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+
+        </div>
+    </header>
+
+
+    <!-- START_CUSTOM_CODE_orderDetailView -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_orderDetailView -->
+    <ul class="masterDetailView" data-role="listview" data-auto-bind="false" data-style="inset" data-template="orderDetailViewModelTemplate" data-bind="source: orderDetailViewModel.dataSource, events: {click: orderDetailViewModel.itemClick}" data-pull-to-refresh="true"
+        data-endless-scroll="false">
+    </ul>
+
+
+    <!-- START_CUSTOM_CODE_orderDetailViewModel -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_orderDetailViewModel -->
+    <script type="text/x-kendo-template" id="orderDetailViewModelTemplate">
+        <div class="image-with-text">
+            # data = app.orderDetailView.orderDetailViewModel.fixHierarchicalData(data); #
+
+            <h3>#: data['Product'] #</h3>
+            <p>#: data['OrderQTY'] #</p>
+        </div>
+    </script>
+</div>
