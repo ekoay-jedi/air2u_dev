@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c35e63da-59be-44cd-a9f6-8624063d74ca" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/components/myProfileView/view.html" afterPath="$PROJECT_DIR$/components/myProfileView/view.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/components/checkoutView/view.html" afterPath="$PROJECT_DIR$/components/checkoutView/view.html" />
     </list>
     <ignored path="Air2U_dev.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,11 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="view.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="view.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/components/myProfileView/view.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.14609286">
-              <caret line="27" column="118" selection-start-line="27" selection-start-column="118" selection-end-line="27" selection-end-column="118" />
+            <state vertical-scroll-proportion="-10.3714285">
+              <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
               <folding>
                 <element signature="n#style#0;n#input#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#button#0;n#div#2;n#div#0;n#div#0;n#!!top" expanded="true" />
@@ -47,6 +47,16 @@
                 <element signature="n#style#0;n#label#0;n#li#5;n#ul#0;n#div#1;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#textarea#0;n#li#5;n#ul#0;n#div#1;n#div#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="view.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/components/checkoutView/view.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.41223103">
+              <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -175,6 +185,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Air2U_dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Air2U_dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="checkoutView" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -580,8 +608,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/components/myProfileView/view.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14609286">
-          <caret line="27" column="118" selection-start-line="27" selection-start-column="118" selection-end-line="27" selection-end-column="118" />
+        <state vertical-scroll-proportion="-10.3714285">
+          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
           <folding>
             <element signature="n#style#0;n#input#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#0;n#div#2;n#div#0;n#div#0;n#!!top" expanded="true" />
@@ -598,6 +626,14 @@
             <element signature="n#style#0;n#label#0;n#li#5;n#ul#0;n#div#1;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#textarea#0;n#li#5;n#ul#0;n#div#1;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/checkoutView/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.41223103">
+          <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+          <folding />
         </state>
       </provider>
     </entry>
