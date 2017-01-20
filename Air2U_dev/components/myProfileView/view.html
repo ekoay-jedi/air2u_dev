@@ -1,69 +1,87 @@
 <style>
-.span-img { display: inline-block;  padding-left:20px; padding-top:10px; }
-.span-tip { padding-left:6px; vertical-align: top; display: inline-block; padding-top:80px;}
- li {list-style: none;}
- input{width:100%;height:40px;}
+
+    /*  margin: 5px 15px 0px 20px  top right bottom left*/
+    .teamMate img {
+        display: inline-block;
+        margin: 5px 15px 0px 20px;
+        border: 1px solid #ccc;
+        vertical-align: middle;
+        text-align: center;
+        height: 70px;
+        width: 70px;
+        border-radius: 50%;
+    }
+
+    .teamMate {
+        text-align: center;
+    }
+
+
 </style>
 
-<div data-role="view" data-title="View" data-layout="main" data-model="app.myProfileView" data-show="app.myProfileView.onShow" data-after-show="app.myProfileView.afterShow" id="myProfileViewScreen" class="screen">
+<div data-role="view" data-title="View" data-layout="main" data-model="app.myProfileView"
+     data-show="app.myProfileView.onShow" data-after-show="app.myProfileView.afterShow" id="myProfileViewScreen"
+     class="screen" >
     <header data-role="header">
         <div data-role="navbar" class="header-text">
-
             <span data-bind="text: strings.myProfileView.title"></span>
-
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
-
+            <button data-role="button" data-align="right" data-bind="click: editprofile" id="rightview" name="rightview" ></button>
         </div>
     </header>
 
-<div id="box">
-	<span class="span-img">
-		<img src="http://img.mukewang.com/52da54ed0001ecfa04120172.jpg" height="100px" width="100px"/>
-	</span>
-	
-	<span class="span-tip">
-		<li>
-			<a >username</a>
-		</li>
-		<li>
-			<a >viewpoint</a>
-		</li>
-		
-	</span>
-	
-</div>
+    <div style="padding: 10px;background-image: url(/resources/infobg.png)">
+        <div class="teamMate">
+            <img src="/resources/head.png" name="userheadview" data-bind="value:userhead" id="userheadview" >
+        </div>
+        <div class="teamMate">
+        <input style="width: 100%;background: none;color: white;border: none;font-size: 17px;text-align: center" type="text" id="usernameinfo" name="usernameinfo" data-bind="value: usernameinfo" />
+        </div>
+        <div class="teamMate">
+            <button style="width: 47%;background: none;color: white;border: none;height: 20px" data-role="button" data-bind="click: viewpoint" >View Loyalty Point</button>
+        </div>
 
-<form style=" padding-top:20px; padding-left:20px; padding-right:20px; " >
-Address
-	<li >
+    </div>
 
-		<input type="text" name="address1" id="address1" >
-	</li>
-	<li style=" padding-top:10px;">
-		<input type="text" name="address2" id="address2">
-	</li>
-	<li style=" padding-top:10px;">
-		<input type="text" name="address3" id="address3">
-	</li>
-<br/>
+    <div>
+        <ul data-role="listview" >
+            <!--<li style="height: 30px">
+                <label for="usernameinfo" style="color: black;">Username</label>
+                <input type="text" id="usernameinfo"  style="color: grey;margin-top: 10px"/>
+            </li>-->
+            <li style="height: 30px">
+                <label for="emailinfo" style="color: black;font-size: 15px">Email:</label>
+                <input type="text" id="emailinfo" name="emailinfo" data-bind="value: emailinfo" style="color: grey;margin-top: 10px;width: 75%;font-size: 15px"/>
+            </li>
+            <li style="height: 30px">
+                <label for="state" style="color: black;font-size: 15px">State:</label>
+                <input type="text" id="state" name="state" data-bind="value: state" style="color: grey;margin-top: 10px;width: 75%;font-size: 15px"/>
+            </li>
+            <li style="height: 30px">
+                <label for="phone" style="color: black;font-size: 15px">Phone:</label>
+                <input id="phone" name="phone" data-bind="value: phone" type="tel" style="color: grey;margin-top: 10px;width: 75%;font-size: 15px"/>
+            </li >
+            <li style="height: 30px">
+                <label for="card" style="color: black;font-size: 15px">Card:</label>
+                <input id="card" name="card" data-bind="value: card" type="tel" style="color: grey;margin-top: 10px;width: 75%;font-size: 15px"/>
+            </li >
+            <li style="height: 30px">
+                <label for="status" style="color: black;font-size: 15px">Status:</label>
+                <input id="status" name="status" data-bind="value: status" type="tel" style="color: grey;margin-top: 10px;width: 75%;font-size: 15px"/>
+            </li >
+            <li data-bind="click: addressdetail" >
+                <label for="defaultaddress" id="addresslabel" name="addresslabel" style="color: black;font-size: 15px" >Address:</label>
+                <textarea id="defaultaddress" name="defaultaddress" data-bind="value: defaultaddress" rows="1"
+                          type="text" style="color: grey;font-size: 15px"></textarea>
+            </li>
 
-   Phone
-	<li>
-		
-		<input type="text" name="phone">
-	</li>
-<br/>
-<li><label>State</label> <input style="vertical-align: right; " type="checkbox" name="state" value="state" checked="checked" /> </li>
 
-</form>
-<div style="padding-left:20px; padding-right:20px; ">
-<button style="width: 100%;" data-role="button" data-bind="click:Save">Save</button>
-</div>
+        </ul>
+    </div>
 
-    <!-- START_CUSTOM_CODE_myProfileView -->
-    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
 
-    <!-- END_CUSTOM_CODE_myProfileView -->
+    <!--<button id="save" style="width:100%; height:30px;margin-left:10px;margin-right:10px;" data-bind="click:saveprofile">Save</button>-->
+
 </div>
 
 <!-- START_CUSTOM_CODE_myProfileViewModel -->
