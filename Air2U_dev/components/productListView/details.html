@@ -68,16 +68,16 @@
                                                                     var query = new Everlive.Query();
                                                                     query.where().eq('productId', productId).eq('userId',userId);
                                                                     cartData.get(query).then(function (data) {
-                                                                        navigator.notification.alert(JSON.stringify(data));
+                                                                        alert(JSON.stringify(data));
                                                                         if (data["count"] > 0) {
-                                                                            navigator.notification.alert('Existed in cart!');
+                                                                            alert('Existed in cart!');
                                                                         } else {
                                                                             cartData.create({'productId': productId, 'qty': 1, 'userId': userId},
                                                                                     function (data) {
-                                                                                        navigator.notification.alert('Add to cart successfully!');
+                                                                                        alert('Add to cart successfully!');
                                                                                     },
                                                                                     function (error) {
-                                                                                        navigator.notification.alert('Fail to add to cart!');
+                                                                                        alert('Fail to add to cart!');
                                                                                     });
                                                                         }
                                                                     });
@@ -88,7 +88,7 @@
                                                     }
                                                 }
                                             });
-                                            navigator.notification.alert('Please login first!');
+                                            alert('Please login first!');
                                             app.mobileApp.navigate('components/loginModelView/view.html');
                                         }
                                     });
