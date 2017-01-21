@@ -70,15 +70,19 @@
                                                                     var query = new Everlive.Query();
                                                                     query.where().eq('productId', productId).eq('userId',userId);
                                                                     cartData.get(query).then(function (data) {
+<<<<<<< HEAD
+=======
+                                                                        alert(JSON.stringify(data));
+>>>>>>> cf257b0419053e5d35404469e5d3b77a3d4d5fec
                                                                         if (data["count"] > 0) {
-                                                                            navigator.notification.alert('Existed in cart!');
+                                                                            alert('Existed in cart!');
                                                                         } else {
                                                                             cartData.create({'productId': productId, 'qty': 1, 'userId': userId,'product':product},
                                                                                     function (data) {
-                                                                                        navigator.notification.alert('Add to cart successfully!');
+                                                                                        alert('Add to cart successfully!');
                                                                                     },
                                                                                     function (error) {
-                                                                                        navigator.notification.alert('Fail to add to cart!');
+                                                                                        alert('Fail to add to cart!');
                                                                                     });
                                                                         }
                                                                     });
@@ -92,7 +96,12 @@
                                                     }
                                                 }
                                             });
+<<<<<<< HEAD
 
+=======
+                                            alert('Please login first!');
+                                            app.mobileApp.navigate('components/loginModelView/view.html');
+>>>>>>> cf257b0419053e5d35404469e5d3b77a3d4d5fec
                                         }
                                     });
                                 </script>
