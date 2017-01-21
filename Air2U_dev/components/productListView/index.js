@@ -284,10 +284,10 @@ app.productListView.productListViewModel = kendo.observable({
                 } else {
                     cartData.create({'productId': itemModel.productId, 'qty': 1, 'userId': null},
                         function (data) {
-                            navigator.notification.alert('Add to cart successfully!');
+                            alert('Add to cart successfully!');
                         },
                         function (error) {
-                            navigator.notification.alert('Fail to add to cart!');
+                            alert('Fail to add to cart!');
                         });
                 }
             });

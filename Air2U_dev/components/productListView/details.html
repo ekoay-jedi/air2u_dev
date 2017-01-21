@@ -64,13 +64,12 @@
                                                                     var productId =
                                                                             app.productListView.productListViewModel.get("currentItem.ProductID");
                                                                     var product =
-                                                                            app.productListView.productListViewModel.get("currentItem");
+                                                                            app.productListView.productListViewModel.get("originalItem.Id");
                                                                     var userId = datainside[iteminside];
                                                                     var cartData = el.data('ProductCart');
                                                                     var query = new Everlive.Query();
                                                                     query.where().eq('productId', productId).eq('userId',userId);
                                                                     cartData.get(query).then(function (data) {
-                                                                        navigator.notification.alert(JSON.stringify(data));
                                                                         if (data["count"] > 0) {
                                                                             navigator.notification.alert('Existed in cart!');
                                                                         } else {
@@ -86,12 +85,14 @@
                                                                     return;
                                                                 }
                                                             }
+                                                        }else{
+                                                            navigator.notification.alert('Please login first!');
+                                                            app.mobileApp.navigate('components/loginModelView/view.html');
                                                         }
                                                     }
                                                 }
                                             });
-                                            navigator.notification.alert('Please login first!');
-                                            app.mobileApp.navigate('components/loginModelView/view.html');
+
                                         }
                                     });
                                 </script>
