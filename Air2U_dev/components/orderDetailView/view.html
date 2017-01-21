@@ -9,8 +9,7 @@
             <script>
                 $("[data-click=opencheckout]").click(function() {
                     var order = app.orderDetailView.get("currentItem.OrderNumber");
-                    alert(order.OrderNumber);
-                    app.mobileApp.navigate('components/checkoutView/view.html');
+                    app.mobileApp.navigate('components/checkoutView/view.html?'+order);
                 });
             </script>
         </div>

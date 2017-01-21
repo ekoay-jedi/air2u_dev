@@ -248,7 +248,6 @@ app.localization.registerView('orderDetailView');
 
     parent.set('onShow', function(e) {
         var location = window.location.href;
-        alert(location.split('?')[1]);
         if(location.indexOf("status=0")==-1){
             document.getElementById("checkoutBtn").style.display="inline";
         }else{
