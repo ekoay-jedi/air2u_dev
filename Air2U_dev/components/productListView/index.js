@@ -272,29 +272,4 @@ app.localization.registerView('productListView');
 
 // START_CUSTOM_CODE_productListViewModel
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
-app.productListView.productListViewModel = kendo.observable({
-    addtoCart: function() {
-        $("[data-click=addtoCart]").click(function() {
-            var el = new Everlive('o6yuauaw7f5m56jb');
-            var cartData = el.data('ProductCart');
-            var query = new Everlive.Query();
-            query.where().eq('productId', itemModel.productId);
-            cartData.get(query).then(function (data) {
-                if (JSON.stringify(data).count > 0) {
-                } else {
-                    cartData.create({'productId': itemModel.productId, 'qty': 1, 'userId': null},
-                        function (data) {
-                            alert('Add to cart successfully!');
-                        },
-                        function (error) {
-                            alert('Fail to add to cart!');
-                        });
-                }
-            });
-        });
-	},
-    // onshow: function () {
-    //     app.productListView.productListViewModel.cash
-    // },
-});
 // END_CUSTOM_CODE_productListViewModel

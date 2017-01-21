@@ -1,28 +1,10 @@
 'use strict';
-var userid;
+
+var userId;
+var apiKey = "o6yuauaw7f5m56jb";
+var el = new Everlive(apiKey);
 app.purchaseHistoryView = kendo.observable({
-    onShow: function() {
-        el.Users.currentUser().then(
-            function (data) {
-                for (var item in data) {
-                    if (item == 'result') {
-                        if (data[item] == null) {
-                            alert("You do not login,Please login first.");
-                            //app.mobileApp.navigate('components/loginModelView/view.html');
-                        } else {
-                            var datainside = data[item];
-                            for (var iteminside in datainside) {
-                                if (iteminside == 'Id') {
-                                    userid = datainside[iteminside];
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            function (error) {
-                alert(JSON.stringify(error));
-    })},
+    onShow: function() {},
     afterShow: function() {}
 });
 app.localization.registerView('purchaseHistoryView');
@@ -88,15 +70,32 @@ app.localization.registerView('purchaseHistoryView');
                 typeName: 'Order',
                 dataProvider: dataProvider
             },
+
             change: function(e) {
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
-
                     /// start flattenLocation property
+                    var customer = dataItem["OrderCustomer"];
+                    if (userId != customer){
+                        data.remove(dataItem);
+                        continue;
+                    }
+                    var status;
+                    switch (dataItem.Status) {
+                        case 0:
+                            status = "Wait for pay";
+                            break;
+                        case 1:
+                            status = "Finished";
+                            break;
+                        case 2:
+                            status = "Canceled";
+                            break;
+                    }
+                    dataItem['status'] = status;
                     flattenLocationProperties(dataItem);
                     /// end flattenLocation property
-
                 }
             },
             error: function(e) {
@@ -184,8 +183,7 @@ app.localization.registerView('purchaseHistoryView');
             },
             itemClick: function(e) {
                 var dataItem = e.dataItem || purchaseHistoryViewModel.originalItem;
-
-                app.mobileApp.navigate('components/orderDetailView/view.html?filter=' + encodeURIComponent(JSON.stringify({
+                app.mobileApp.navigate('components/orderDetailView/view.html?status='+encodeURIComponent(dataItem.Status)+'&filter='  +encodeURIComponent(JSON.stringify({
                         field: 'OrderNumber',
                         value: dataItem.Id,
                         operator: 'eq'
@@ -246,26 +244,39 @@ app.localization.registerView('purchaseHistoryView');
     }
 
     parent.set('onShow', function(e) {
-        var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
-            isListmenu = false,
-            backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
-            dataSourceOptions = purchaseHistoryViewModel.get('_dataSourceOptions'),
-            dataSource;
+        el.Users.currentUser().then(function (data) {
+            for (var item in data) {
+                if (item == 'result') {
+                    if (data[item] == null) {
+                        alert("You do not login,Please login first.");
+                        app.mobileApp.navigate('components/loginModelView/view.html');
+                    } else {
+                        var datainside = data[item];
+                        userId = datainside["Id"];
+                        var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
+                            isListmenu = false,
+                            backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
+                            dataSourceOptions = purchaseHistoryViewModel.get('_dataSourceOptions'),
+                            dataSource;
 
-        if (param || isListmenu) {
-            backbutton.show();
-            backbutton.css('visibility', 'visible');
-        } else {
-            if (e.view.element.find('header [data-role="navbar"] [data-role="button"]').length) {
-                backbutton.hide();
-            } else {
-                backbutton.css('visibility', 'hidden');
+                        if (param || isListmenu) {
+                            backbutton.show();
+                            backbutton.css('visibility', 'visible');
+                        } else {
+                            if (e.view.element.find('header [data-role="navbar"] [data-role="button"]').length) {
+                                backbutton.hide();
+                            } else {
+                                backbutton.css('visibility', 'hidden');
+                            }
+                        }
+
+                        dataSource = new kendo.data.DataSource(dataSourceOptions);
+                        purchaseHistoryViewModel.set('dataSource', dataSource);
+                        fetchFilteredData(param);
+                    }
+                }
             }
-        }
-
-        dataSource = new kendo.data.DataSource(dataSourceOptions);
-        purchaseHistoryViewModel.set('dataSource', dataSource);
-        fetchFilteredData(param);
+        });
     });
 
 })(app.purchaseHistoryView);

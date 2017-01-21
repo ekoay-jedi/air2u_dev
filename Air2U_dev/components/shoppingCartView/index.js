@@ -64,7 +64,7 @@ app.localization.registerView('shoppingCartView');
         dataSourceOptions = {
             type: 'everlive',
             transport: {
-                typeName: 'ProductOrder',
+                typeName: 'ProductCart',
                 dataProvider: dataProvider
             },
             change: function(e) {
@@ -72,8 +72,8 @@ app.localization.registerView('shoppingCartView');
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
 
-                    dataItem['ProductUrl'] =
-                        processImage(dataItem['Product']);
+                    dataItem['productIdUrl'] =
+                        processImage(dataItem['productId']);
 
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);
@@ -96,8 +96,12 @@ app.localization.registerView('shoppingCartView');
             schema: {
                 model: {
                     fields: {
-                        'Product': {
-                            field: 'Product',
+                        'productId': {
+                            field: 'productId',
+                            defaultValue: ''
+                        },
+                        'qty': {
+                            field: 'qty',
                             defaultValue: ''
                         },
                     }
@@ -170,6 +174,36 @@ app.localization.registerView('shoppingCartView');
                 var uid = this.originalItem.uid;
                 app.mobileApp.navigate('#components/shoppingCartView/edit.html?uid=' + uid);
             },
+            deleteItem: function() {
+                var dataSource = shoppingCartViewModel.get('dataSource');
+
+                dataSource.remove(this.originalItem);
+
+                dataSource.one('sync', function() {
+                    app.mobileApp.navigate('#:back');
+                });
+
+                dataSource.one('error', function() {
+                    dataSource.cancelChanges();
+                });
+
+                dataSource.sync();
+            },
+            deleteClick: function() {
+                var that = this;
+
+                navigator.notification.confirm(
+                    'Are you sure you want to delete this item?',
+                    function(index) {
+                        //'OK' is index 1
+                        //'Cancel' - index 2
+                        if (index === 1) {
+                            that.deleteItem();
+                        }
+                    },
+                    '', ['OK', 'Cancel']
+                );
+            },
             detailsShow: function(e) {
                 var uid = e.view.params.uid,
                     dataSource = shoppingCartViewModel.get('dataSource'),
@@ -185,8 +219,8 @@ app.localization.registerView('shoppingCartView');
                     dataSource = shoppingCartViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item);
 
-                if (!itemModel.Product) {
-                    itemModel.Product = String.fromCharCode(160);
+                if (!itemModel.productId) {
+                    itemModel.productId = String.fromCharCode(160);
                 }
 
                 /// start detail form initialization
