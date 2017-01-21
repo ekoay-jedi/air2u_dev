@@ -72,10 +72,10 @@ app.localization.registerView('shoppingCartView');
                             "product": {
                                 "TargetTypeName": "Product"
                             }
-                        }),
-                        "X-Everlive-Filter": JSON.stringify({
-                            'Owner': app.currentUser.Id
                         })
+                        //"X-Everlive-Filter": JSON.stringify({
+                        //    'Owner': app.currentUser.Id
+                        //})
                     }},
                         //{
                         //    "Authorization" : app.currentUser.access_token
@@ -86,7 +86,6 @@ app.localization.registerView('shoppingCartView');
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
-<<<<<<< HEAD
                     dataItem.cchecked = dataItem.cchecked | false;
                     var product = dataItem['product'];
                     var imgs = product['ProductImages'];
@@ -96,11 +95,6 @@ app.localization.registerView('shoppingCartView');
                     }else {
                         dataItem['productIdUrl'] = "";
                     }
-=======
-
-                    dataItem['productIdUrl'] =
-                        processImage(dataItem['productId']);
->>>>>>> develop
 
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);
@@ -206,52 +200,10 @@ app.localization.registerView('shoppingCartView');
                     }
                 }
 
-<<<<<<< HEAD
                 var currentTotal = shoppingCartViewModel.get('total');
                 if (currentTotal != totalP) {
                     shoppingCartViewModel.set('total', totalP);
                 }
-=======
-            },
-            editClick: function() {
-                var uid = this.originalItem.uid;
-                app.mobileApp.navigate('#components/shoppingCartView/edit.html?uid=' + uid);
-            },
-            deleteItem: function() {
-                var dataSource = shoppingCartViewModel.get('dataSource');
-
-                dataSource.remove(this.originalItem);
-
-                dataSource.one('sync', function() {
-                    app.mobileApp.navigate('#:back');
-                });
-
-                dataSource.one('error', function() {
-                    dataSource.cancelChanges();
-                });
-
-                dataSource.sync();
-            },
-            deleteClick: function() {
-                var that = this;
-
-                navigator.notification.confirm(
-                    'Are you sure you want to delete this item?',
-                    function(index) {
-                        //'OK' is index 1
-                        //'Cancel' - index 2
-                        if (index === 1) {
-                            that.deleteItem();
-                        }
-                    },
-                    '', ['OK', 'Cancel']
-                );
-            },
-            detailsShow: function(e) {
-                var uid = e.view.params.uid,
-                    dataSource = shoppingCartViewModel.get('dataSource'),
-                    itemModel = dataSource.getByUid(uid);
->>>>>>> develop
 
                 var currentPV = shoppingCartViewModel.get('pv');
                 if (totalPV != currentPV) {
@@ -303,7 +255,6 @@ app.localization.registerView('shoppingCartView');
                 source.sync();
             },
 
-<<<<<<< HEAD
             createProductOrders: function(productCarts, callback) {
                 var pOrders = [];
                 for(var i = 0; i < productCarts.length; i++) {
@@ -316,10 +267,6 @@ app.localization.registerView('shoppingCartView');
                         Owner: app.currentUser.Id
                     };
                     pOrders.push(pOrder);
-=======
-                if (!itemModel.productId) {
-                    itemModel.productId = String.fromCharCode(160);
->>>>>>> develop
                 }
 
                 var data = dataProvider.data('ProductOrder');

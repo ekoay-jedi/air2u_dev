@@ -45,14 +45,14 @@ app.localization.registerView('checkoutView');
     /// start form functions
     /// end form functions
 
-    parent.set('onShow', function _onShow() {
+    parent.set('onShow', function _onShow(e) {
         var that = parent;
         that.set('addFormData', {
             /// start add form data init
             /// end add form data init
         });
 
-        $("#total-price").text("RMB 19000");
+        $("#total-price").text("RMB " + e.view.params.price);
 
         /// start add form show
         /// end add form show
