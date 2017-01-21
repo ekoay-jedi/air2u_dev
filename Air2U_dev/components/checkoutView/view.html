@@ -1,32 +1,46 @@
+
 <div data-role="view" data-title="View" data-layout="main" data-model="app.checkoutView" data-show="app.checkoutView.onShow"
-	data-after-show="app.checkoutView.afterShow" id="checkoutViewScreen" class="screen">
+	 data-after-show="app.checkoutView.afterShow" id="checkoutViewScreen" class="screen">
+
 	<div id="checkoutViewModel" class="form-view screen__content screen__content--form add-item-view">
 		<form>
 			<ul class="form-content" data-role="listview" data-style="inset">
 				<li class="form-content-item">
 					<div id="shoppingcartField" class="field field--image imageListItem km-label-above">
-						<div class="align-left field__content"> <img src="resources/shopping_cart.png">
-							<div style="float:right;">
-								<h3>My Total : RM15000.00</h3> </div>
-						</div>
+						<img src="resources/shopping_cart.png" style="float: left;">
+						<div style="margin-top: 15px;margin-left: 20px;">
+							<h1 style="float: left;margin-left: 20px;">My Total: </h1><h1 style="float: right;margin-right: 20px;">RM 1500.00</h1> </div>
+
 					</div>
 				</li>
 				<li>
-					<div style="padding-right:20px"> <input type="checkbox" name="vehicle" value="Bike" />
+					<div style="padding-right:20px"> <input type="checkbox" name="vehicle" value="Bike" style="float: left;position: inherit;margin-right: 20px;"/>
 						<h3>Use available point 25,000</h3> </div>
 				</li>
 				<li>
 					<div>
-					<h3>Pay with Card</h3>
+						<h3>Pay with Card</h3>
 					</div>
 					<div>
 						<select>
-  							<option value ="volvo">Volvo</option>
-  							<option value ="saab">Saab</option>
-  							<option value="opel">Opel</option>
-  							<option value="audi">Audi</option>
+							<option value="Select card to pay" selected="selected">Select card to pay</option>
+							<option value ="volvo">Volvo</option>
+							<option value ="saab">Saab</option>
+							<option value="opel">Opel</option>
+							<option value="audi">Audi</option>
 						</select>
 					</div>
+				</li>
+				<li>
+					<div  style="margin-bottom: 20px;">
+						<h3>Pay with E-banking</h3>
+					</div>
+					<input type="checkbox" name="bank" value="Bike" style="float: left;position: inherit;margin-right: 20px;"/>
+					<h3>Maybank2U</h3>
+					<input type="checkbox" name="hlb" value="Bike" style="float: left;position: inherit;margin-right: 20px;"/>
+					<h3>HLB Online</h3>
+					<input type="checkbox" name="pb" value="Bike" style="float: left;position: inherit;margin-right: 20px;"/>
+					<h3>PBOnline</h3>
 				</li>
 			</ul>
 			<div class="button-group">
@@ -41,7 +55,7 @@
 	<header data-role="header">
 		<div data-role="navbar" class="header-text"> <span data-bind="text: strings.checkoutView.title"></span>
 			<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"
-				data-icon="drawer-button"></a>
+			   data-icon="drawer-button"></a>
 		</div>
 	</header>
 	<!-- START_CUSTOM_CODE_checkoutView -->
