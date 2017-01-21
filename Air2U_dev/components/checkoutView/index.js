@@ -1,5 +1,6 @@
 'use strict';
-
+var apiKey = "o6yuauaw7f5m56jb";
+var el = new Everlive(apiKey);
 app.checkoutView = kendo.observable({
     onShow: function() {},
     afterShow: function() {}
@@ -26,7 +27,15 @@ app.localization.registerView('checkoutView');
         /// end global model properties
 
         checkoutViewModel = kendo.observable({
-            submit: function() {},
+            submit: function() {
+                el.data('Order').updateSingle({ Id: '416aacc0-dd49-11e6-8b40-95cdc645b97b', 'Status': 1 },
+                    function(data){
+                        alert(JSON.stringify(data));
+                    },
+                    function(error){
+                        alert(JSON.stringify(error));
+                    });
+            },
             /// start add model functions
             /// end add model functions
 
@@ -42,6 +51,9 @@ app.localization.registerView('checkoutView');
             /// start add form data init
             /// end add form data init
         });
+
+        $("#total-price").text("RMB 19000");
+
         /// start add form show
         /// end add form show
     });

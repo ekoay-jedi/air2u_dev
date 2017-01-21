@@ -4,8 +4,15 @@
 
             <span data-bind="text: strings.orderDetailView.title"></span>
 
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
-
+            <a data-role="backbutton" data-align="left">Back</a>
+            <a data-role="button" id="checkoutBtn" data-click="opencheckout" data-align="right" data-icon="action"></a>
+            <script>
+                $("[data-click=opencheckout]").click(function() {
+                    var order = app.orderDetailView.get("currentItem.OrderNumber");
+                    alert(order.OrderNumber);
+                    app.mobileApp.navigate('components/checkoutView/view.html');
+                });
+            </script>
         </div>
     </header>
 
@@ -26,9 +33,10 @@
     <script type="text/x-kendo-template" id="orderDetailViewModelTemplate">
         <div class="image-with-text">
             # data = app.orderDetailView.orderDetailViewModel.fixHierarchicalData(data); #
-
-            <h3>#: data['Product'] #</h3>
-            <p>#: data['OrderQTY'] #</p>
+            <img src="#: data['ProductImagesUrl'] #">
+            <h3>#: data['Product'].ProductName #</h3>
+            <p>CV:#: data['Product'].cvPrice # PV: #: data['Product'].pvPrice #</p>
+            <p>Qty:#: data['OrderQTY'] #</p>
         </div>
     </script>
 </div>

@@ -1,5 +1,6 @@
 'use strict';
-
+var apiKey = "o6yuauaw7f5m56jb";
+var el = new Everlive(apiKey);
 app.orderDetailView = kendo.observable({
     onShow: function() {},
     afterShow: function() {}
@@ -65,13 +66,28 @@ app.localization.registerView('orderDetailView');
             type: 'everlive',
             transport: {
                 typeName: 'ProductOrder',
-                dataProvider: dataProvider
+                dataProvider: dataProvider,
+                read: {
+                   contentType: "application/json",
+                   headers: {
+                       "X-Everlive-Expand": JSON.stringify({
+                           "Product": {
+                               "TargetTypeName": "Product"
+                           },
+                           "OrderNumber": {
+                               "TargetTypeName": "Order"
+                           }
+                       })
+                   }
+                }
             },
             change: function(e) {
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
-
+                    var item = dataItem.Product.ProductImages;
+                    dataItem['ProductImagesUrl'] =
+                        processImage(item[0]);
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);
                     /// end flattenLocation property
@@ -170,7 +186,7 @@ app.localization.registerView('orderDetailView');
             detailsShow: function(e) {
                 var uid = e.view.params.uid,
                     dataSource = orderDetailViewModel.get('dataSource'),
-                    itemModel = dataSource.getByUid(uid);
+                    itemModel = dataSource.getByUid(uid).Product;
 
                 orderDetailViewModel.setCurrentItemByUid(uid);
 
@@ -180,15 +196,25 @@ app.localization.registerView('orderDetailView');
             setCurrentItemByUid: function(uid) {
                 var item = uid,
                     dataSource = orderDetailViewModel.get('dataSource'),
-                    itemModel = dataSource.getByUid(item);
+                    itemModel = dataSource.getByUid(item).Product;
+                var imgitem = itemModel.ProductImages;
+                alert(imgitem);
+                if (imgitem.count>0){
+                    orderDetailViewModel.set("ProductImagesUrl",imgitem[0]);
+                }
 
-                if (!itemModel.Product) {
-                    itemModel.Product = String.fromCharCode(160);
+                if (!itemModel.ProductName) {
+                    itemModel.ProductName = String.fromCharCode(160);
                 }
 
                 /// start detail form initialization
                 /// end detail form initialization
 
+                var descitem = itemModel.ProductDescription;
+                if (!descitem.count>0) {
+                    orderDetailViewModel.set("productDesc",descitem[0]);
+                }
+                alert(itemModel.ProductName);
                 orderDetailViewModel.set('originalItem', itemModel);
                 orderDetailViewModel.set('currentItem',
                     orderDetailViewModel.fixHierarchicalData(itemModel));
@@ -221,6 +247,13 @@ app.localization.registerView('orderDetailView');
     }
 
     parent.set('onShow', function(e) {
+        var location = window.location.href;
+        alert(location.split('?')[1]);
+        if(location.indexOf("status=0")==-1){
+            document.getElementById("checkoutBtn").style.display="inline";
+        }else{
+            document.getElementById("checkoutBtn").style.display="none";
+        }
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,
             backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
