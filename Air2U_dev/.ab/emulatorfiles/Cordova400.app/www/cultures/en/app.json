@@ -63,5 +63,9 @@
   },
   "testView": {
     "title": "Test View"
+  },
+  "orderDetailView": {
+    "title": "OrderList",
+    "orderDetailViewModel": {}
   }
 }

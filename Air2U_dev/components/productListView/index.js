@@ -272,6 +272,7 @@ app.localization.registerView('productListView');
 
 // START_CUSTOM_CODE_productListViewModel
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
+<<<<<<< HEAD
 app.productListView.productListViewModel = kendo.observable({
     addtoCart: function() {
         $("[data-click=addtoCart]").click(function() {
@@ -297,4 +298,6 @@ app.productListView.productListViewModel = kendo.observable({
     //     app.productListView.productListViewModel.cash
     // },
 });
+=======
+>>>>>>> feature/SalesHistory
 // END_CUSTOM_CODE_productListViewModel

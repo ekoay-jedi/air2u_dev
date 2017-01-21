@@ -50,7 +50,7 @@
                                         var qty = document.getElementById("qtyField").value;
                                         var stock = app.productListView.productListViewModel.get("currentItem.QTY");
                                         if (qty>stock){
-                                            navigator.notification.alert('Out of stock！');
+                                            alert('Out of stock！');
                                             document.getElementById("qtyField").value = stock;
                                         }  else {
                                             //var el = new Everlive("o6yuauaw7f5m56jb");

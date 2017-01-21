@@ -131,7 +131,7 @@
           "isMapView": false,
           "serverSideSorting": false,
           "serverSidePaging": false,
-          "itemActionView": "subCategoryView",
+          "itemActionView": "orderDetailView",
           "itemActionPrimaryKey": "Id",
           "itemActionSecondaryKey": "ParentCategory",
           "detailHeaderFieldSource": "dataBound",
@@ -268,7 +268,34 @@
       "title": "Test View",
       "addToNavigation": true,
       "icon": "wifi"
-    }
+    },
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "orderDetailView",
+      "components": [
+        {
+          "type": "kendo-ui-mobile:editableList",
+          "listExtraFields": [],
+          "detailExtraFields": [],
+          "addScreenExtraFields": [],
+          "editScreenExtraFields": [],
+          "components": [],
+          "name": "orderDetailViewModel",
+          "dataProvider": "backendServices",
+          "collection": "ProductOrder",
+          "headerField": "Product",
+          "subHeaderField": "OrderQTY",
+          "addItemForm": false,
+          "editItemForm": false,
+          "deleteItemButton": false,
+          "pullToRefresh": true,
+          "endlessScroll": false,
+          "isMapView": false,
+          "serverSideSorting": false,
+          "serverSidePaging": false,
+          "detailHeaderFieldSource": "static",
+          "detailHeaderFieldValue": "Detail"
+        }
   ],
   "dataProviders": [
     {

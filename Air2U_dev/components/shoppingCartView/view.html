@@ -15,7 +15,7 @@
 
     <!-- END_CUSTOM_CODE_shoppingCartView -->
     <ul class="masterDetailView" data-role="listview" data-auto-bind="false" data-style="inset" data-template="shoppingCartViewModelTemplate" data-bind="source: shoppingCartViewModel.dataSource, events: {click: shoppingCartViewModel.itemClick}" data-pull-to-refresh="false"
-    data-endless-scroll="false">
+        data-endless-scroll="false">
     </ul>
 
 
@@ -27,9 +27,9 @@
         <div class="image-with-text">
             # data = app.shoppingCartView.shoppingCartViewModel.fixHierarchicalData(data); #
 
-            <img src="#: data['ProductUrl'] #">
-            <h3>#: data['Product'] #</h3>
-
+            <img src="#: data['productIdUrl'] #">
+            <h3>#: data['productId'] #</h3>
+            <p>#: data['qty'] #</p>
         </div>
     </script>
 </div>
