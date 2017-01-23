@@ -6,6 +6,11 @@
 
             <a data-role="backbutton" data-align="left">Back</a>
             <a data-role="button" id="checkoutBtn" data-click="opencheckout" data-align="right">Checkout</a>
+            <script>
+                $("[data-click=opencheckout]").click(function() {
+                    app.mobileApp.navigate('components/checkoutView/view.html?orderId='+orderID);
+                });
+            </script>
         </div>
     </header>
 
