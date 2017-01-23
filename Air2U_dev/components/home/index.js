@@ -8,7 +8,6 @@ app.localization.registerView('home');
 
 app.splash = kendo.observable({
     onShow: function() {
-        alert(app.needShowSplash.isNeed);
         if(app.needShowSplash.isNeed) {
             setTimeout(function() {
                 document.getElementById("splash").style.visibility="hidden";
