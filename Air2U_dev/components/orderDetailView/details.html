@@ -56,8 +56,6 @@
                                                             for (var iteminside in datainside) {
                                                                 if (iteminside == 'Id') {
                                                                     var productId =
-                                                                            app.productListView.productListViewModel.get("currentItem.ProductID");
-                                                                    var product =
                                                                             app.productListView.productListViewModel.get("currentItem.Id");
                                                                     var userId = datainside[iteminside];
                                                                     var cartData = el.data('ProductCart');
@@ -67,7 +65,7 @@
                                                                         if (data["count"] > 0) {
                                                                             navigator.notification.alert('Existed in cart!');
                                                                         } else {
-                                                                            cartData.create({'productId': productId, 'qty': 1, 'userId': userId,'product':product},
+                                                                            cartData.create({'productId': productId, 'qty': 1, 'userId': userId,'product':productId},
                                                                                     function (data) {
                                                                                         navigator.notification.alert('Add to cart successfully!');
                                                                                     },
