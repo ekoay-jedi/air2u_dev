@@ -594,12 +594,10 @@ Fields
 #cartFooter .km-view-title #cartPrice {
     font-size: 0.8em;
     line-height: 1.0em;
-    position: absolute;
-    top: 25%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 50%;
+    text-align: left;
+    margin-left: 30px;
+    margin-top: 10px;
+    vertical-align: middle;
 }
 
 
