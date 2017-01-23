@@ -1,6 +1,5 @@
 'use strict';
 
-var userId;
 var apiKey = "o6yuauaw7f5m56jb";
 var el = new Everlive(apiKey);
 app.purchaseHistoryView = kendo.observable({
@@ -77,7 +76,7 @@ app.localization.registerView('purchaseHistoryView');
                     var dataItem = data[i];
                     /// start flattenLocation property
                     var customer = dataItem["OrderCustomer"];
-                    if (userId != customer){
+                    if (app.currentUser.Id != customer){
                         data.remove(dataItem);
                         continue;
                     }
@@ -244,41 +243,32 @@ app.localization.registerView('purchaseHistoryView');
     }
 
     parent.set('onShow', function(e) {
-        el.Users.currentUser().then(function (data) {
-            for (var item in data) {
-                if (item == 'result') {
-                    if (data[item] == null) {
-                        alert("You do not login,Please login first.");
-                        app.mobileApp.navigate('components/loginModelView/view.html');
-                    } else {
-                        var datainside = data[item];
-                        userId = datainside["Id"];
-                        var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
-                            isListmenu = false,
-                            backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
-                            dataSourceOptions = purchaseHistoryViewModel.get('_dataSourceOptions'),
-                            dataSource;
+        if (app.currentUser.Id == "") {
+            alert("You do not login,Please login first.");
+            app.mobileApp.navigate('components/loginModelView/view.html');
+        } else {
+            var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
+                isListmenu = false,
+                backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
+                dataSourceOptions = purchaseHistoryViewModel.get('_dataSourceOptions'),
+                dataSource;
 
-                        if (param || isListmenu) {
-                            backbutton.show();
-                            backbutton.css('visibility', 'visible');
-                        } else {
-                            if (e.view.element.find('header [data-role="navbar"] [data-role="button"]').length) {
-                                backbutton.hide();
-                            } else {
-                                backbutton.css('visibility', 'hidden');
-                            }
-                        }
-
-                        dataSource = new kendo.data.DataSource(dataSourceOptions);
-                        purchaseHistoryViewModel.set('dataSource', dataSource);
-                        fetchFilteredData(param);
-                    }
+            if (param || isListmenu) {
+                backbutton.show();
+                backbutton.css('visibility', 'visible');
+            } else {
+                if (e.view.element.find('header [data-role="navbar"] [data-role="button"]').length) {
+                    backbutton.hide();
+                } else {
+                    backbutton.css('visibility', 'hidden');
                 }
             }
-        });
-    });
 
+            dataSource = new kendo.data.DataSource(dataSourceOptions);
+            purchaseHistoryViewModel.set('dataSource', dataSource);
+            fetchFilteredData(param);
+        }
+    });
 })(app.purchaseHistoryView);
 
 // START_CUSTOM_CODE_purchaseHistoryViewModel
