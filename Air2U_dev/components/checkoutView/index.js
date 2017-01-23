@@ -32,9 +32,11 @@ app.localization.registerView('checkoutView');
 
         checkoutViewModel = kendo.observable({
             submit: function () {
-                el.data('Order').updateSingle({Id: '416aacc0-dd49-11e6-8b40-95cdc645b97b', 'Status': 1},
+                el.data('Order').updateSingle({Id: orderid, 'Status': 1},
                     function (data) {
-                        alert(JSON.stringify(data));
+                        alert( "Order  Created Successfully");
+                        app.mobileApp.navigate('components/purchaseHistoryView/view.html');
+                        //alert(JSON.stringify(data));
                     },
                     function (error) {
                         alert(JSON.stringify(error));
@@ -51,8 +53,8 @@ app.localization.registerView('checkoutView');
     /// end form functions
 
     parent.set('onShow', function _onShow(e) {
-
-        el.data('Order').getById(e.view.params.orderId)
+        orderid=e.view.params.orderId;
+        el.data('Order').getById(orderid)
             .then(function (data) {
                     for (var item in data) {
                         if (item == 'result') {
