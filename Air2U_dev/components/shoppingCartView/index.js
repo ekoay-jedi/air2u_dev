@@ -350,7 +350,7 @@ app.localization.registerView('shoppingCartView');
                 }
             }
 
-            if (checkedCount == data.length) {
+            if (checkedCount == data.length && data.length > 0) {
                 shoppingCartViewModel.set('allChecked', true);
             }else if (checkedCount == 0) {
                 shoppingCartViewModel.set('allChecked', false);
