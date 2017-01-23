@@ -36,8 +36,6 @@ app.loginModelView = kendo.observable({
                                 app.currentUser[item] = data['result'][item];
                             }
                         }
-
-                        console.log("user: " + JSON.stringify(app.currentUser));
                     }, function (error) {
 
                     });

@@ -182,12 +182,11 @@ app.localization.registerView('purchaseHistoryView');
             },
             itemClick: function(e) {
                 var dataItem = e.dataItem || purchaseHistoryViewModel.originalItem;
-                app.mobileApp.navigate('components/orderDetailView/view.html?orderId='+dataItem.Id+'&status='+encodeURIComponent(dataItem.Status)+'&filter='  +encodeURIComponent(JSON.stringify({
+                app.mobileApp.navigate('components/orderDetailView/view.html?orderId='+dataItem.Id+'&status='+dataItem.Status+'&filter='+encodeURIComponent(JSON.stringify({
                         field: 'OrderNumber',
                         value: dataItem.Id,
                         operator: 'eq'
                     })));
-
             },
             detailsShow: function(e) {
                 var uid = e.view.params.uid,

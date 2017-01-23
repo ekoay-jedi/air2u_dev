@@ -587,6 +587,19 @@ Fields
     font-size: 1.2em;
 }
 
+#cartFooter .km-rightitem a[data-role='button'] {
+    background-color: red;
+}
+
+#cartFooter .km-view-title #cartPrice {
+    font-size: 0.8em;
+    line-height: 1.0em;
+    text-align: left;
+    margin-left: 30px;
+    margin-top: 10px;
+    vertical-align: middle;
+}
+
 
 /* START_CUSTOM_CODE_kendoUiMobileApp */
 
