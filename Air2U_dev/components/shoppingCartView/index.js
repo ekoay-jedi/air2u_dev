@@ -244,7 +244,7 @@ app.localization.registerView('shoppingCartView');
                                          if (error) {
                                              alert(JSON.stringify(error));
                                          }else {
-                                             app.mobileApp.navigate("components/checkoutView/view.html?price=" + totalP + "&pv=" + totalPV);
+                                             app.mobileApp.navigate("components/checkoutView/view.html?orderId=" + retO.Id );
                                          }
                                      });
                                  }

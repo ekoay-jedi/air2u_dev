@@ -4,8 +4,8 @@ var el = new Everlive(apiKey);
 var orderID;
 app.orderDetailView = kendo.observable({
     opencheckout: function () {
-        alert(orderID.length+"-"+orderID);
-        app.mobileApp.navigate('components/checkoutView/view.html?orderId='+order);
+       alert("------ "+orderID);
+        app.mobileApp.navigate('components/checkoutView/view.html?orderId='+orderID);
     },
     onShow: function() {},
     afterShow: function() {}
