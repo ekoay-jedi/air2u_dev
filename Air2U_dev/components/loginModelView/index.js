@@ -1,16 +1,18 @@
 'use strict';
 
 var el = app.data.backendServices;
-var currentUserName = "";
 
 app.loginModelView = kendo.observable({
     onShow: function() {
-        if (app.currentUser.id) {
-            window.location.href = "#userinfo";
-            app.userinfoView.set("username", "");
-        }
+        setTimeout(function() {
+            if (app.currentUser.Id.length > 0) {
+                window.location.href = "#userinfo";
+            }
+        },"1000");
     },
-    afterShow: function() {},
+    afterShow: function() {
+
+    },
 	submit: function () {
             if (!this.username) {
                 navigator.notification.alert("Username is required.");
@@ -99,6 +101,7 @@ app.userinfoView = kendo.observable({
         //Prevent going to the login page until the login call processes.
         event.preventDefault();
         el.Users.logout(function () {
+            app.currentUser.Id = "";
             window.location.href = "#loginModelViewScreen";
             //app.loginModelView.set("username", "");
             app.loginModelView.set("password", "");
