@@ -252,17 +252,6 @@ app.localization.registerView('orderDetailView');
     }
 
     parent.set('onShow', function(e) {
-        var location = window.location.href;
-        if (location.indexOf('orderId=')!=-1){
-            var key = location.split('orderId=')[1];
-            orderID = key.split('&')[0];
-        }
-        if(location.indexOf("status=0")==-1){
-            document.getElementById("checkoutBtn").style.display="inline";
-        }else{
-            document.getElementById("checkoutBtn").style.display="none";
-        }
-
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,
             backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
@@ -283,8 +272,14 @@ app.localization.registerView('orderDetailView');
         dataSource = new kendo.data.DataSource(dataSourceOptions);
         orderDetailViewModel.set('dataSource', dataSource);
         fetchFilteredData(param);
-    });
 
+        orderID = e.view.params.orderId;
+        if(e.view.params.status==0){
+            document.getElementById("checkoutBtn").style.display="inline";
+        }else{
+            document.getElementById("checkoutBtn").style.display="none";
+        }
+    });
 })(app.orderDetailView);
 
 // START_CUSTOM_CODE_orderDetailViewModel
