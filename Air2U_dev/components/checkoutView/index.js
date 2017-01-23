@@ -50,12 +50,9 @@ app.localization.registerView('checkoutView');
     /// start form functions
     /// end form functions
 
-    parent.set('onShow', function _onShow() {
-        var location = window.location.href;
-        orderid= location.split('=')[1];
-        //alert("checkout----"+orderid);
+    parent.set('onShow', function _onShow(e) {
 
-        el.data('Order').getById(orderid)
+        el.data('Order').getById(e.view.params.orderId)
             .then(function (data) {
                     for (var item in data) {
                         if (item == 'result') {
