@@ -6,7 +6,7 @@
             <a data-role="button" data-click="showAllCarts" data-align="right" data-icon="cart"></a>
         <script>
             $("[data-click=showAllCarts]").click(function() {
-//                app.mobileApp.navigate('components/loginModelView/view.html');
+                app.mobileApp.navigate('components/shoppingCartView/view.html');
             });
         </script>
         </div>
@@ -37,7 +37,8 @@
                                 <h4>Stock: <text data-bind="text: currentItem.QTY"/></h4>
                             </td>
                             <td>
-                                Qty:<input type="text" id="qtyField" name="qtyField" value="1" style="margin-left: 30px; margin-top: 33px; text-align: center; width: 10px; margin-right: 60px"; pattern="[0-9]"/>
+                                Qty:<input type="text" id="qtyField" name="qtyField" value="1" style="margin-left: 30px; margin-top: 33px; text-align: center; width: 10px; margin-right: 60px";
+                                           pattern="[0-9]" maxlength="4"/>
                                 </h4>
                             </td>
                             <td align="right">
