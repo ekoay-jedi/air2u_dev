@@ -15,83 +15,97 @@ var card;
 app.myProfileView = kendo.observable({
     onShow: function () {
         $("#rightview").text("Edit");
-        el.Users.currentUser().then(function (data) {
-                for (var item in data) {
-                    if (item == 'result') {
-                        if (data[item] == null) {
-                            alert("You do not login,Please login first.");
-                            app.mobileApp.navigate('components/loginModelView/view.html');
-                        } else {
-                            var datainside = data[item];
-                            for (var iteminside in datainside) {
-                                if (iteminside == 'Username') {
-                                    username = datainside[iteminside];
-                                } else if (iteminside == 'DeliveryAddress') {
-                                    address = datainside[iteminside]
-                                } else if (iteminside == 'ContactNumber') {
-                                    phone = datainside[iteminside]
-                                } else if (iteminside == 'Id') {
-                                    userid = datainside[iteminside]
-                                } else if (iteminside == 'State') {
-                                    state = datainside[iteminside]
-                                } else if (iteminside == 'Avatar') {
-                                    avatar = datainside[iteminside]
-                                }else if (iteminside == 'Email') {
-                                    email = datainside[iteminside]
-                                }else if (iteminside == 'Card') {
-                                    card = datainside[iteminside]
-                                }else if (iteminside == 'Status') {
-                                    status = datainside[iteminside]
-                                }
 
-                            }
-                        }
-                    }
-                }
-                app.myProfileView.set("usernameinfo", username);
-                app.myProfileView.set("emailinfo", email);
-                app.myProfileView.set("defaultaddress", address);
-                app.myProfileView.set("phone", phone);
-                app.myProfileView.set("state", state);
-                app.myProfileView.set("status", status);
-                app.myProfileView.set("card", card);
+        if (app.currentUser.Id != "") {
+            username = app.currentUser.Username;
+            email = app.currentUser.Email;
+            address = app.currentUser.DeliveryAddress;
+            phone = app.currentUser.ContactNumber;
+            state = app.currentUser.State;
+            status = app.currentUser.Status;
+            card = app.currentUser.Card;
+            avatar = app.currentUser.Avatar;
 
-                $("#save").attr("disabled", true);
-                $("#usernameinfo").attr("disabled", true);
-                $("#emailinfo").attr("disabled", true);
-                $("#defaultaddress").attr("disabled", true);
-                $("#phone").attr("disabled", true);
-                $("#state").attr("disabled", true);
-                $("#status").attr("disabled", true);
-                $("#card").attr("disabled", true);
+            app.myProfileView.set("usernameinfo", username);
+            app.myProfileView.set("emailinfo", email);
+            app.myProfileView.set("defaultaddress", address);
+            app.myProfileView.set("phone", phone);
+            app.myProfileView.set("state", state);
+            app.myProfileView.set("status", status);
+            app.myProfileView.set("card", card);
 
-                var imagehead = document.getElementById("userheadview");
-                if (avatar != null) {
-                    el.Files.getById(avatar).then(function (data) {
-                            for (var item in data) {
-                                if (item == 'result') {
-                                    var datainside = data[item];
-                                    for (var iteminside in datainside) {
-                                        if (iteminside == 'Uri') {
-                                            var iamgeurl = datainside[iteminside];
-                                            imagehead.src = iamgeurl;
-                                        }
+            $("#save").attr("disabled", true);
+            $("#usernameinfo").attr("disabled", true);
+            $("#emailinfo").attr("disabled", true);
+            $("#defaultaddress").attr("disabled", true);
+            $("#phone").attr("disabled", true);
+            $("#state").attr("disabled", true);
+            $("#status").attr("disabled", true);
+            $("#card").attr("disabled", true);
+
+            var imagehead = document.getElementById("userheadview");
+            if (avatar != null) {
+                el.Files.getById(avatar).then(function (data) {
+                        for (var item in data) {
+                            if (item == 'result') {
+                                var datainside = data[item];
+                                for (var iteminside in datainside) {
+                                    if (iteminside == 'Uri') {
+                                        var iamgeurl = datainside[iteminside];
+                                        imagehead.src = iamgeurl;
                                     }
                                 }
                             }
-                        },
-                        function (error) {
-                            alert(JSON.stringify(error));
-                        });
-                } else {
-                    imagehead.src = "/resources/head.png";
-                }
+                        }
+                    },
+                    function (error) {
+                        alert(JSON.stringify(error));
+                    });
+            } else {
+                imagehead.src = "/resources/head.png";
+            }
+        } else {
+            alert("You do not login,Please login first.");
+            app.mobileApp.navigate('components/loginModelView/view.html');
+        }
 
+        /*el.Users.currentUser().then(function (data) {
+         for (var item in data) {
+         if (item == 'result') {
+         if (data[item] == null) {
+         alert("You do not login,Please login first.");
+         app.mobileApp.navigate('components/loginModelView/view.html');
+         } else {
+         var datainside = data[item];
+         for (var iteminside in datainside) {
+         if (iteminside == 'Username') {
+         username = datainside[iteminside];
+         } else if (iteminside == 'DeliveryAddress') {
+         address = datainside[iteminside]
+         } else if (iteminside == 'ContactNumber') {
+         phone = datainside[iteminside]
+         } else if (iteminside == 'Id') {
+         userid = datainside[iteminside]
+         } else if (iteminside == 'State') {
+         state = datainside[iteminside]
+         } else if (iteminside == 'Avatar') {
+         avatar = datainside[iteminside]
+         } else if (iteminside == 'Email') {
+         email = datainside[iteminside]
+         } else if (iteminside == 'Card') {
+         card = datainside[iteminside]
+         } else if (iteminside == 'Status') {
+         status = datainside[iteminside]
+         }
 
-            },
-            function (error) {
-                alert(JSON.stringify(error));
-            });
+         }
+         }
+         }
+         }
+         },
+         function (error) {
+         alert(JSON.stringify(error));
+         });*/
 
     },
     afterShow: function () {
@@ -100,7 +114,7 @@ app.myProfileView = kendo.observable({
     editprofile: function () {
         var righttitle = $("#rightview").text();
 
-        if (righttitle=="Edit") {
+        if (righttitle == "Edit") {
             $("#rightview").text("Save");
             $("#save").attr("disabled", false);
             $("#usernameinfo").attr("disabled", false);
@@ -167,8 +181,8 @@ app.myProfileView = kendo.observable({
     },
 
     /*addressdetail: function () {
-        alert("address detail");
-    },*/
+     alert("address detail");
+     },*/
 
     /* saveprofile: function () {
      var username = $("#usernameinfo").val();

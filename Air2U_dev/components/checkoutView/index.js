@@ -2,7 +2,7 @@
 var apiKey = "o6yuauaw7f5m56jb";
 var el = new Everlive(apiKey);
 var totalprice;
-
+var orderid;
 app.checkoutView = kendo.observable({
     onShow: function () {
     },
@@ -50,12 +50,9 @@ app.localization.registerView('checkoutView');
     /// start form functions
     /// end form functions
 
-    parent.set('onShow', function _onShow() {
-        var location = window.location.href;
-        //var orderid= location.split('?')[1];
-        //alert(location.split('?')[1]);
+    parent.set('onShow', function _onShow(e) {
 
-        el.data('Order').getById('416aacc0-dd49-11e6-8b40-95cdc645b97b')
+        el.data('Order').getById(e.view.params.orderId)
             .then(function (data) {
                     for (var item in data) {
                         if (item == 'result') {
@@ -64,7 +61,6 @@ app.localization.registerView('checkoutView');
                                 if (iteminside == 'totalPrice') {
                                     totalprice = datainside[iteminside];
                                     $("#total-price").text("RMB "+totalprice);
-                                    alert(totalprice);
                                 }
                             }
                         }

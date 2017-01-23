@@ -200,6 +200,9 @@ app.localization.registerView('shoppingCartView');
                     }
                 }
 
+                totalP = totalP.toFixed(2);
+                totalPV = totalPV.toFixed(2);
+
                 var currentTotal = shoppingCartViewModel.get('total');
                 if (currentTotal != totalP) {
                     shoppingCartViewModel.set('total', totalP);
@@ -244,7 +247,7 @@ app.localization.registerView('shoppingCartView');
                                          if (error) {
                                              alert(JSON.stringify(error));
                                          }else {
-                                             app.mobileApp.navigate("components/checkoutView/view.html?price=" + totalP + "&pv=" + totalPV);
+                                             app.mobileApp.navigate("components/checkoutView/view.html?orderId=" + retO.Id );
                                          }
                                      });
                                  }
@@ -338,7 +341,6 @@ app.localization.registerView('shoppingCartView');
 
     shoppingCartViewModel.bind('change', function(e) {
         var source = shoppingCartViewModel.get('dataSource');
-        console.log("model change: " + e.field);
         var data = source.data();
 
         if (e.field == 'dataSource') {
