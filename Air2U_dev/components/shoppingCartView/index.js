@@ -2,7 +2,7 @@
 
 app.shoppingCartView = kendo.observable({
     onShow: function() {},
-    afterShow: function() {}
+    afterShow: function() {},
 });
 app.localization.registerView('shoppingCartView');
 
@@ -12,8 +12,8 @@ app.localization.registerView('shoppingCartView');
 // END_CUSTOM_CODE_shoppingCartView
 (function(parent) {
     var dataProvider = app.data.backendServices,
-        /// start global model properties
-        /// end global model properties
+    /// start global model properties
+    /// end global model properties
         fetchFilteredData = function(paramFilter, searchFilter) {
             var model = parent.get('shoppingCartViewModel'),
                 dataSource;
@@ -65,20 +65,40 @@ app.localization.registerView('shoppingCartView');
             type: 'everlive',
             transport: {
                 typeName: 'ProductCart',
+                read: {
+                    contentType: "application/json",
+                    headers: {
+                        "X-Everlive-Expand": JSON.stringify({
+                            "product": {
+                                "TargetTypeName": "Product"
+                            }
+                        })
+                        //"X-Everlive-Filter": JSON.stringify({
+                        //    'Owner': app.currentUser.Id
+                        //})
+                    }},
+                        //{
+                        //    "Authorization" : app.currentUser.access_token
+                        //}
                 dataProvider: dataProvider
             },
             change: function(e) {
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
-
-                    dataItem['productIdUrl'] =
-                        processImage(dataItem['productId']);
+                    dataItem.cchecked = dataItem.cchecked | false;
+                    var product = dataItem['product'];
+                    var imgs = product['ProductImages'];
+                    if (imgs && imgs.length > 0) {
+                        dataItem['productIdUrl'] =
+                            processImage(imgs[0]);
+                    }else {
+                        dataItem['productIdUrl'] = "";
+                    }
 
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);
                     /// end flattenLocation property
-
                 }
             },
             error: function(e) {
@@ -104,13 +124,17 @@ app.localization.registerView('shoppingCartView');
                             field: 'qty',
                             defaultValue: ''
                         },
+                        'cchecked': {
+                            field: 'cchecked',
+                            defaultValue: false
+                        }
                     }
                 }
             },
             serverFiltering: true,
         },
-        /// start data sources
-        /// end data sources
+    /// start data sources
+    /// end data sources
         shoppingCartViewModel = kendo.observable({
             _dataSourceOptions: dataSourceOptions,
             fixHierarchicalData: function(data) {
@@ -164,153 +188,186 @@ app.localization.registerView('shoppingCartView');
 
                 return result;
             },
-            itemClick: function(e) {
-                var dataItem = e.dataItem || shoppingCartViewModel.originalItem;
 
-                app.mobileApp.navigate('#components/shoppingCartView/details.html?uid=' + dataItem.uid);
-
-            },
-            editClick: function() {
-                var uid = this.originalItem.uid;
-                app.mobileApp.navigate('#components/shoppingCartView/edit.html?uid=' + uid);
-            },
-            deleteItem: function() {
-                var dataSource = shoppingCartViewModel.get('dataSource');
-
-                dataSource.remove(this.originalItem);
-
-                dataSource.one('sync', function() {
-                    app.mobileApp.navigate('#:back');
-                });
-
-                dataSource.one('error', function() {
-                    dataSource.cancelChanges();
-                });
-
-                dataSource.sync();
-            },
-            deleteClick: function() {
-                var that = this;
-
-                navigator.notification.confirm(
-                    'Are you sure you want to delete this item?',
-                    function(index) {
-                        //'OK' is index 1
-                        //'Cancel' - index 2
-                        if (index === 1) {
-                            that.deleteItem();
-                        }
-                    },
-                    '', ['OK', 'Cancel']
-                );
-            },
-            detailsShow: function(e) {
-                var uid = e.view.params.uid,
-                    dataSource = shoppingCartViewModel.get('dataSource'),
-                    itemModel = dataSource.getByUid(uid);
-
-                shoppingCartViewModel.setCurrentItemByUid(uid);
-
-                /// start detail form show
-                /// end detail form show
-            },
-            setCurrentItemByUid: function(uid) {
-                var item = uid,
-                    dataSource = shoppingCartViewModel.get('dataSource'),
-                    itemModel = dataSource.getByUid(item);
-
-                if (!itemModel.productId) {
-                    itemModel.productId = String.fromCharCode(160);
+            updateTotalPrice: function(data) {
+                var totalP = 0;
+                var totalPV = 0;
+                for (var i = 0; i < data.length; i++) {
+                    var item = data[i];
+                    if (item.cchecked) {
+                        totalP = totalP + parseFloat(item.product.cvPrice);
+                        totalPV = totalPV + parseFloat(item.product.pvPrice);
+                    }
                 }
 
-                /// start detail form initialization
-                /// end detail form initialization
-
-                shoppingCartViewModel.set('originalItem', itemModel);
-                shoppingCartViewModel.set('currentItem',
-                    shoppingCartViewModel.fixHierarchicalData(itemModel));
-
-                return itemModel;
-            },
-            linkBind: function(linkString) {
-                var linkChunks = linkString.split('|');
-                if (linkChunks[0].length === 0) {
-                    return this.get('currentItem.' + linkChunks[1]);
+                var currentTotal = shoppingCartViewModel.get('total');
+                if (currentTotal != totalP) {
+                    shoppingCartViewModel.set('total', totalP);
                 }
-                return linkChunks[0] + this.get('currentItem.' + linkChunks[1]);
+
+                var currentPV = shoppingCartViewModel.get('pv');
+                if (totalPV != currentPV) {
+                    shoppingCartViewModel.set('pv', totalPV);
+                }
             },
             /// start masterDetails view model functions
-            /// end masterDetails view model functions
-            currentItem: {}
+            /// end masterDetails view model function
+            checkout: function (e) {
+                var totalP = shoppingCartViewModel.get('total');
+                var totalPV = shoppingCartViewModel.get('pv');
+                var source = shoppingCartViewModel.get('dataSource');
+                var data = source.data();
+                var checkedProducts = [];
+                for (var i = 0; i < data.length; i++) {
+                    var item = data[i];
+                    if (item.cchecked) {
+                        checkedProducts.push(item);
+                        source.remove(item);
+                    }
+                }
+
+                if (checkedProducts.length == 0) {
+                    return;
+                }
+                source.one('sync', function() {
+                     shoppingCartViewModel.createProductOrders(checkedProducts, function(error, pdata) {
+                         if (error) {
+                             alert(JSON.stringify(error));
+                         }else {
+                             var retP = pdata['result'];
+                             shoppingCartViewModel.createOrder(retP, totalP, totalPV, function(error, odata) {
+                                 if (error) {
+                                     alert(JSON.stringify(error));
+                                 }else {
+                                     var retO = odata['result'];
+                                     shoppingCartViewModel.updateProductOrders(retO, retP, function(error, data) {
+                                         if (error) {
+                                             alert(JSON.stringify(error));
+                                         }else {
+                                             app.mobileApp.navigate("components/checkoutView/view.html?price=" + totalP + "&pv=" + totalPV);
+                                         }
+                                     });
+                                 }
+                             });
+                         }
+                     });
+                });
+                source.sync();
+            },
+
+            createProductOrders: function(productCarts, callback) {
+                var pOrders = [];
+                for(var i = 0; i < productCarts.length; i++) {
+                    var productCard = productCarts[i];
+                    console.log("productCart: " + JSON.stringify(productCard));
+                    var pOrder = {
+                        OrderQTY : productCard.qty,
+                        Product: productCard.product.Id,
+                        EarnedPV: 0,
+                        Owner: app.currentUser.Id
+                    };
+                    pOrders.push(pOrder);
+                }
+
+                var data = dataProvider.data('ProductOrder');
+                data.create(pOrders,
+                    function(data){
+                       callback(null, data);
+                    },
+                    function(error){
+                        callback(error);
+                    }
+                );
+            },
+
+            createOrder: function(productOders,price,pv, callback) {
+                console.log("productOrders: " + JSON.stringify(productOders));
+                var pOrderIds = [];
+                for (var i = 0; i < productOders.length; i++) {
+                    var pOrder = productOders[i];
+                    pOrderIds.push(pOrder.Id);
+                }
+
+                var order = {
+                    OrderCustomer: app.currentUser.Id,
+                    OrderNumber: kendo.guid(),
+                    Status: 0,
+                    totalPrice: price,
+                    totalPV: pv,
+                    OrderProductOrder: pOrderIds,
+                    Owner: app.currentUser.Id
+                };
+                var data = dataProvider.data('Order');
+                data.create(order,
+                    function(data){
+                        callback(null, data);
+                    },
+                    function(error){
+                        callback(error);
+                    }
+                );
+            },
+
+            updateProductOrders: function(order, pOrders, callback) {
+                console.log("update order: " + JSON.stringify(order));
+                var ids = [];
+                for (var i = 0; i < pOrders.length; i++) {
+                    var pOrder = pOrders[i];
+                    ids.push(pOrder.Id);
+                 }
+
+                var data = dataProvider.data('ProductOrder');
+                var query = new Everlive.Query();
+                query.where().isin('Id', ids);
+                data.update({OrderNumber: order.Id}, query,
+                    function(data){
+                        callback(null, data);
+                    },
+                    function(error){
+                        callback(error);
+                    }
+                );
+            },
+
+            currentItem: {},
+            total: 0,
+            pv: 0,
+            allChecked: false,
+
         });
 
-    parent.set('editItemViewModel', kendo.observable({
-        /// start edit model properties
-        /// end edit model properties
-        /// start edit model functions
-        /// end edit model functions
-        editFormData: {},
-        onShow: function(e) {
-            var that = this,
-                itemUid = e.view.params.uid,
-                dataSource = shoppingCartViewModel.get('dataSource'),
-                itemData = dataSource.getByUid(itemUid),
-                fixedData = shoppingCartViewModel.fixHierarchicalData(itemData);
+    shoppingCartViewModel.bind('change', function(e) {
+        var source = shoppingCartViewModel.get('dataSource');
+        console.log("model change: " + e.field);
+        var data = source.data();
 
-            /// start edit form before itemData
-            /// end edit form before itemData
+        if (e.field == 'dataSource') {
+            var checkedCount = 0;
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                if (item.cchecked) {
+                    checkedCount = checkedCount + 1;
+                }
+            }
 
-            this.set('itemData', itemData);
-            this.set('editFormData', {
-                /// start edit form data init
-                /// end edit form data init
-            });
-
-            /// start edit form show
-            /// end edit form show
-        },
-        linkBind: function(linkString) {
-            var linkChunks = linkString.split(':');
-            return linkChunks[0] + ':' + this.get('itemData.' + linkChunks[1]);
-        },
-        onSaveClick: function(e) {
-            var that = this,
-                editFormData = this.get('editFormData'),
-                itemData = this.get('itemData'),
-                dataSource = shoppingCartViewModel.get('dataSource');
-
-            /// edit properties
-            /// start edit form data save
-            /// end edit form data save
-
-            function editModel(data) {
-                /// start edit form data prepare
-                /// end edit form data prepare
-                dataSource.one('sync', function(e) {
-                    /// start edit form data save success
-                    /// end edit form data save success
-
-                    app.mobileApp.navigate('#:back');
-                });
-
-                dataSource.one('error', function() {
-                    dataSource.cancelChanges(itemData);
-                });
-
-                dataSource.sync();
-                app.clearFormDomData('edit-item-view');
-            };
-            /// start edit form save
-            /// end edit form save
-            /// start edit form save handler
-            editModel();
-            /// end edit form save handler
-        },
-        onCancel: function() {
-            /// start edit form cancel
-            /// end edit form cancel
+            if (checkedCount == data.length) {
+                shoppingCartViewModel.set('allChecked', true);
+            }else if (checkedCount == 0) {
+                shoppingCartViewModel.set('allChecked', false);
+            }
+            shoppingCartViewModel.updateTotalPrice(data);
+        }else if (e.field == 'allChecked') {
+            var checked = this.get(e.field);
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                if (item.get('cchecked') != checked) {
+                    item.set('cchecked', checked);
+                }
+            }
+            //shoppingCartViewModel.updateTotalPrice(data);
         }
-    }));
+    });
+
 
     if (typeof dataProvider.sbProviderReady === 'function') {
         dataProvider.sbProviderReady(function dl_sbProviderReady() {
@@ -326,6 +383,11 @@ app.localization.registerView('shoppingCartView');
     }
 
     parent.set('onShow', function(e) {
+        if (!app.currentUser.Id) {
+            alert('You do not login,Please login first.');
+            app.mobileApp.navigate('components/loginModelView/view.html');
+
+        }
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,
             backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),

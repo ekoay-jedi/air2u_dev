@@ -1,7 +1,12 @@
 'use strict';
 var apiKey = "o6yuauaw7f5m56jb";
 var el = new Everlive(apiKey);
+var orderID;
 app.orderDetailView = kendo.observable({
+    opencheckout: function () {
+        alert(orderID.length+"-"+orderID);
+        app.mobileApp.navigate('components/checkoutView/view.html?orderId='+order);
+    },
     onShow: function() {},
     afterShow: function() {}
 });
@@ -248,11 +253,16 @@ app.localization.registerView('orderDetailView');
 
     parent.set('onShow', function(e) {
         var location = window.location.href;
+        if (location.indexOf('orderId=')!=-1){
+            var key = location.split('orderId=')[1];
+            orderID = key.split('&')[0];
+        }
         if(location.indexOf("status=0")==-1){
             document.getElementById("checkoutBtn").style.display="inline";
         }else{
             document.getElementById("checkoutBtn").style.display="none";
         }
+
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,
             backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),

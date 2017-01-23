@@ -83,7 +83,6 @@ app.localization.registerView('checkoutView');
         });
 
 
-
         /// start add form show
         /// end add form show
     });

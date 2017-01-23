@@ -1,35 +1,14 @@
 'use strict';
 
-var apiKey = "o6yuauaw7f5m56jb";
-var el = new Everlive(apiKey);
+var el = app.data.backendServices;
 var currentUserName = "";
 
 app.loginModelView = kendo.observable({
     onShow: function() {
-        el.Users.currentUser().then(function (data) {
-                    for(var item in data){
-                        if(item == 'result') {
-                            var resVal = data[item];
-                            if(resVal != null) {
-                                for(var subitem in resVal){
-                                    if(subitem == 'Username') {
-                                        currentUserName = resVal[subitem];
-                                        //alert(currentUserName);
-                                    }
-                                }
-
-                                //alert(JSON.stringify(resVal));
-                                window.location.href = "#userinfo";
-                                app.userinfoView.set("username", currentUserName);
-                            }
-                        }
-                    }
-
-                    //alert(JSON.stringify(data));
-                },
-                function(error){
-
-                });
+        if (app.currentUser.id) {
+            window.location.href = "#userinfo";
+            app.userinfoView.set("username", "");
+        }
     },
     afterShow: function() {},
 	submit: function () {
@@ -43,6 +22,23 @@ app.loginModelView = kendo.observable({
             }
             el.Users.login(this.username, this.password,
                 function (data) {
+                    for (var item in data['result']) {
+                        if (data['result'].hasOwnProperty(item)) {
+                            app.currentUser[item] = data['result'][item];
+                        }
+                    }
+
+                    el.Users.currentUser().then(function(data) {
+                        for (var item in data['result']) {
+                            if (data['result'].hasOwnProperty(item)) {
+                                app.currentUser[item] = data['result'][item];
+                            }
+                        }
+
+                        console.log("user: " + JSON.stringify(app.currentUser));
+                    }, function (error) {
+
+                    });
                     window.location.href = "#userinfo";
 					//app.mobileApp.navigate('components/home/view.html');
                 }, function () {
@@ -64,6 +60,7 @@ app.registerView = kendo.observable({
             }
             el.Users.register(this.username, this.password, { Email: this.email },
                 function () {
+                    app.currentUser.Id = "";
                     navigator.notification.alert("Your account was successfully created.");
                     window.location.href = "#loginModelViewScreen";
                 },
