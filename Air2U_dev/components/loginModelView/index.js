@@ -5,9 +5,8 @@ var currentUserName = "";
 
 app.loginModelView = kendo.observable({
     onShow: function() {
-        if (app.currentUser.id) {
+        if (app.currentUser.Id.length > 0) {
             window.location.href = "#userinfo";
-            app.userinfoView.set("username", "");
         }
     },
     afterShow: function() {},

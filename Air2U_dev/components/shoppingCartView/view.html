@@ -28,14 +28,16 @@
         data-endless-scroll="false">
     </ul>
 
-    <footer data-role="footer">
-        <div data-role="navbar" class="footer-text">
-            <input style="float: left;" type="checkbox" data-bind="checked: shoppingCartViewModel.allChecked"/>
-            <p style="float: left;">
-                Total Price: <span id="totalPrice" data-bind="text: shoppingCartViewModel.total"></span>
-                Total PV:<span id="totalPV" data-bind="text: shoppingCartViewModel.pv"></span>
-            </p>
-            <a data-role="button" data-align="right" data-click="app.shoppingCartView.shoppingCartViewModel.checkout">Checkout</a>
+    <footer data-role="footer" id="cartFooter">
+        <div data-role="navbar" class="footer-text" style="height: 50px;">
+            <div>
+                <input type="checkbox" data-align="left" data-bind="checked: shoppingCartViewModel.allChecked"/>
+            </div>
+            <div id="cartPrice">
+                Total Price: <span id="totalPrice" data-bind="text: shoppingCartViewModel.total"></span><br/>
+                PV:<span id="totalPV" data-bind="text: shoppingCartViewModel.pv"></span>
+            </div>
+            <a data-role="button" data-align="right" style="color: white;" data-click="app.shoppingCartView.shoppingCartViewModel.checkout">Checkout</a>
         </div>
     </footer>
 
@@ -45,7 +47,7 @@
 
     <!-- END_CUSTOM_CODE_shoppingCartViewModel -->
     <script type="text/x-kendo-template" id="shoppingCartViewModelTemplate">
-        <div class="image-with-text">
+        <div class="image-with-text" id="cartProduct">
             <input style="float: left; position: inherit; margin-right: 10px;" type="checkbox" data-bind="checked: cchecked"/>
             <img src="#: productIdUrl #">
             <h3>#: product['ProductName'] #</h3>
