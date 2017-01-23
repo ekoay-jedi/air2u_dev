@@ -15,6 +15,9 @@
         },
         currentUser: {
             Id: ""
+        },
+        needShowSplash: {
+            isNeed: true
         }
     };
 
