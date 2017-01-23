@@ -12,6 +12,9 @@
         },
         navigation: {
             viewModel: kendo.observable()
+        },
+        currentUser: {
+            Id: ""
         }
     };
 

@@ -1,4 +1,9 @@
-<div data-role="view" data-title="View" data-layout="main" data-model="app.shoppingCartView" data-show="app.shoppingCartView.onShow" data-after-show="app.shoppingCartView.afterShow" id="shoppingCartViewScreen" class="screen">
+<div data-role="view" data-title="View"
+     data-layout="main"
+     data-model="app.shoppingCartView"
+     data-show="app.shoppingCartView.onShow"
+     data-after-show="app.shoppingCartView.afterShow"
+     id="shoppingCartViewScreen" class="screen">
     <header data-role="header">
         <div data-role="navbar" class="header-text">
 
@@ -9,14 +14,30 @@
         </div>
     </header>
 
-
     <!-- START_CUSTOM_CODE_shoppingCartView -->
     <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
 
     <!-- END_CUSTOM_CODE_shoppingCartView -->
-    <ul class="masterDetailView" data-role="listview" data-auto-bind="false" data-style="inset" data-template="shoppingCartViewModelTemplate" data-bind="source: shoppingCartViewModel.dataSource, events: {click: shoppingCartViewModel.itemClick}" data-pull-to-refresh="false"
+    <ul class="masterDetailView"
+        data-role="listview"
+        data-auto-bind="false"
+        data-style="inset"
+        data-template="shoppingCartViewModelTemplate"
+        data-bind="source: shoppingCartViewModel.dataSource"
+        data-pull-to-refresh="false"
         data-endless-scroll="false">
     </ul>
+
+    <footer data-role="footer">
+        <div data-role="navbar" class="footer-text">
+            <input style="float: left;" type="checkbox" data-bind="checked: shoppingCartViewModel.allChecked"/>
+            <p style="float: left;">
+                Total Price: <span id="totalPrice" data-bind="text: shoppingCartViewModel.total"></span>
+                Total PV:<span id="totalPV" data-bind="text: shoppingCartViewModel.pv"></span>
+            </p>
+            <a data-role="button" data-align="right" data-click="app.shoppingCartView.shoppingCartViewModel.checkout">Checkout</a>
+        </div>
+    </footer>
 
 
     <!-- START_CUSTOM_CODE_shoppingCartViewModel -->
@@ -25,11 +46,19 @@
     <!-- END_CUSTOM_CODE_shoppingCartViewModel -->
     <script type="text/x-kendo-template" id="shoppingCartViewModelTemplate">
         <div class="image-with-text">
-            # data = app.shoppingCartView.shoppingCartViewModel.fixHierarchicalData(data); #
+            <input style="float: left; position: inherit; margin-right: 10px;" type="checkbox" data-bind="checked: cchecked"/>
+            <img src="#: productIdUrl #">
+            <h3>#: product['ProductName'] #</h3>
+            <div>
+                <p>Qty: <span>#: qty #</span></p>
+                # if (product['pvPrice'] > 0) { #
+                <p>PV: <span>#: product['pvPrice'] #</span></p>
+                #}#
+                # if (product['cvPrice'] > 0) { #
+                <p>Price: <span style="color: red;">#: product['cvPrice'] #</span></p>
+                #}#
+            </div>
 
-            <img src="#: data['productIdUrl'] #">
-            <h3>#: data['productId'] #</h3>
-            <p>#: data['qty'] #</p>
         </div>
     </script>
 </div>
