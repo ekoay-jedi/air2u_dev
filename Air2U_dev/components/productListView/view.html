@@ -27,8 +27,10 @@
         <div class="image-with-text">
             # data = app.productListView.productListViewModel.fixHierarchicalData(data); #
 
-            <img src="#: data['ProductImagesUrl'] #">
-            <h3>#: data['ProductName'] #</h3>
+            <img style="margin-top: 10px; height: 100px" src="#: data['ProductImagesUrl'] #">
+            <div style="overflow: hidden; white-space: normal; text-overflow: ellipsis; height: 40px"><h4>#:
+                data['ProductName']
+                #</h4></div>
             <p><font color="red">CV: #: data['cvPrice'] #</font></p>
             <p>Qty: #: data['QTY'] #</p>
             <p>PV: #: data['pvPrice'] #</p>
