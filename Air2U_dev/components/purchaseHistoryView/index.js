@@ -244,7 +244,9 @@ app.localization.registerView('purchaseHistoryView');
     parent.set('onShow', function(e) {
         if (app.currentUser.Id == "") {
             alert("You do not login,Please login first.");
-            app.mobileApp.navigate('components/loginModelView/view.html');
+            setTimeout(function(){
+                app.mobileApp.navigate('components/loginModelView/view.html');
+            }, 10);
         } else {
             var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
                 isListmenu = false,

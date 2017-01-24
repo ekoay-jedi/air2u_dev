@@ -67,7 +67,9 @@ app.myProfileView = kendo.observable({
             }
         } else {
             alert("You do not login,Please login first.");
-            app.mobileApp.navigate('components/loginModelView/view.html');
+            setTimeout(function(){
+                app.mobileApp.navigate('components/loginModelView/view.html');
+            }, 10);
         }
 
         /*el.Users.currentUser().then(function (data) {
