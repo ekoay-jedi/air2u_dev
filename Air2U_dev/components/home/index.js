@@ -6,27 +6,6 @@ app.home = kendo.observable({
 });
 app.localization.registerView('home');
 
-app.splash = kendo.observable({
-    onShow: function() {
-        if(app.needShowSplash.isNeed) {
-            setTimeout(function() {
-                document.getElementById("splash").style.visibility="hidden";
-                window.location.href = "#homeScreen";
-                app.needShowSplash.isNeed = false;
-            },"3000");
-
-            //document.getElementById('splash').style.display="";
-        }else {
-            setTimeout(function() {
-                document.getElementById("splash").style.visibility="hidden";
-                window.location.href = "#homeScreen";
-            },"50");
-        }
-    }
-
-});
-app.localization.registerView('splash');
-
 // START_CUSTOM_CODE_home
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 function processImage(img) {
