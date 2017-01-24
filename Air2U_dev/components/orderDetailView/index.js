@@ -91,8 +91,12 @@ app.localization.registerView('orderDetailView');
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
                     var item = dataItem.Product.ProductImages;
-                    dataItem['ProductImagesUrl'] =
-                        processImage(item[0]);
+                    if (item && item.length > 0) {
+                        dataItem['ProductImagesUrl'] =
+                            processImage(item[0]);
+                    }else{
+                        dataItem['ProductImagesUrl'] = "";
+                    }
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);
                     /// end flattenLocation property
