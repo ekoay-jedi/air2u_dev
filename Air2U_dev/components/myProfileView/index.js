@@ -17,6 +17,7 @@ app.myProfileView = kendo.observable({
         $("#rightview").text("Edit");
 
         if (app.currentUser.Id != "") {
+            userid = app.currentUser.Id;
             username = app.currentUser.Username;
             email = app.currentUser.Email;
             address = app.currentUser.DeliveryAddress;
