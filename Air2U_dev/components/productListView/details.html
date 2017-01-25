@@ -16,7 +16,7 @@
         <div class="km-listview-wrapper">
             <ul class="km-listview km-list km-listinset details-fields">
                 <li><div data-bind="text: currentItem.ProductName"></div></li>
-                <li><img data-bind="attr: { src: currentItem.ProductImagesUrl }" width="100%" height="auto"></li>
+                <li><img data-bind="attr: { src: currentItem.ProductImagesUrl }" width="100%" height="auto" onerror="this.src='resources/default.png'"></li>
                 <li>
                     <table width="100%">
                         <tr >
