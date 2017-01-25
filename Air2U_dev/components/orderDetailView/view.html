@@ -31,8 +31,9 @@
     <script type="text/x-kendo-template" id="orderDetailViewModelTemplate">
         <div class="image-with-text">
             # data = app.orderDetailView.orderDetailViewModel.fixHierarchicalData(data); #
-            <img src="#: data['ProductImagesUrl'] #" onerror="this.src='resources/default.png'">
-            <h3>#: data['Product'].ProductName #</h3>
+            <img src="#: data['ProductImagesUrl'] #" onerror="this.src='resources/default.png'" style="margin-top:
+            10px">
+            <div style="overflow: hidden; white-space: normal; text-overflow: ellipsis; height: 45px"><h4>#: data['Product'].ProductName #</h4></div>
             <p>CV:#: data['Product'].cvPrice # PV: #: data['Product'].pvPrice #</p>
             <p>Qty:#: data['OrderQTY'] #</p>
         </div>
