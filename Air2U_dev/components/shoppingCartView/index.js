@@ -221,8 +221,9 @@ app.localization.registerView('shoppingCartView');
                 var source = shoppingCartViewModel.get('dataSource');
                 var data = source.data();
                 var checkedProducts = [];
-                for (var i = data.length-1; i >-1; i--) {
-                    var item = data[i];
+                var opItems = data.slice();
+                for (var i = 0; i <opItems.length; i++) {
+                    var item = opItems[i];
                     if (item.cchecked) {
                         checkedProducts.push(item);
                         source.remove(item);
