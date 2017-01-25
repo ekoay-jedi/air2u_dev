@@ -187,9 +187,9 @@ app.localization.registerView('orderDetailView');
                 return result;
             },
             itemClick: function(e) {
-                var dataItem = e.dataItem || orderDetailViewModel.originalItem;
-
-                app.mobileApp.navigate('#components/orderDetailView/details.html?uid=' + dataItem.uid);
+                // var dataItem = e.dataItem || orderDetailViewModel.originalItem;
+                //
+                // app.mobileApp.navigate('#components/orderDetailView/details.html?uid=' + dataItem.uid);
 
             },
             detailsShow: function(e) {

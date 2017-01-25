@@ -10,7 +10,7 @@
         <div class="km-listview-wrapper">
             <ul class="km-listview km-list km-listinset details-fields">
                 <li><div data-bind="text: currentItem.ProductName"></div></li>
-                <li><img data-bind="attr: { src: ProductImagesUrl }" width="100%" height="auto" onerror="this.src='resources/default.png'"></li>
+                <li><img data-bind="attr: { src: currentItem.ProductImagesUrl }" width="100%" height="auto" onerror="this.src='resources/default.png'"></li>
                 <li>
                     <table width="100%">
                         <tr >
@@ -19,11 +19,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <h4>AirPoint: <text data-bind="text: currentItem.pvPrice"></text></h4>
+                            <td width="50%">
+                                <h4>PV: <text data-bind="text: currentItem.pvPrice"></text></h4>
                             </td>
                             <td>
-                                <h4>Cash: RM <text data-bind="text: currentItem.cvPrice"></text></h4>
+                                <h4>CV: <text data-bind="text: currentItem.cvPrice"></text></h4>
                             </td>
                         </tr>
                         <tr>
@@ -31,12 +31,13 @@
                                 <h4>Stock: <text data-bind="text: currentItem.QTY"/></h4>
                             </td>
                             <td>
-                                <h4>Qty:<input type="text" id="qtyField" name="qtyField" value="1" style="margin-right: 36px; margin-top: 33px; text-align: center"/>
+                                Qty:<input type="text" id="qtyField" name="qtyField" value="1" style="margin-left: 30px; margin-top: 33px; text-align: center; width: 10px; margin-right: 60px";
+                                           pattern="[0-9]" maxlength="4"/>
                                 </h4>
                             </td>
-                            <td>
+                            <td align="right">
                                 <img src="resources/shopping_cart.png" width="30px" height="30px"
-                                     data-align="left" data-click="addtocart">
+                                     data-align="right" data-click="addtocart">
                                 <script>
                                     var el = new Everlive("o6yuauaw7f5m56jb");
 
@@ -44,49 +45,41 @@
                                         var qty = document.getElementById("qtyField").value;
                                         var stock = app.productListView.productListViewModel.get("currentItem.QTY");
                                         if (qty>stock){
-                                            navigator.notification.alert('Out of stock！');
+                                            alert('Out of stock！');
                                             document.getElementById("qtyField").value = stock;
                                         }  else {
                                             //var el = new Everlive("o6yuauaw7f5m56jb");
-                                            el.users.currentUser().then(function (data) {
-                                                for (var item in data) {
-                                                    if (item == 'result') {
-                                                        if (data[item] != null) {
-                                                            var datainside = data[item];
-                                                            for (var iteminside in datainside) {
-                                                                if (iteminside == 'Id') {
-                                                                    var productId =
-                                                                            app.productListView.productListViewModel.get("currentItem.Id");
-                                                                    var userId = datainside[iteminside];
-                                                                    var cartData = el.data('ProductCart');
-                                                                    var query = new Everlive.Query();
-                                                                    query.where().eq('productId', productId).eq('userId',userId);
-                                                                    cartData.get(query).then(function (data) {
-                                                                        if (data["count"] > 0) {
-                                                                            navigator.notification.alert('Existed in cart!');
-                                                                        } else {
-                                                                            cartData.create({'productId': productId, 'qty': 1, 'userId': userId,'product':productId},
-                                                                                    function (data) {
-                                                                                        navigator.notification.alert('Add to cart successfully!');
-                                                                                    },
-                                                                                    function (error) {
-                                                                                        navigator.notification.alert('Fail to add to cart!');
-                                                                                    });
-                                                                        }
-                                                                    });
-                                                                    return;
-                                                                }
-                                                            }
-                                                        }else{
-                                                            navigator.notification.alert("You do not login,Please login first.");
-                                                            setTimeout(function(){
-                                                                app.mobileApp.navigate('components/loginModelView/view.html');
-                                                            }, 10);
-                                                        }
+                                            if (app.currentUser.Id != "") {
+                                                var productId =
+                                                        app.productListView.productListViewModel.get("originalItem.Id");
+                                                var userId = app.currentUser.Id;
+                                                var cartData = el.data('ProductCart');
+                                                var query = new Everlive.Query();
+                                                query.where().eq('productId', productId).eq('userId', userId);
+                                                cartData.get(query).then(function (data) {
+                                                    if (data["count"] > 0) {
+                                                        alert('Existed in cart!');
+                                                    } else {
+                                                        cartData.create({
+                                                                    'productId': productId,
+                                                                    'qty': 1,
+                                                                    'userId': userId,
+                                                                    'product': productId
+                                                                },
+                                                                function (data) {
+                                                                    alert('Add to cart successfully!');
+                                                                },
+                                                                function (error) {
+                                                                    alert('Fail to add to cart!');
+                                                                });
                                                     }
-                                                }
-                                            });
-
+                                                });
+                                            } else {
+                                                navigator.notification.alert("You do not login,Please login first.");
+                                                setTimeout(function(){
+                                                    app.mobileApp.navigate('components/loginModelView/view.html');
+                                                }, 10);
+                                            }
                                         }
                                     });
                                 </script>
