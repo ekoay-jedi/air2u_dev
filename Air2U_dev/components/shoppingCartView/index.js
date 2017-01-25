@@ -386,9 +386,10 @@ app.localization.registerView('shoppingCartView');
 
     parent.set('onShow', function(e) {
         if (!app.currentUser.Id) {
-            alert('You do not login,Please login first.');
-            app.mobileApp.navigate('components/loginModelView/view.html');
-
+            alert("You do not login,Please login first.");
+            setTimeout(function(){
+                app.mobileApp.navigate('components/loginModelView/view.html');
+            }, 10);
         }
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,

@@ -81,8 +81,10 @@
                                                     }
                                                 });
                                             } else {
-                                                navigator.notification.alert('Please login first!');
-                                                app.mobileApp.navigate('components/loginModelView/view.html');
+                                                alert("You do not login,Please login first.");
+                                                setTimeout(function(){
+                                                    app.mobileApp.navigate('components/loginModelView/view.html');
+                                                }, 10);
                                             }
                                         }
                                     });
