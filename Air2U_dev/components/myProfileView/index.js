@@ -66,7 +66,7 @@ app.myProfileView = kendo.observable({
                 imagehead.src = "/resources/head.png";
             }
         } else {
-            alert("You do not login,Please login first.");
+            navigator.notification.alert("You do not login,Please login first.");
             setTimeout(function(){
                 app.mobileApp.navigate('components/loginModelView/view.html');
             }, 10);
