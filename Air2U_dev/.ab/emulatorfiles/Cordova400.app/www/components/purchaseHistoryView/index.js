@@ -82,8 +82,8 @@ app.localization.registerView('purchaseHistoryView');
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
 
-                    dataItem['ProductUrl'] =
-                        processImage(dataItem['Product']);
+                    // dataItem['ProductUrl'] =
+                    //     processImage(dataItem['Product']);
 
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);

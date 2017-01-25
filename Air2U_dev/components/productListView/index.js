@@ -76,7 +76,7 @@ app.localization.registerView('productListView');
                         dataItem['ProductImagesUrl'] =
                             processImage(item[0]);
                     }else{
-                        dataItem['ProductImagesUrl'] = "";
+                        dataItem['ProductImagesUrl'] = "resources/default.png";
                     }
 
                     /// start flattenLocation property

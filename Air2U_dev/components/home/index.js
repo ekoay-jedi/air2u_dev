@@ -89,9 +89,12 @@ function processImage(img) {
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
-
-                    dataItem['parentCateImageUrl'] =
-                        processImage(dataItem['parentCateImage']);
+                    if (dataItem['parentCateImage']!=null && dataItem['parentCateImage'].length>0){
+                        dataItem['parentCateImageUrl'] =
+                            processImage(dataItem['parentCateImage']);
+                    }else{
+                        dataItem['parentCateImageUrl'] ="resources/default.png";
+                    }
 
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);

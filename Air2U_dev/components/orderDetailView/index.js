@@ -95,7 +95,7 @@ app.localization.registerView('orderDetailView');
                         dataItem['ProductImagesUrl'] =
                             processImage(item[0]);
                     }else{
-                        dataItem['ProductImagesUrl'] = "";
+                        dataItem['ProductImagesUrl'] = "resources/default.png";
                     }
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);

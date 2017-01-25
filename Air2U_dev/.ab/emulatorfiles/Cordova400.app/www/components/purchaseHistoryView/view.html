@@ -27,7 +27,7 @@
         <div class="image-with-text">
             # data = app.purchaseHistoryView.purchaseHistoryViewModel.fixHierarchicalData(data); #
 
-            <img src="#: data['ProductUrl'] #">
+            <img src="#: data['ProductUrl'] #" onerror="javascript:src='resources/default.png'">
             <h3>#: data['Product'] #</h3>
 
         </div>

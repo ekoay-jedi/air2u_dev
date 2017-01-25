@@ -27,7 +27,7 @@
         <div class="image-with-text">
             # data = app.productListView.productListViewModel.fixHierarchicalData(data); #
 
-            <img src="#: data['ProductImagesUrl'] #">
+            <img src="#: data['ProductImagesUrl'] #" onerror="javascript:src='resources/default.png'">
             <h3>#: data['ProductName'] #</h3>
             <p>#: data['cvPrice'] #</p>
         </div>

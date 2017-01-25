@@ -72,9 +72,12 @@ app.localization.registerView('subCategoryView');
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
-
-                    dataItem['cateImgUrlUrl'] =
-                        processImage(dataItem['cateImgUrl']);
+                    if (dataItem['cateImgUrl']!=null && dataItem['cateImgUrl'].length>0){
+                        dataItem['cateImgUrlUrl'] =
+                            processImage(dataItem['cateImgUrl']);
+                    }else{
+                        dataItem['cateImgUrlUrl'] = "resources/default.png";
+                    }
 
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);

@@ -49,7 +49,7 @@
     <script type="text/x-kendo-template" id="shoppingCartViewModelTemplate">
         <div class="image-with-text" id="cartProduct">
             <input style="float: left; position: inherit; margin-right: 10px;" type="checkbox" data-bind="checked: cchecked"/>
-            <img src="#: productIdUrl #">
+            <img src="#: productIdUrl #" onerror="javascript:src='resources/default.png'">
             <h3>#: product['ProductName'] #</h3>
             <div>
                 <p>Qty: <span>#: qty #</span></p>

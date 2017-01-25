@@ -93,7 +93,7 @@ app.localization.registerView('shoppingCartView');
                         dataItem['productIdUrl'] =
                             processImage(imgs[0]);
                     }else {
-                        dataItem['productIdUrl'] = "";
+                        dataItem['productIdUrl'] = "resources/default.png";
                     }
 
                     /// start flattenLocation property
