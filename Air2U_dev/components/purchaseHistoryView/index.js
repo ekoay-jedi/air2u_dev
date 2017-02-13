@@ -78,6 +78,7 @@ app.localization.registerView('purchaseHistoryView');
                     var customer = dataItem["OrderCustomer"];
                     if (app.currentUser.Id != customer){
                         data.remove(dataItem);
+                        i--;
                         continue;
                     }
                     var status;

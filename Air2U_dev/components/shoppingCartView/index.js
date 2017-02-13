@@ -86,6 +86,12 @@ app.localization.registerView('shoppingCartView');
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
+                    var userId = dataItem["userId"];
+                    if (app.currentUser.Id != userId){
+                        data.remove(dataItem);
+                        i--;
+                        continue;
+                    }
                     dataItem.cchecked = dataItem.cchecked | false;
                     var product = dataItem['product'];
                     var imgs = product['ProductImages'];
