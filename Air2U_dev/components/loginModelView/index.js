@@ -1,6 +1,8 @@
 'use strict';
 
 var el = app.data.backendServices;
+var delayTime = "10";//delay loading time value.
+var customerRoleId = "3cd6f410-da39-11e6-a8d2-5562bb8ecdac";
 
 app.loginModelView = kendo.observable({
     onShow: function() {
@@ -8,89 +10,112 @@ app.loginModelView = kendo.observable({
             if (app.currentUser.Id.length > 0) {
                 window.location.href = "#userinfo";
             }
-        },"1000");
+        }, delayTime);
     },
     afterShow: function() {
-
+        //Todo...
     },
-	submit: function () {
-            if (!this.username) {
-                navigator.notification.alert("Username is required.");
-                return;
-            }
-            if (!this.password) {
-                navigator.notification.alert("Password is required.");
-                return;
-            }
-            el.Users.login(this.username, this.password,
-                function (data) {
+    submit: function () {
+        if (!this.username) {
+            //navigator.notification.alert("Username is required.");
+            alert("Username is required.");
+            return;
+        }
+        if (!this.password) {
+            //navigator.notification.alert("Password is required.");
+            alert("Password is required.");
+            return;
+        }
+        el.Users.login(this.username, this.password,
+            function (data) {
+                for (var item in data['result']) {
+                    if (data['result'].hasOwnProperty(item)) {
+                        app.currentUser[item] = data['result'][item];
+                    }
+                }
+
+                el.Users.currentUser().then(function(data) {
                     for (var item in data['result']) {
                         if (data['result'].hasOwnProperty(item)) {
                             app.currentUser[item] = data['result'][item];
                         }
                     }
+                }, function (error) {
 
-                    el.Users.currentUser().then(function(data) {
-                        for (var item in data['result']) {
-                            if (data['result'].hasOwnProperty(item)) {
-                                app.currentUser[item] = data['result'][item];
-                            }
-                        }
-                    }, function (error) {
-
-                    });
-                    window.location.href = "#userinfo";
-					//app.mobileApp.navigate('components/home/view.html');
-                }, function () {
-                    navigator.notification.alert("Unfortunately we could not find your account.");
                 });
-        },
+                window.location.href = "#userinfo";
+                //app.mobileApp.navigate('components/home/view.html');
+            }, function () {
+                //navigator.notification.alert("Unfortunately we could not find your account.");
+                alert("Unfortunately we could not find your account.");
+            });
+    },
 });
 app.localization.registerView('loginModelView');
 
 app.registerView = kendo.observable({
-	submit: function () {
-            if (!this.username) {
-                navigator.notification.alert("Username is required.");
-                return;
-            }
-            if (!this.password) {
-                navigator.notification.alert("Password is required.");
-                return;
-            }
-            el.Users.register(this.username, this.password, { Email: this.email },
-                function () {
-                    app.currentUser.Id = "";
-                    navigator.notification.alert("Your account was successfully created.");
-                    window.location.href = "#loginModelViewScreen";
-                },
-                function () {
-                    navigator.notification.alert("Unfortunately we were unable to create your account.");
-                });
+    submit: function () {
+        var introducername = this.introducername;
+        var introducercontact = this.introducercontact;
+        var introduceremail = this.introduceremail;
+
+        if (!this.username) {
+            //navigator.notification.alert("Username is required.");
+            alert("Username is required.");
+            return;
         }
+        if (!this.password) {
+            //navigator.notification.alert("Password is required.");
+            alert("Password is required.");
+            return;
+        }
+
+        var attrs = {
+            Email: this.email,
+            IntroducerName: introducername,
+            IntroducerContact: introducercontact,
+            IntroducerEmail: introduceremail,
+            AppRoles: [customerRoleId]
+        };
+
+        el.Users.register(this.username, this.password, attrs,
+            function () {
+                app.currentUser.Id = "";
+                //navigator.notification.alert("Your account was successfully created.");
+                alert("Your account was successfully created.");
+                window.location.href = "#loginModelViewScreen";
+            },
+            function (error) {
+                //navigator.notification.alert("Unfortunately we were unable to create your account.");
+                //alert("Unfortunately we were unable to create your account.");
+                alert(JSON.stringify(error));
+            });
+    }
 });
 app.localization.registerView('registerView');
 
 app.passwordView = kendo.observable({
-	submit: function () {
-            if (!this.email) {
-                navigator.notification.alert("Email address is required.");
-                return;
-            }
-            $.ajax({
-                type: "POST",
-                url: "https://api.everlive.com/v1/" + apiKey + "/Users/resetpassword",
-                contentType: "application/json",
-                data: JSON.stringify({ Email: this.email }),
-                success: function () {
-                    navigator.notification.alert("Your password was successfully reset. Please check your email for instructions on choosing a new password.");
-                    window.location.href = "#loginModelViewScreen";
-                },
-                error: function () {
-                    navigator.notification.alert("Unfortunately, an error occurred resetting your password.")
-                }
-            });
+    submit: function () {
+        if (!this.email) {
+            navigator.notification.alert("Email address is required.");
+            return;
         }
+        $.ajax({
+            type: "POST",
+            url: "https://api.everlive.com/v1/" + apiKey + "/Users/resetpassword",
+            contentType: "application/json",
+            data: JSON.stringify({ Email: this.email }),
+            success: function () {
+                //navigator.notification.alert("Your password was successfully reset. Please check your email for instructions on choosing a new password.");
+                alert("Your password was successfully reset. Please check your email for instructions on choosing a new password.");
+                window.location.href = "#loginModelViewScreen";
+            },
+            error: function () {
+                //navigator.notification.alert("Unfortunately, an error occurred resetting your password.");
+                alert("Unfortunately, an error occurred resetting your password.");
+            }
+        });
+    }
 });
 app.localization.registerView('passwordView');
 
@@ -104,7 +129,8 @@ app.userinfoView = kendo.observable({
             //app.loginModelView.set("username", "");
             app.loginModelView.set("password", "");
         }, function () {
-            navigator.notification.alert("Unfortunately an error occurred logging out of your account.");
+            //navigator.notification.alert("Unfortunately an error occurred logging out of your account.");
+            alert("Unfortunately an error occurred logging out of your account.");
         });
     }
 });

@@ -59,7 +59,9 @@
     "productListViewModel": {}
   },
   "loginModelView": {
-    "title": "Log In/Out"
+    "title": "Log In/Out",
+    "welcome_name": "Dear Customer,",
+    "welcome_value": "Welcome to Air2U Mobile App!"
   },
   "testView": {
     "title": "Test View"
