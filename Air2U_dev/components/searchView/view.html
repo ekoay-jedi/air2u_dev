@@ -1,0 +1,43 @@
+<div data-role="view" data-title="View" data-layout="main-nonav" data-model="app.searchView" data-show="app.searchView.onShow" data-after-show="app.searchView.afterShow" id="searchViewScreen" class="screen">
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+            <a data-role="backbutton" data-align="left">Back</a>
+            <span>Search</span>
+        </div>
+        <div>
+            <input type="text" name="searchWord" id="searchWord" placeholder="Name..."/>
+            <!--<input type="button" value="Search" data-click="searchClick"/>-->
+            <a data-role="button" data-click="openSearch" data-align="right" data-icon="search"></a>
+            <script>
+                var listView = $("#resultListView").data("listview");
+                $("[data-click=openSearch]").click(function() {
+                    keyword = $("#searchWord").val();
+                });
+            </script>
+        </div>
+    </header>
+
+
+
+    <!-- START_CUSTOM_CODE_searchViewModel -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+    <ul class="masterDetailView" data-role="listview" data-auto-bind="false" data-style="inset" id="resultListView" data-template="searchViewModelTemplate" data-bind="source: searchViewModel.dataSource, events: {click: searchViewModel.itemClick}" data-pull-to-refresh="true"
+        data-endless-scroll="false">
+    </ul>
+
+
+    <!-- END_CUSTOM_CODE_searchViewModel -->
+    <script type="text/x-kendo-template" id="searchViewModelTemplate">
+        <div class="image-with-text">
+            # data = app.searchView.searchViewModel.fixHierarchicalData(data); #
+
+            <img style="margin-top: 10px; height: 100px" src="#: data['ProductImagesUrl'] #" onerror="this.src='resources/default.png'">
+            <div style="overflow: hidden; white-space: normal; text-overflow: ellipsis; height: 45px"><h4>#:
+                data['ProductName']
+                #</h4></div>
+            <p><font color="red">CV: #: data['cvPrice'] #</font></p>
+            <p>Qty: #: data['QTY'] #</p>
+            <p>PV: #: data['pvPrice'] #</p>
+        </div>
+    </script>
+</div>

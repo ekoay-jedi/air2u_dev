@@ -293,6 +293,14 @@
           "serverSidePaging": false,
           "detailHeaderFieldSource": "static",
           "detailHeaderFieldValue": "Detail"
+        },
+        {
+          "type": "kendo-ui-mobile:view",
+          "name": "searchView",
+          "components": [],
+          "title": "Search",
+          "addToNavigation": false,
+          "icon": "search"
         }
   ],
   "dataProviders": [
