@@ -72,11 +72,18 @@ app.localization.registerView('purchaseHistoryView');
 
             change: function(e) {
                 var data = this.data();
+                var date = new Date().getTime();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
                     /// start flattenLocation property
+                    var modifiedTime = dataItem["ModifiedAt"].getTime();
                     var customer = dataItem["OrderCustomer"];
                     if (app.currentUser.Id != customer){
+                        data.remove(dataItem);
+                        i--;
+                        continue;
+                    }else if (modifiedTime-date>2592000000){
+                        alert(modifiedTime-date);
                         data.remove(dataItem);
                         i--;
                         continue;
