@@ -274,7 +274,8 @@ app.localization.registerView('productListView');
 
     parent.set('onShow', function(e) {
         keyword = "";
-        app.searchView.set("search", "");
+        $("#search").val('');
+        $("#filterSelected").val('00');
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,
             backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
