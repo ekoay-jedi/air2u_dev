@@ -11,6 +11,12 @@ var avatar;
 var status;
 var email;
 var card;
+var introduceName;
+var introduceContact;
+var introduceEmail;
+
+var currentPoint;
+var lastqwarded;
 
 app.myProfileView = kendo.observable({
     onShow: function () {
@@ -26,6 +32,10 @@ app.myProfileView = kendo.observable({
             status = app.currentUser.Status;
             card = app.currentUser.Card;
             avatar = app.currentUser.Avatar;
+            introduceName = app.currentUser.IntroducerName;
+            introduceContact = app.currentUser.IntroducerContact;
+            introduceEmail = app.currentUser.IntroducerEmail;
+
 
             app.myProfileView.set("usernameinfo", username);
             app.myProfileView.set("emailinfo", email);
@@ -43,6 +53,22 @@ app.myProfileView = kendo.observable({
             $("#state").attr("disabled", true);
             $("#status").attr("disabled", true);
             $("#card").attr("disabled", true);
+            $("#introduce_name").attr("disabled", true);
+            $("#introduce_contact").attr("disabled", true);
+            $("#introduce_email").attr("disabled", true);
+
+            if (introduceName != "") {
+                app.myProfileView.set("introduce_name", introduceName);
+            }
+
+            if (introduceContact != "") {
+                app.myProfileView.set("introduce_contact", introduceContact);
+            }
+
+            if (introduceEmail != "") {
+                app.myProfileView.set("introduce_email", introduceEmail);
+            }
+
 
             var imagehead = document.getElementById("userheadview");
             if (avatar != null) {
@@ -67,7 +93,7 @@ app.myProfileView = kendo.observable({
             }
         } else {
             navigator.notification.alert("You do not login,Please login first.");
-            setTimeout(function(){
+            setTimeout(function () {
                 app.mobileApp.navigate('components/loginModelView/view.html');
             }, 10);
         }
@@ -127,6 +153,10 @@ app.myProfileView = kendo.observable({
             $("#emailinfo").attr("disabled", false);
             $("#status").attr("disabled", false);
             $("#card").attr("disabled", false);
+            $("#introduce_name").attr("disabled", false);
+            $("#introduce_contact").attr("disabled", false);
+            $("#introduce_email").attr("disabled", false);
+
         } else if (righttitle == "Save") {
             var username = $("#usernameinfo").val();
             var address = $("#defaultaddress").val();
@@ -151,8 +181,10 @@ app.myProfileView = kendo.observable({
                                     'Email': email,
                                     'Card': card,
                                     'State': state,
-                                    'Status': status
-
+                                    'Status': status,
+                                    'IntroducerName': introduceName,
+                                    'IntroducerContact': introduceContact,
+                                    'IntroducerEmail': introduceEmail
                                 },
                                 function (data) {
                                     alert("Update myProfile Info successfully");
@@ -165,6 +197,10 @@ app.myProfileView = kendo.observable({
                                     $("#emailinfo").attr("disabled", true);
                                     $("#status").attr("disabled", true);
                                     $("#card").attr("disabled", true);
+                                    $("#introduce_name").attr("disabled", true);
+                                    $("#introduce_contact").attr("disabled", true);
+                                    $("#introduce_email").attr("disabled", true);
+
                                 },
                                 function (error) {
                                     alert(JSON.stringify(error));
@@ -179,9 +215,7 @@ app.myProfileView = kendo.observable({
 
 
     },
-    viewpoint: function () {
-        alert("The function will be soon.");
-    },
+
 
     /*addressdetail: function () {
      alert("address detail");
@@ -221,6 +255,45 @@ app.myProfileView = kendo.observable({
 });
 app.localization.registerView('myProfileView');
 
+app.myloyaltypointView = kendo.observable({
+    onShow: function () {
+        currentPoint = "PV 24000";
+        lastqwarded = "PV 1400";
+        $("#current_point").attr("disabled", true);
+        $("#last_awarded").attr("disabled", true);
+        app.myloyaltypointView.set("current_point", currentPoint);
+        app.myloyaltypointView.set("last_awarded", lastqwarded);
+
+        /* JsBarcode("#barcode4",
+         "f701bc80-db33-11e6-ba7d-ed8ffe6e33d3",
+         {displayValue: true});*/
+        JsBarcode("#barcode4", userid, {displayValue: true});
+
+        var img = document.getElementById('barcode4');
+        img.style.width = "100%"
+        img.style.height = "auto"
+
+       /* var qrcode = new QRCode(document.getElementById("qrcode"), {
+            width : 200,
+            height : 200
+        });
+
+        qrcode.makeCode(userid);*/
+
+    },
+    buyproduct: function () {
+        alert("The buy product.");
+        app.mobileApp.navigate('components/productListView/view.html?filter=' + encodeURIComponent(JSON.stringify({
+                field: 'pvPrice',
+                value: dataItem.Id,
+                operator: 'eq'
+            })));
+
+    },
+});
+
+
+app.localization.registerView('myloyaltypointView');
 
 // START_CUSTOM_CODE_myProfileView
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes

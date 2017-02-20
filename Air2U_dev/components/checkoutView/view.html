@@ -1,3 +1,15 @@
+<style>
+    .left {
+        list-style-type: none;
+        font-size: 25px;
+        color: black;
+        margin-top: 20px;
+        margin-left: 0;
+
+    }
+</style>
+
+
 <div data-role="view" data-title="View" data-layout="main" data-model="app.checkoutView"
      data-show="app.checkoutView.onShow"
      data-after-show="app.checkoutView.afterShow" id="checkoutViewScreen" class="screen">
@@ -10,7 +22,8 @@
                         <img src="resources/shopping_cart.png" style="float: left;">
                         <div style="margin-top: 15px;margin-left: 20px;">
                             <h1 style="float: left;margin-left: 20px;color: black;">My Total: </h1>
-                            <h1 style="float: right;margin-right: 20px;color: black;" name="total-price" id="total-price"></h1></div>
+                            <h1 style="float: right;margin-right: 20px;color: black;" name="total-price"
+                                id="total-price"></h1></div>
 
                     </div>
                 </li>
@@ -20,40 +33,51 @@
                          <h3>Use available point 25,000</h3></div>
                  </li>-->
                 <li>
+                    <div>
+                        <h2 style="float: left;margin-left: 10px;color: black;">Use Loyalty Point: </h2>
+                        <h2 style="float: right;margin-right: 10px;color: black;" name="total-point" id="total-point">
+                            999</h2></div>
+
+                </li>
+
+                <!--<li>
                     <h3 style="color: black;">Use available point 25,000</h3>
                     <input id="usepoint-switch"/>
+                </li>-->
+
+                <!--  <li>
+                      &lt;!&ndash;<div><h3>Pay with Card</h3></div>
+                      <select style="font-size: 20px;float: left;width: 45%;color: #626576" >
+                          <option value="Select card to pay" selected="selected" >Select card to pay</option>
+                          <option value="volvo" >Volvo</option>
+                          <option value="saab" >Saab</option>
+                          <option value="opel">Opel</option>
+                          <option value="audi">Audi</option>
+                      </select>&ndash;&gt;
+
+
+                      <h3 style="margin-bottom: 40px;color: black;">Pay with Card</h3>
+                  <select id="selectcard" style="width: 97%;margin-top: 30px;color: black;font-size: 23px;margin-bottom: 10px">
+                      <option value="Select card to pay" selected="selected">Select card to pay</option>
+                      <option value="volvo">6228480402564890018</option>
+                      <option value="saab">6228480402564890019</option>
+                      <option value="opel">6228480402564890013</option>
+                      <option value="audi">6228480402564890017</option>
+                  </select>
+                  </li>-->
+                <li style="list-style-type: none;font-size: 25px;color: black;margin-top: 20px">
+                <span><label style="color: black">Tax:</label>
+            <input style="float: right;margin-right: 20px" type="checkbox" name="send_message_item"/>
+        </span>
                 </li>
-
-                <li>
-                    <!--<div><h3>Pay with Card</h3></div>
-                    <select style="font-size: 20px;float: left;width: 45%;color: #626576" >
-                        <option value="Select card to pay" selected="selected" >Select card to pay</option>
-                        <option value="volvo" >Volvo</option>
-                        <option value="saab" >Saab</option>
-                        <option value="opel">Opel</option>
-                        <option value="audi">Audi</option>
-                    </select>-->
-
-
-                    <h3 style="margin-bottom: 40px;color: black;">Pay with Card</h3>
-                <select id="selectcard" style="width: 97%;margin-top: 30px;color: black;font-size: 23px;margin-bottom: 10px">
-                    <option value="Select card to pay" selected="selected">Select card to pay</option>
-                    <option value="volvo">6228480402564890018</option>
-                    <option value="saab">6228480402564890019</option>
-                    <option value="opel">6228480402564890013</option>
-                    <option value="audi">6228480402564890017</option>
-                </select>
-                </li>
-
-
             </ul>
 
-            <ui>
-                <li style="list-style-type: none;margin-left: 16px ;font-size: 20px;color: black;">
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: black;">Pay with E-banking</h3>
-                    </div>
+            <ul>
 
+                <li style="list-style-type: none;font-size: 25px;color: black;margin-top: 20px">
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: black;">Shipping Method</h3>
+                    </div>
                     <input type="radio" name="pay-for-e-bank"
                            style="float: left;position: inherit;margin-right: 20px;"/>
                     <h3 style="color: black;">Maybank2U</h3>
@@ -64,8 +88,7 @@
                            style="float: left;position: inherit;margin-right: 20px;"/>
                     <h3 style="color: black;">PBOnline</h3>
                 </li>
-            </ui>
-
+            </ul>
 
 
         </form>
@@ -76,9 +99,6 @@
                data-bind="events: { click: checkoutViewModel.submit }, buttonText: strings.checkoutView.checkoutViewModel.submitButton"></a>
         </div>
 
-        <!-- START_CUSTOM_CODE_checkoutViewModel -->
-        <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
-        <!-- END_CUSTOM_CODE_checkoutViewModel -->
     </div>
     <header data-role="header">
         <div data-role="navbar" class="header-text"><span data-bind="text: strings.checkoutView.title"></span>
@@ -93,7 +113,4 @@
             $("#usepoint-switch").kendoMobileSwitch({});
         });
     </script>
-    <!-- START_CUSTOM_CODE_checkoutView -->
-    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
-    <!-- END_CUSTOM_CODE_checkoutView -->
 </div>
