@@ -1,4 +1,6 @@
 'use strict';
+var apiKey = "o6yuauaw7f5m56jb";
+var el = new Everlive(apiKey);
 
 app.subCategoryView = kendo.observable({
     onShow: function() {
@@ -170,13 +172,24 @@ app.localization.registerView('subCategoryView');
             },
             itemClick: function(e) {
                 var dataItem = e.dataItem || subCategoryViewModel.originalItem;
-
-                app.mobileApp.navigate('components/productListView/view.html?filter=' + encodeURIComponent(JSON.stringify({
-                    field: 'ProductCategory',
-                    value: dataItem.Id,
-                    operator: 'eq'
-                })));
-
+                var categoryData = el.data('Category');
+                var query = new Everlive.Query();
+                query.where().eq('Pid', dataItem['Id']);
+                categoryData.get(query).then(function (data) {
+                    if (data["count"] > 0) {
+                        app.mobileApp.navigate('components/subCategoryView/view.html?filter=' + encodeURIComponent(JSON.stringify({
+                                field: 'Pid',
+                                value: dataItem.Id,
+                                operator: 'eq'
+                            })));
+                    }else{
+                        app.mobileApp.navigate('components/productListView/view.html?filter=' + encodeURIComponent(JSON.stringify({
+                                field: 'ProductCategory',
+                                value: dataItem.Id,
+                                operator: 'eq'
+                            })));
+                    }
+                });
             },
             detailsShow: function(e) {
                 var uid = e.view.params.uid,

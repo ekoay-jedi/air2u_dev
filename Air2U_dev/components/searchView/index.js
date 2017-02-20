@@ -1,29 +1,28 @@
 'use strict';
-
-var apiKey = "o6yuauaw7f5m56jb";
-var el = new Everlive(apiKey);
-app.purchaseHistoryView = kendo.observable({
+var keyword;
+app.searchView = kendo.observable({
     onShow: function() {},
     afterShow: function() {}
 });
-app.localization.registerView('purchaseHistoryView');
+app.localization.registerView('searchView');
 
-// START_CUSTOM_CODE_purchaseHistoryView
+// START_CUSTOM_CODE_searchView
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 
-// END_CUSTOM_CODE_purchaseHistoryView
+// END_CUSTOM_CODE_searchView
 (function(parent) {
     var dataProvider = app.data.backendServices,
         /// start global model properties
         /// end global model properties
+
         fetchFilteredData = function(paramFilter, searchFilter) {
-            var model = parent.get('purchaseHistoryViewModel'),
+            var model = parent.get('searchViewModel'),
                 dataSource;
 
             if (model) {
                 dataSource = model.get('dataSource');
             } else {
-                parent.set('purchaseHistoryViewModel_delayedFetch', paramFilter || null);
+                parent.set('searchViewModel_delayedFetch', paramFilter || null);
                 return;
             }
 
@@ -66,43 +65,31 @@ app.localization.registerView('purchaseHistoryView');
         dataSourceOptions = {
             type: 'everlive',
             transport: {
-                typeName: 'Order',
+                typeName: 'Product',
                 dataProvider: dataProvider
             },
-
             change: function(e) {
                 var data = this.data();
-                var date = new Date().getTime();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
+                    var name = dataItem['ProductName'];
+                    if (keyword!=null && name.toLowerCase().indexOf(keyword.toLowerCase())==-1){
+                        data.remove(dataItem);
+                        i--;
+                        continue;
+                    }
+                    var item = dataItem['ProductImages'];
+                    if (item && item.length > 0) {
+                        dataItem['ProductImagesUrl'] =
+                            processImage(item[0]);
+                    }else{
+                        dataItem['ProductImagesUrl'] = "resources/default.png";
+                    }
+
                     /// start flattenLocation property
-                    var modifiedTime = dataItem["ModifiedAt"].getTime();
-                    var customer = dataItem["OrderCustomer"];
-                    if (app.currentUser.Id != customer){
-                        data.remove(dataItem);
-                        i--;
-                        continue;
-                    }else if (modifiedTime-date>2592000000){
-                        alert(modifiedTime-date);
-                        data.remove(dataItem);
-                        i--;
-                        continue;
-                    }
-                    var status;
-                    switch (dataItem.Status) {
-                        case 0:
-                            status = "Wait for pay";
-                            break;
-                        case 1:
-                            status = "Finished";
-                            break;
-                        case 2:
-                            status = "Canceled";
-                            break;
-                    }
-                    dataItem['status'] = status;
                     flattenLocationProperties(dataItem);
                     /// end flattenLocation property
+
                 }
             },
             error: function(e) {
@@ -120,12 +107,24 @@ app.localization.registerView('purchaseHistoryView');
             schema: {
                 model: {
                     fields: {
-                        'OrderNumber': {
-                            field: 'OrderNumber',
+                        'ProductName': {
+                            field: 'ProductName',
                             defaultValue: ''
                         },
-                        'OrderStatus': {
-                            field: 'OrderStatus',
+                        'cvPrice': {
+                            field: 'cvPrice',
+                            defaultValue: ''
+                        },
+                        'ProductImages': {
+                            field: 'ProductImages',
+                            defaultValue: ''
+                        },
+                        'ProductID': {
+                            field: 'ProductID',
+                            defaultValue: ''
+                        },
+                        'QTY': {
+                            field: 'QTY',
                             defaultValue: ''
                         },
                     }
@@ -135,7 +134,7 @@ app.localization.registerView('purchaseHistoryView');
         },
         /// start data sources
         /// end data sources
-        purchaseHistoryViewModel = kendo.observable({
+        searchViewModel = kendo.observable({
             _dataSourceOptions: dataSourceOptions,
             fixHierarchicalData: function(data) {
                 var result = {},
@@ -189,38 +188,46 @@ app.localization.registerView('purchaseHistoryView');
                 return result;
             },
             itemClick: function(e) {
-                var dataItem = e.dataItem || purchaseHistoryViewModel.originalItem;
-                app.mobileApp.navigate('components/orderDetailView/view.html?orderId='+dataItem.Id+'&status='+dataItem.Status+'&filter='+encodeURIComponent(JSON.stringify({
-                        field: 'OrderNumber',
-                        value: dataItem.Id,
-                        operator: 'eq'
-                    })));
+                var dataItem = e.dataItem || searchViewModel.originalItem;
+                app.mobileApp.navigate('#components/productListView/details.html?uid=' + dataItem.uid+'&productId='+dataItem.productId);
+
             },
             detailsShow: function(e) {
                 var uid = e.view.params.uid,
-                    dataSource = purchaseHistoryViewModel.get('dataSource'),
+                    dataSource = searchViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(uid);
 
-                purchaseHistoryViewModel.setCurrentItemByUid(uid);
+                searchViewModel.setCurrentItemByUid(uid);
 
                 /// start detail form show
                 /// end detail form show
             },
             setCurrentItemByUid: function(uid) {
                 var item = uid,
-                    dataSource = purchaseHistoryViewModel.get('dataSource'),
+                    dataSource = searchViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item);
+                var imgitem = itemModel.ProductImages;
+                if (imgitem.count>0){
+                    itemModel.ProductImagesUrl = processImage(imgitem[0]);
+                }
 
-                if (!itemModel.OrderNumber) {
-                    itemModel.OrderNumber = String.fromCharCode(160);
+                if (!itemModel.ProductName) {
+                    itemModel.ProductName = String.fromCharCode(160);
                 }
 
                 /// start detail form initialization
                 /// end detail form initialization
 
-                purchaseHistoryViewModel.set('originalItem', itemModel);
-                purchaseHistoryViewModel.set('currentItem',
-                    purchaseHistoryViewModel.fixHierarchicalData(itemModel));
+                var descitem = itemModel.ProductDescription;
+                if (!descitem.count>0) {
+                    searchViewModel.set("productDesc",descitem[0]);
+                }
+                if (!itemModel.ProductID) {
+                    searchViewModel.set("ProductID",itemModel.ProductID);
+                }
+                searchViewModel.set('originalItem', itemModel);
+                searchViewModel.set('currentItem',
+                    searchViewModel.fixHierarchicalData(itemModel));
 
                 return itemModel;
             },
@@ -238,49 +245,42 @@ app.localization.registerView('purchaseHistoryView');
 
     if (typeof dataProvider.sbProviderReady === 'function') {
         dataProvider.sbProviderReady(function dl_sbProviderReady() {
-            parent.set('purchaseHistoryViewModel', purchaseHistoryViewModel);
-            var param = parent.get('purchaseHistoryViewModel_delayedFetch');
+            parent.set('searchViewModel', searchViewModel);
+            var param = parent.get('searchViewModel_delayedFetch');
             if (typeof param !== 'undefined') {
-                parent.set('purchaseHistoryViewModel_delayedFetch', undefined);
+                parent.set('searchViewModel_delayedFetch', undefined);
                 fetchFilteredData(param);
             }
         });
     } else {
-        parent.set('purchaseHistoryViewModel', purchaseHistoryViewModel);
+        parent.set('searchViewModel', searchViewModel);
     }
 
     parent.set('onShow', function(e) {
-        if (app.currentUser.Id == "") {
-            navigator.notification.alert("You do not login,Please login first.");
-            setTimeout(function(){
-                app.mobileApp.navigate('components/loginModelView/view.html');
-            }, 10);
+        var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
+            isListmenu = false,
+            backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
+            dataSourceOptions = searchViewModel.get('_dataSourceOptions'),
+            dataSource;
+
+        if (param || isListmenu) {
+            backbutton.show();
+            backbutton.css('visibility', 'visible');
         } else {
-            var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
-                isListmenu = false,
-                backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
-                dataSourceOptions = purchaseHistoryViewModel.get('_dataSourceOptions'),
-                dataSource;
-
-            if (param || isListmenu) {
-                backbutton.show();
-                backbutton.css('visibility', 'visible');
+            if (e.view.element.find('header [data-role="navbar"] [data-role="button"]').length) {
+                backbutton.hide();
             } else {
-                if (e.view.element.find('header [data-role="navbar"] [data-role="button"]').length) {
-                    backbutton.hide();
-                } else {
-                    backbutton.css('visibility', 'hidden');
-                }
+                backbutton.css('visibility', 'hidden');
             }
-
-            dataSource = new kendo.data.DataSource(dataSourceOptions);
-            purchaseHistoryViewModel.set('dataSource', dataSource);
-            fetchFilteredData(param);
         }
+
+        dataSource = new kendo.data.DataSource(dataSourceOptions);
+        searchViewModel.set('dataSource', dataSource);
+        fetchFilteredData(param);
     });
-})(app.purchaseHistoryView);
 
-// START_CUSTOM_CODE_purchaseHistoryViewModel
+})(app.searchView);
+
+// START_CUSTOM_CODE_searchViewModel
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
-
-// END_CUSTOM_CODE_purchaseHistoryViewModel
+// END_CUSTOM_CODE_searchViewModel

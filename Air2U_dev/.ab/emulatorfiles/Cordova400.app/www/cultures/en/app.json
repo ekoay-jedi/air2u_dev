@@ -67,5 +67,8 @@
   "orderDetailView": {
     "title": "OrderList",
     "orderDetailViewModel": {}
+  },
+  "searchView": {
+    "title": "Search"
   }
 }

@@ -1,4 +1,6 @@
 'use strict';
+var apiKey = "o6yuauaw7f5m56jb";
+var el = new Everlive(apiKey);
 
 app.home = kendo.observable({
     onShow: function() {},
@@ -82,18 +84,26 @@ function processImage(img) {
         dataSourceOptions = {
             type: 'everlive',
             transport: {
-                typeName: 'ParentCategory',
+                typeName: 'Category',
                 dataProvider: dataProvider
             },
             change: function(e) {
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
-                    if (dataItem['parentCateImage']!=null && dataItem['parentCateImage'].length>0){
-                        dataItem['parentCateImageUrl'] =
-                            processImage(dataItem['parentCateImage']);
+
+                    var userId = dataItem["Pid"];
+                    if (userId != '0'){
+                        data.remove(dataItem);
+                        i--;
+                        continue;
+                    }
+
+                    if (dataItem['cateImgUrl']!=null && dataItem['cateImgUrl'].length>0){
+                        dataItem['cateImgUrl'] =
+                            processImage(dataItem['cateImgUrl']);
                     }else{
-                        dataItem['parentCateImageUrl'] ="resources/default.png";
+                        dataItem['cateImgUrl'] ="resources/default.png";
                     }
 
                     /// start flattenLocation property
@@ -187,13 +197,24 @@ function processImage(img) {
             },
             itemClick: function(e) {
                 var dataItem = e.dataItem || homeModel.originalItem;
-
-                app.mobileApp.navigate('components/subCategoryView/view.html?filter=' + encodeURIComponent(JSON.stringify({
-                    field: 'ParentCategory',
-                    value: dataItem.Id,
-                    operator: 'eq'
-                })));
-				
+                var categoryData = el.data('Category');
+                var query = new Everlive.Query();
+                query.where().eq('Pid', dataItem['Id']);
+                categoryData.get(query).then(function (data) {
+                    if (data["count"] > 0) {
+                        app.mobileApp.navigate('components/subCategoryView/view.html?filter=' + encodeURIComponent(JSON.stringify({
+                                field: 'Pid',
+                                value: dataItem.Id,
+                                operator: 'eq'
+                            })));
+                    }else{
+                        app.mobileApp.navigate('components/productListView/view.html?filter=' + encodeURIComponent(JSON.stringify({
+                                field: 'ProductCategory',
+                                value: dataItem.Id,
+                                operator: 'eq'
+                            })));
+                    }
+                });
             },
             detailsShow: function(e) {
                 var uid = e.view.params.uid,
