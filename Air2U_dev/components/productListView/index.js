@@ -1,4 +1,6 @@
 'use strict';
+var keyword;
+var filter;
 app.productListView = kendo.observable({
     onShow: function() {},
     afterShow: function() {}
@@ -69,8 +71,29 @@ app.localization.registerView('productListView');
             },
             change: function(e) {
                 var data = this.data();
+                filter = $("#filterSelected").val();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
+                    var name = dataItem['ProductName'];
+                    if (keyword!=null && name.toLowerCase().indexOf(keyword.toLowerCase())==-1){
+                        data.remove(dataItem);
+                        i--;
+                        continue;
+                    }else if (filter!=null){
+                        if (filter == '10' && dataItem["pvPrice"]>0) {
+                            data.remove(dataItem);
+                            i--;
+                            continue;
+                        }else if (filter == '01' && dataItem["cvPrice"]>0) {
+                            data.remove(dataItem);
+                            i--;
+                            continue;
+                        }else if (filter == '11' && dataItem["cvPrice"]==0 || dataItem["pvPrice"==0]) {
+                            data.remove(dataItem);
+                            i--;
+                            continue;
+                        }
+                    }
                     var item = dataItem['ProductImages'];
                     if (item && item.length > 0) {
                         dataItem['ProductImagesUrl'] =
@@ -250,6 +273,9 @@ app.localization.registerView('productListView');
     }
 
     parent.set('onShow', function(e) {
+        keyword = "";
+        $("#search").val('');
+        $("#filterSelected").val('00');
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,
             backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
