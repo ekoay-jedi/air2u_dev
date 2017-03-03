@@ -18,7 +18,8 @@ app.loginModelView = kendo.observable({
     submit: function () {
         if (!this.username) {
             //navigator.notification.alert("Username is required.");
-            alert("Username is required.");
+            //alert("Username is required.");
+            alert("Email Address is required.");
             return;
         }
         if (!this.password) {
@@ -55,13 +56,14 @@ app.localization.registerView('loginModelView');
 
 app.registerView = kendo.observable({
     submit: function () {
-        var introducername = this.introducername;
-        var introducercontact = this.introducercontact;
+        //var introducername = this.introducername;
+        //var introducercontact = this.introducercontact;
         var introduceremail = this.introduceremail;
 
         if (!this.username) {
             //navigator.notification.alert("Username is required.");
-            alert("Username is required.");
+            //alert("Username is required.");
+            alert("Email Address is required.");
             return;
         }
         if (!this.password) {
@@ -71,9 +73,9 @@ app.registerView = kendo.observable({
         }
 
         var attrs = {
-            Email: this.email,
-            IntroducerName: introducername,
-            IntroducerContact: introducercontact,
+            Email: this.username,
+            //IntroducerName: introducername,
+            //IntroducerContact: introducercontact,
             IntroducerEmail: introduceremail,
             AppRoles: [customerRoleId]
         };
