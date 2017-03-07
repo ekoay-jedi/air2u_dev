@@ -22,9 +22,9 @@
 }
 /* Button */
 .km-nova .km-button {
-  color: #888e90;
-  background: #fff;
-  border-color: #888e90;
+  color: #fff;
+  background: #e0c389;
+  border-color: #e0c389;
 }
 .km-nova .km-button.km-state-active {
   background: #f5f6f6;
@@ -45,12 +45,12 @@
 }
 /* Link button */
 .km-nova .km-link-button {
-  color: #00acc1;
+  color: #fbd2b2;
   border-color: transparent;
 }
 .km-nova a:not([class]),
 .km-nova .km-external-link {
-  color: #00acc1;
+  color: #fbd2b2;
 }
 /* TabStrip */
 .km-nova .km-footer {
@@ -241,7 +241,7 @@
   border-color: #3c415b;
 }
 .km-nova .km-drawer .km-list > li {
-  border-color: #3c415b;
+  border-color: #f5907c;
 }
 .km-nova .km-drawer .km-list > li,
 .km-nova .km-drawer .km-list > li > .km-listview-link,
@@ -442,17 +442,17 @@
 .km-nova .k-toolbar,
 .km-nova .km-tabstrip,
 .km-nova .km-drawer .km-content {
-  background-image: linear-gradient(to bottom, #2e3246 0%, #242736 100%);
+  background-image: linear-gradient(to bottom, #f5907c 0%, #f5907c 100%);
 }
 .km-nova .km-drawer .km-navbar {
-  background: #14151e;
+  background: #f5907c;
 }
 .km-nova .km-tabstrip .km-button.km-state-active {
   background-image: linear-gradient(to bottom, #1e202d 0%, #14151e 100%);
 }
 .km-nova #navigation-container .active,
 .km-nova .km-drawer .km-listview li.km-state-active {
-  background: #1e202d;
+  background: #e0c389;
 }
 .km-nova .km-touch-scrollbar,
 .km-nova .km-loading-left:before {
