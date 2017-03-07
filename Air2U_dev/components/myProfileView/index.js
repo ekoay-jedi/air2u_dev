@@ -161,6 +161,13 @@ app.myProfileView = kendo.observable({
             var username = $("#usernameinfo").val();
             var address = $("#defaultaddress").val();
             var phone = $("#phone").val();
+            var card = $("#card").val();
+            var state = $("#state").val();
+            var status = $("#status").val();
+            var introduceName = $("#introduce_name").val();
+            var introduceContact = $("#introduce_contact").val();
+            var introduceEmail = $("#introduce_email").val();
+            var email = $("#emailinfo").val();
 
             if (username == "") {
                 alert("username can not empty");
@@ -171,20 +178,22 @@ app.myProfileView = kendo.observable({
                     if (address == "") {
                         alert("address can not empty");
                     } else {
-                        var re = /^1\d{10}$/
+                        var re = /^1\d{10}$/;
                         if (re.test(phone)) {
+                            alert("Update "+username+" "+card+" "+phone+" "+state);
+
                             el.Users.updateSingle({
                                     'Id': userid,
                                     'Username': username,
                                     'DeliveryAddress': address,
                                     'ContactNumber': phone,
-                                    'Email': email,
                                     'Card': card,
                                     'State': state,
                                     'Status': status,
                                     'IntroducerName': introduceName,
                                     'IntroducerContact': introduceContact,
-                                    'IntroducerEmail': introduceEmail
+                                    'IntroducerEmail': introduceEmail,
+                                    'Email': email
                                 },
                                 function (data) {
                                     alert("Update myProfile Info successfully");
