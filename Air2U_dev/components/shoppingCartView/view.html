@@ -10,7 +10,33 @@
             <span data-bind="text: strings.shoppingCartView.title"></span>
 
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+            <a data-role="button" data-click="deleteItems" data-align="right" data-icon="delete"></a>
+            <script>
+                var el = new Everlive("o6yuauaw7f5m56jb");
+                var cartData = el.data('ProductCart');
+                $("[data-click=deleteItems]").click(function() {
+                    var source = app.shoppingCartView.shoppingCartViewModel.get('dataSource');
+                    var data = source.data();
+                    var opItems = data.slice();
+                    for (var i = 0; i <opItems.length; i++) {
+                        var item = opItems[i];
+                        if (item.cchecked) {
+                            var id = item["Id"];
+                            cartData.destroySingle({Id: id},
+                                function(){
+                                    source.remove(item);
+                                    var resultList = $('#cartListView').data('kendoMobileListView');
+                                    resultList.dataSource.read();
+                                    resultList.refresh();
+                                },
+                                function(error){
+                                    alert(JSON.stringify(error));
+                                });
+                        }
+                    }
 
+                });
+            </script>
         </div>
     </header>
 
@@ -25,7 +51,8 @@
         data-template="shoppingCartViewModelTemplate"
         data-bind="source: shoppingCartViewModel.dataSource"
         data-pull-to-refresh="false"
-        data-endless-scroll="false">
+        data-endless-scroll="false"
+        id = "cartListView">
     </ul>
 
     <footer data-role="footer" id="cartFooter">

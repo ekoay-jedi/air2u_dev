@@ -438,6 +438,11 @@
   color: #fff;
 }
 /*Custom Theme Overrides*/
+/*.km-nova .km-navbar,*/
+/*.km-nova .k-toolbar{*/
+  /*background-image: linear-gradient(to bottom, #f5907c 0%, #f5907c 100%);*/
+/*}*/
+
 .km-nova .km-navbar,
 .km-nova .k-toolbar,
 .km-nova .km-tabstrip,
@@ -445,7 +450,7 @@
   background-image: linear-gradient(to bottom, #f5907c 0%, #f5907c 100%);
 }
 .km-nova .km-drawer .km-navbar {
-  background: #f5907c;
+  background: #fbd2b2;
 }
 .km-nova .km-tabstrip .km-button.km-state-active {
   background-image: linear-gradient(to bottom, #1e202d 0%, #14151e 100%);
