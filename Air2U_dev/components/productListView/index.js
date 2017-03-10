@@ -213,6 +213,11 @@ app.localization.registerView('productListView');
                     dataSource = productListViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(uid);
 
+                setTimeout(function() {
+                    if (app.currentUser.Id.length > 0) {
+                        window.location.href = "#userinfo";
+                    }
+                }, 2000);
                 productListViewModel.setCurrentItemByUid(uid);
 
                 /// start detail form show

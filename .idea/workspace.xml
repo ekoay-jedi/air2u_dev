@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9f07bc8d-43ef-4c58-b582-0b05b2730a32" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Air2U_dev/components/productListView/index.js" afterPath="$PROJECT_DIR$/Air2U_dev/components/productListView/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Air2U_dev/components/productListView/view.html" afterPath="$PROJECT_DIR$/Air2U_dev/components/productListView/view.html" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -24,8 +25,8 @@
       <file leaf-file-name="details.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Air2U_dev/components/productListView/details.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="890">
-              <caret line="61" column="86" lean-forward="false" selection-start-line="61" selection-start-column="86" selection-end-line="61" selection-end-column="86" />
+            <state relative-caret-position="90">
+              <caret line="6" column="16" lean-forward="true" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -34,10 +35,11 @@
       <file leaf-file-name="view.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Air2U_dev/components/productListView/view.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="27" column="26" lean-forward="false" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="26" />
+            <state relative-caret-position="885">
+              <caret line="59" column="38" lean-forward="false" selection-start-line="59" selection-start-column="38" selection-end-line="59" selection-end-column="38" />
               <folding>
-                <element signature="n#style#0;n#select#0;n#div#1;n#header#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#select#0;n#div#0;n#div#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -46,8 +48,18 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Air2U_dev/components/productListView/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="81" column="44" lean-forward="false" selection-start-line="81" selection-start-column="44" selection-end-line="81" selection-end-column="44" />
+            <state relative-caret-position="417">
+              <caret line="219" column="25" lean-forward="true" selection-start-line="219" selection-start-column="25" selection-end-line="219" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Air2U_dev/components/loginModelView/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="22" lean-forward="true" selection-start-line="8" selection-start-column="8" selection-end-line="12" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -75,6 +87,11 @@
       <find>resultListView</find>
       <find>alert</find>
       <find>filterChange</find>
+      <find>filter =</find>
+      <find>loading</find>
+      <find>delayTime</find>
+      <find>searchResultsearchResult</find>
+      <find>onpage</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -93,6 +110,7 @@
         <option value="$USER_HOME$/Downloads/telerik.kendoui.professional.2016.3.1118.trial/examples/listview/remote-data-binding.html" />
         <option value="$PROJECT_DIR$/Air2U_dev/components/shoppingCartView/view.html" />
         <option value="$PROJECT_DIR$/Air2U_dev/components/productListView/view.html" />
+        <option value="$PROJECT_DIR$/Air2U_dev/components/productListView/details.html" />
         <option value="$PROJECT_DIR$/Air2U_dev/components/productListView/index.js" />
       </list>
     </option>
@@ -104,7 +122,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="71" />
+    <option name="x" value="-8" />
     <option name="y" value="23" />
     <option name="width" value="1279" />
     <option name="height" value="694" />
@@ -239,6 +257,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="loginModelView" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="air2u" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="air2u" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Air2U_dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="home" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -330,15 +370,15 @@
       <workItem from="1488335733790" duration="6703000" />
       <workItem from="1488868512486" duration="1344000" />
       <workItem from="1489028924861" duration="8010000" />
-      <workItem from="1489126844011" duration="632000" />
+      <workItem from="1489126844011" duration="5462000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16689000" />
+    <option name="totallyTimeSpent" value="21519000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="71" y="23" width="1279" height="694" extended-state="0" />
+    <frame x="-8" y="23" width="1279" height="694" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22337043" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -366,7 +406,9 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -391,7 +433,8 @@
         <state relative-caret-position="720">
           <caret line="48" column="62" lean-forward="false" selection-start-line="48" selection-start-column="62" selection-end-line="48" selection-end-column="62" />
           <folding>
-            <element signature="n#style#0;n#select#0;n#div#1;n#header#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#select#0;n#div#0;n#div#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -595,28 +638,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Air2U_dev/components/productListView/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="59" column="38" lean-forward="false" selection-start-line="59" selection-start-column="38" selection-end-line="59" selection-end-column="38" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#select#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Air2U_dev/components/productListView/details.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="890">
-          <caret line="61" column="86" lean-forward="false" selection-start-line="61" selection-start-column="86" selection-end-line="61" selection-end-column="86" />
+        <state relative-caret-position="90">
+          <caret line="6" column="16" lean-forward="true" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Air2U_dev/components/productListView/view.html">
+    <entry file="file://$PROJECT_DIR$/Air2U_dev/components/loginModelView/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="27" column="26" lean-forward="false" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="26" />
-          <folding>
-            <element signature="n#style#0;n#select#0;n#div#1;n#header#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="180">
+          <caret line="12" column="22" lean-forward="true" selection-start-line="8" selection-start-column="8" selection-end-line="12" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Air2U_dev/components/productListView/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="81" column="44" lean-forward="false" selection-start-line="81" selection-start-column="44" selection-end-line="81" selection-end-column="44" />
+        <state relative-caret-position="417">
+          <caret line="219" column="25" lean-forward="true" selection-start-line="219" selection-start-column="25" selection-end-line="219" selection-end-column="25" />
           <folding />
         </state>
       </provider>
