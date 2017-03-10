@@ -7,8 +7,8 @@
 
         </div>
         <div style="margin-top:10px">
-            <input width="60%" type="text" name="search" id="search" placeholder="Name..."/>
-            <select id="filterSelected" style="width: 40%;" onchange="filterChange()">
+            <input width="50%" type="text" name="search" id="search" placeholder="Name..."/>
+            <select id="filterSelected" style="width: 48%;" onchange="filterChange()">
                 <option value="00" selected="selected">All</option>
                 <option value="10">Cash only</option>
                 <option value="01">Points only</option>
@@ -30,13 +30,6 @@
                     resultList.dataSource.read();
                     resultList.refresh();
                 }
-
-//                $("[data-click=beginSearch]").click(function() {
-//                    keyword = $("#search").val();
-//                    var resultList = $('#resultListView').data('kendoMobileListView');
-//                    resultList.dataSource.read();
-//                    resultList.refresh();
-//                });
             </script>
         </div>
     </header>
