@@ -216,9 +216,10 @@ app.localization.registerView('productListView');
                     dataSource = productListViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(uid);
                 var photos = new Array();
-                for (var i = 0; i < curItem['ProductImages'].length; i++) {
+                var images = curItem['ProductImages'] || [];
+                for (var i = 0; i < images.length; i++) {
                     var photo = new Object();
-                    photo.img = processImage(curItem['ProductImages'][i]);
+                    photo.img = processImage(images[i]);
                     photos.push(photo);
                 }
                 var template = kendo.template($("#SmallGalleryTemplate").html());
