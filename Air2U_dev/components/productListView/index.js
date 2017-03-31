@@ -76,21 +76,17 @@ app.localization.registerView('productListView');
                     var dataItem = data[i];
                     var name = dataItem['ProductName'];
                     if (keyword!=null && name.toLowerCase().indexOf(keyword.toLowerCase())==-1){
-                        data.remove(dataItem);
-                        i--;
+                        this.data().remove(dataItem);
                         continue;
                     }else if (filter!=null){
-                        if (filter == '10' && dataItem["pvPrice"]>0) {
-                            data.remove(dataItem);
-                            i--;
+                        if (filter == '10' && parseInt(dataItem["pvPrice"])>0) {
+                            this.data().remove(dataItem);
                             continue;
-                        }else if (filter == '01' && dataItem["cvPrice"]>0) {
-                            data.remove(dataItem);
-                            i--;
+                        }else if (filter == '01' && parseInt(dataItem["cvPrice"])>0) {
+                            this.data().remove(dataItem);
                             continue;
-                        }else if (filter == '11' && dataItem["cvPrice"]==0 || dataItem["pvPrice"==0]) {
-                            data.remove(dataItem);
-                            i--;
+                        }else if (filter == '11' && parseInt(dataItem["cvPrice"])==0 && parseInt(dataItem["pvPrice"])==0) {
+                            this.data().remove(dataItem);
                             continue;
                         }
                     }
