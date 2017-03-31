@@ -36,8 +36,6 @@ app.myProfileView = kendo.observable({
             introduceContact = app.currentUser.IntroducerContact;
             introduceEmail = app.currentUser.IntroducerEmail;
 
-            currentPoint = app.currentUser.CurrentPoint;
-            lastqwarded = app.currentUser.LatestAwardedPoint;
 
             app.myProfileView.set("usernameinfo", username);
             app.myProfileView.set("emailinfo", email);
@@ -46,7 +44,6 @@ app.myProfileView = kendo.observable({
             app.myProfileView.set("state", state);
             app.myProfileView.set("status", status);
             app.myProfileView.set("card", card);
-            $('#layout_point').html("PV "+currentPoint);
 
             $("#save").attr("disabled", true);
             $("#usernameinfo").attr("disabled", true);
@@ -95,11 +92,10 @@ app.myProfileView = kendo.observable({
                 imagehead.src = "/resources/head.png";
             }
         } else {
-            $('#layout_point').html("PV4445555");
-           /* navigator.notification.alert("You do not login,Please login first.");
+            navigator.notification.alert("You do not login,Please login first.");
             setTimeout(function () {
                 app.mobileApp.navigate('components/loginModelView/view.html');
-            }, 10);*/
+            }, 10);
         }
 
         /*el.Users.currentUser().then(function (data) {
@@ -270,12 +266,12 @@ app.localization.registerView('myProfileView');
 
 app.myloyaltypointView = kendo.observable({
     onShow: function () {
-        /*currentPoint = "PV 24000";
-        lastqwarded = "PV 1400";*/
+        currentPoint = "PV 24000";
+        lastqwarded = "PV 1400";
         $("#current_point").attr("disabled", true);
         $("#last_awarded").attr("disabled", true);
-        app.myloyaltypointView.set("current_point", "PV "+currentPoint);
-        app.myloyaltypointView.set("last_awarded", "PV "+lastqwarded);
+        app.myloyaltypointView.set("current_point", currentPoint);
+        app.myloyaltypointView.set("last_awarded", lastqwarded);
 
         /* JsBarcode("#barcode4",
          "f701bc80-db33-11e6-ba7d-ed8ffe6e33d3",

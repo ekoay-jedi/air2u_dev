@@ -1,0 +1,50 @@
+<div data-role="view" data-title="View" data-layout="main" data-model="app.checkoutView" data-show="app.checkoutView.onShow"
+	data-after-show="app.checkoutView.afterShow" id="checkoutViewScreen" class="screen">
+	<div id="checkoutViewModel" class="form-view screen__content screen__content--form add-item-view">
+		<form>
+			<ul class="form-content" data-role="listview" data-style="inset">
+				<li class="form-content-item">
+					<div id="shoppingcartField" class="field field--image imageListItem km-label-above">
+						<div class="align-left field__content"> <img src="resources/shopping_cart.png">
+							<div style="float:right;">
+								<h3>My Total : RM15000.00</h3> </div>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div style="padding-right:20px"> <input type="checkbox" name="vehicle" value="Bike" />
+						<h3>Use available point 25,000</h3> </div>
+				</li>
+				<li>
+					<div>
+					<h3>Pay with Card</h3>
+					</div>
+					<div>
+						<select>
+  							<option value ="volvo">Volvo</option>
+  							<option value ="saab">Saab</option>
+  							<option value="opel">Opel</option>
+  							<option value="audi">Audi</option>
+						</select>
+					</div>
+				</li>
+			</ul>
+			<div class="button-group">
+				<a data-role="button" data-bind="events: { click: checkoutViewModel.cancel }, buttonText: strings.checkoutView.checkoutViewModel.cancelButton"></a>
+				<a class="primary" data-role="button" data-bind="events: { click: checkoutViewModel.submit }, buttonText: strings.checkoutView.checkoutViewModel.submitButton"></a>
+			</div>
+		</form>
+		<!-- START_CUSTOM_CODE_checkoutViewModel -->
+		<!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+		<!-- END_CUSTOM_CODE_checkoutViewModel -->
+	</div>
+	<header data-role="header">
+		<div data-role="navbar" class="header-text"> <span data-bind="text: strings.checkoutView.title"></span>
+			<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"
+				data-icon="drawer-button"></a>
+		</div>
+	</header>
+	<!-- START_CUSTOM_CODE_checkoutView -->
+	<!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+	<!-- END_CUSTOM_CODE_checkoutView -->
+</div>

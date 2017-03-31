@@ -1,0 +1,72 @@
+<style>
+.span-img { display: inline-block;  padding-left:20px; padding-top:10px; }
+.span-tip { padding-left:6px; vertical-align: top; display: inline-block; padding-top:80px;}
+ li {list-style: none;}
+ input{width:100%;height:40px;}
+</style>
+
+<div data-role="view" data-title="View" data-layout="main" data-model="app.myProfileView" data-show="app.myProfileView.onShow" data-after-show="app.myProfileView.afterShow" id="myProfileViewScreen" class="screen">
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+
+            <span data-bind="text: strings.myProfileView.title"></span>
+
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+
+        </div>
+    </header>
+
+<div id="box">
+	<span class="span-img">
+		<img src="http://img.mukewang.com/52da54ed0001ecfa04120172.jpg" height="100px" width="100px"/>
+	</span>
+	
+	<span class="span-tip">
+		<li>
+			<a >username</a>
+		</li>
+		<li>
+			<a >viewpoint</a>
+		</li>
+		
+	</span>
+	
+</div>
+
+<form style=" padding-top:20px; padding-left:20px; padding-right:20px; " >
+Address
+	<li >
+
+		<input type="text" name="address1" id="address1" >
+	</li>
+	<li style=" padding-top:10px;">
+		<input type="text" name="address2" id="address2">
+	</li>
+	<li style=" padding-top:10px;">
+		<input type="text" name="address3" id="address3">
+	</li>
+<br/>
+
+   Phone
+	<li>
+		
+		<input type="text" name="phone">
+	</li>
+<br/>
+<li><label>State</label> <input style="vertical-align: right; " type="checkbox" name="state" value="state" checked="checked" /> </li>
+
+</form>
+<div style="padding-left:20px; padding-right:20px; ">
+<button style="width: 100%;" data-role="button" data-bind="click:Save">Save</button>
+</div>
+
+    <!-- START_CUSTOM_CODE_myProfileView -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_myProfileView -->
+</div>
+
+<!-- START_CUSTOM_CODE_myProfileViewModel -->
+<!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+<!-- END_CUSTOM_CODE_myProfileViewModel -->
