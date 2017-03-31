@@ -10,6 +10,37 @@
         }
     });
 
+    var registerRemoteNotification = function(el) {
+        var pushSettings = {
+            iOS: {
+                badge: true,
+                sound: true,
+                alert: true,
+                clearBadge: true
+            },
+            android: {
+                senderID: 'SENDER_ID_HERE'
+            },
+            notificationCallbackIOS: function(e) {
+                // logic for handling push in iOS
+            },
+            notificationCallbackAndroid: function(e) {
+                // logic for handling push in Android
+            }
+        };
+
+        el.push.register(
+            pushSettings,
+            function successCallback(data) {
+                // This function will be called once the device is successfully registered
+            },
+            function errorCallback(error) {
+                // This callback will be called any errors occurred during the device
+                // registration process
+            }
+        );
+    };
+
     function _readyTimeout() {
         if (!provider.sbReady) {
             provider.sbReady = true;
@@ -36,6 +67,7 @@
         _readyTimeout();
     });
 
+    registerRemoteNotification(provider);
     window.setTimeout(_readyTimeout, 2000);
 
 }());

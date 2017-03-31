@@ -30,9 +30,7 @@
     };
 
     $(document).ready(function() {
-
         app.notification = $("#notify");
-
     });
 
     app.showNotification = function(message, time) {
