@@ -215,11 +215,17 @@ app.localization.registerView('productListView');
                 var uid = e.view.params.uid,
                     dataSource = productListViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(uid);
+
                 var photos = new Array();
-                var images = curItem['ProductImages'] || [];
-                for (var i = 0; i < images.length; i++) {
+                if (curItem['ProductImages']){
+                    for (var i = 0; i < curItem['ProductImages'].length; i++) {
+                        var photo = new Object();
+                        photo.img = processImage(curItem['ProductImages'][i]);
+                        photos.push(photo);
+                    }
+                }else{
                     var photo = new Object();
-                    photo.img = processImage(images[i]);
+                    photo.img = "resources/default.png";
                     photos.push(photo);
                 }
                 var template = kendo.template($("#SmallGalleryTemplate").html());
@@ -231,11 +237,12 @@ app.localization.registerView('productListView');
                     pageSize:photos.length
                 });
                 photoDS.read();
-                // setTimeout(function() {
-                //     if (app.currentUser.Id.length > 0) {
-                //         window.location.href = "#userinfo";
-                //     }
-                // }, 2000);
+
+                setTimeout(function() {
+                    if (app.currentUser.Id.length > 0) {
+                        window.location.href = "#userinfo";
+                    }
+                }, 2000);
                 productListViewModel.setCurrentItemByUid(uid);
 
                 /// start detail form show

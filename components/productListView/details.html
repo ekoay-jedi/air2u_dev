@@ -20,33 +20,16 @@
                     <div data-role="scrollview"
                          data-source="photoDS"
                          data-template="SmallGalleryTemplate"
-                         data-content-height="180px"
-                         id="SmallGalleryInner">
+                         data-content-height="100%"
+                         data-enable-pager="false"
+                         id = "SmallGalleryInner">
                     </div>
                     <script id="SmallGalleryTemplate" type="text/x-kendo-template">
-                        <img src="#= img #" style="width: 100%" data-role="page"/>
+                        <div align="center">
+                            <img src="#= img #" style="width: auto; height: 180px" data-role="page"/>
+                        </div>
                     </script>
-                    <!--<script>-->
-                        <!--$(document).ready(function () {-->
-                            <!--var photos = new Array();-->
-                            <!--for (var i = 0; i < curItem['ProductImages'].length; i++) {-->
-                                <!--var photo = new Object();-->
-                                <!--photo.img = processImage(curItem['ProductImages'][i]);-->
-                                <!--photos.push(photo);-->
-                            <!--}-->
-                            <!--var template = kendo.template($("#SmallGalleryTemplate").html());-->
-                            <!--photoDS = new kendo.data.DataSource({-->
-                                <!--data: photos,-->
-                                <!--change: function () {-->
-                                    <!--$("#SmallGalleryInner").html(kendo.render(template, photos));-->
-                                <!--}-->
-                            <!--});-->
-                            <!--photoDS.read();-->
-                        <!--});-->
-
-                    <!--</script>-->
                 </li>
-                <!--<li><img data-bind="attr: {src: currentItem.ProductImagesUrl}" width="100%" height="auto" onerror="this.src='resources/default.png'"></li>-->
                 <li>
                     <table width="100%">
                         <tr >
@@ -111,7 +94,7 @@
                                                     }
                                                 });
                                             } else {
-                                                navigator.notification.alert("You do not login,Please login first.");
+                                                alert("You do not login,Please login first.");
                                                 setTimeout(function(){
                                                     app.mobileApp.navigate('components/loginModelView/view.html');
                                                 }, 10);
@@ -131,21 +114,3 @@
     <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
     <!-- END_CUSTOM_CODE_productListViewModel -->
 </div>
-<!--<div data-role="popover" id="popover-photo" data-popup='{"height": "100%", "width": "100%"}'>-->
-    <!--<div data-role="view" data-title="People">-->
-        <!--<div data-role="header">-->
-            <!--<div data-role="navbar" class="km-light">-->
-                <!--<span data-role="view-title"></span>-->
-                <!--<a data-role="button" data-align="right" data-click="closeParentPopover" data-icon="close"></a>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<ul data-role="listview">-->
-            <!--<li><label>Isabella Anderson<input type="checkbox"></label></li>-->
-            <!--<li><label>Josh Anderson<input type="checkbox"></label></li>-->
-            <!--<li><label>Linda Anderson<input type="checkbox"></label></li>-->
-            <!--<li><label>Oliver Anderson<input type="checkbox"></label></li>-->
-            <!--<li><label>James Williams<input type="checkbox"></label></li>-->
-            <!--<li><label>Barbara Williams<input type="checkbox"></label></li>-->
-        <!--</ul>-->
-    <!--</div>-->
-<!--</div>-->
