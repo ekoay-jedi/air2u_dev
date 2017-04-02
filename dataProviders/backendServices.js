@@ -19,7 +19,7 @@
                 clearBadge: true
             },
             android: {
-                senderID: 'SENDER_ID_HERE'
+                senderID: '1064315854771'
             },
             notificationCallbackIOS: function(e) {
                 // logic for handling push in iOS
