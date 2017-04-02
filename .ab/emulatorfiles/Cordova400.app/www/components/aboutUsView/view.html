@@ -1,0 +1,43 @@
+<div data-role="view" data-title="View" data-layout="main" data-model="app.aboutUsView" data-show="app.aboutUsView.onShow" data-after-show="app.aboutUsView.afterShow" id="aboutUsViewScreen" class="screen">
+    <div class="about-view screen__content screen__content--about" data-bind="invisible:error">
+        <div class="icon-group">
+
+            <div class="app-icon">
+                <img src="resources/aquapower-logo.png">
+            </div>
+
+
+            <div class="app-details">
+                <h2 data-bind="text: strings.aboutUsView.aboutUsViewModel.appName"></h2>
+                <h4 data-bind="text: strings.aboutUsView.aboutUsViewModel.appVersion"></h4>
+            </div>
+        </div>
+
+        <p data-bind="text: strings.aboutUsView.aboutUsViewModel.appDescription"></p>
+
+        <div class="button-group button-group-vertical">
+            <a data-role="button" data-rel="external" href="mailto:enquiry@aquapowerwater.com" data-bind="buttonText: strings.aboutUsView.aboutUsViewModel.contactLabel"></a>
+            <a data-role="button" data-rel="external" href="#" onclick="app.openLink('https://www.facebook.com/aquapowersystems');" data-bind="buttonText: strings.aboutUsView.aboutUsViewModel.facebookLabel"></a>
+            <a data-role="button" data-rel="external" href="#" onclick="app.openLink('https://twitter.com/aquapowersystem');" data-bind="buttonText: strings.aboutUsView.aboutUsViewModel.twitterLabel"></a>
+        </div>
+        <!-- START_CUSTOM_CODE_aboutUsViewModel -->
+        <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+        <!-- END_CUSTOM_CODE_aboutUsViewModel -->
+    </div>
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+
+            <span data-bind="text: strings.aboutUsView.title"></span>
+
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+
+        </div>
+    </header>
+
+
+    <!-- START_CUSTOM_CODE_aboutUsView -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_aboutUsView -->
+</div>
