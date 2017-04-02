@@ -206,8 +206,11 @@ app.localization.registerView('shoppingCartView');
                     }
                 }
 
-                totalP = totalP.toFixed(2);
                 totalPV = totalPV.toFixed(2);
+
+                var taxRate = shoppingCartViewModel.get("taxRate");
+                totalP = totalP + totalP * taxRate;
+                totalP = totalP.toFixed(2);
 
                 var currentTotal = shoppingCartViewModel.get('total');
                 if (currentTotal != totalP) {
@@ -270,10 +273,12 @@ app.localization.registerView('shoppingCartView');
                 for(var i = 0; i < productCarts.length; i++) {
                     var productCard = productCarts[i];
                     console.log("productCart: " + JSON.stringify(productCard));
+                    var productPrice = parseFloat(productCard.qty) * parseFloat(productCard.cvPrice);
+                    var earnedPoint = shoppingCartViewModel.getPointFromPrice(productPrice);
                     var pOrder = {
                         OrderQTY : productCard.qty,
                         Product: productCard.product.Id,
-                        EarnedPV: 0,
+                        EarnedPV: earnedPoint,
                         Owner: app.currentUser.Id
                     };
                     pOrders.push(pOrder);
@@ -298,24 +303,46 @@ app.localization.registerView('shoppingCartView');
                     pOrderIds.push(pOrder.Id);
                 }
 
+                var point = shoppingCartViewModel.getPointFromPrice(price);
+
                 var order = {
                     OrderCustomer: app.currentUser.Id,
                     OrderNumber: kendo.guid(),
                     Status: 0,
                     totalPrice: price,
                     totalPV: pv,
+                    Point: point,
                     OrderProductOrder: pOrderIds,
                     Owner: app.currentUser.Id
                 };
                 var data = dataProvider.data('Order');
                 data.create(order,
                     function(data){
-                        callback(null, data);
+                        shoppingCartViewModel.updateUserWithOrder(order, function (user, error) {
+                            callback(error, data);
+                        });
                     },
                     function(error){
                         callback(error);
                     }
                 );
+            },
+
+            updateUserWithOrder: function (order, callback) {
+                var userTotalPoint = app.currentUser.CurrentPoint + order.Point - order.totalPV;
+                dataProvider.Users.updateSingle({
+                        'Id': app.currentUser.Id,
+                         'LatestAwardedPoint' : order.Point,
+                         'CurrentPoint' : userTotalPoint
+                    },
+                    function (data) {
+                         app.currentUser.LatestAwardedPoint = order.Point;
+                         app.currentUser.CurrentPoint = userTotalPoint;
+                         callback(null, app.currentUser);
+                    },
+                    function (error) {
+                        callback(error);
+                    });
             },
 
             updateProductOrders: function(order, pOrders, callback) {
@@ -339,10 +366,82 @@ app.localization.registerView('shoppingCartView');
                 );
             },
 
+            getTaxRate: function (callback) {
+                var data = dataProvider.data('TaxRate');
+                data.get().then(function (data) {
+                    var ret = data['result'];
+                    if (Array.isArray(ret)) {
+                        var taxRate = ret[0];
+                        if (taxRate.TaxStatus >= 1) {
+                            callback(taxRate["TaxRate"]);
+                        }else {
+                            callback(0);
+                        }
+                    }else {
+                        alert("get tax rate: " + JSON.stringify(data));
+                    }
+                }, function (error) {
+                    callback(null, error);
+                });
+            },
+
+            getPointRule: function (callback) {
+                var data = dataProvider.data('PointRule');
+                var query = new Everlive.Query();
+                var currentDate = new Date();
+                var isoStr = currentDate.toISOString();
+                query.where().or().eq('IsSelected', true).gte('EndDate', isoStr).done();
+                data.get(query).then(function (data) {
+                    var result = data['result'];
+                    if (Array.isArray(result)) {
+                        var ret = null;
+                        if (result.length > 1) {
+                            var defaultRule = null;
+                            for (var i = 0; i < result.length; i++) {
+                                if (result[i]["RuleName"] == "Default Point") {
+                                    defaultRule = result[i];
+                                }
+
+                                if (result[i]["IsSelected"]) {
+                                    ret = result[i];
+                                    break;
+                                }
+                            }
+
+                            if (!ret) {
+                                ret = defaultRule;
+                            }
+                        }else {
+                            ret = retult[0];
+                        }
+                        callback(ret);
+                    }else {
+                        alert("get point rule: " + JSON.stringify(data));
+                    }
+                }, function (error) {
+                    callback(null, error);
+                });
+            },
+
+            getPointFromPrice: function (price) {
+                var point = 0
+                if (price > 0) {
+                    var pointRule = shoppingCartViewModel.get('pointRule');
+                    var cv = parseFloat(pointRule.cv);
+                    var pv = parseFloat(pointRule.pv);
+                    point = ((price - price % cv) / cv) * pv;
+                }
+                return point;
+            },
+
+
+
             currentItem: {},
             total: 0,
             pv: 0,
             allChecked: false,
+            taxRate: 0,
+            pointRule: {}
 
         });
 
@@ -365,6 +464,17 @@ app.localization.registerView('shoppingCartView');
                 shoppingCartViewModel.set('allChecked', false);
             }
             shoppingCartViewModel.updateTotalPrice(data);
+
+            var currentPV = shoppingCartViewModel.get("pv");
+            if (app.currentUser.CurrentPoint < currentPV) {
+                alert("Your point is not enough for this action");
+                var itemLength = e.items.length;
+                for (var j = 0; i < itemLength; i++) {
+                    var item = e.items[i];
+                    var checked = item.get("cchecked");
+                    item.set("cchecked", !checked);
+                }
+            }
         }else if (e.field == 'allChecked') {
             var checked = this.get(e.field);
             for (var i = 0; i < data.length; i++) {
@@ -393,31 +503,50 @@ app.localization.registerView('shoppingCartView');
 
     parent.set('onShow', function(e) {
         if (!app.currentUser.Id) {
-            navigator.notification.alert("You do not login,Please login first.");
+            //navigator.notification.
+            alert("You do not login,Please login first.");
             setTimeout(function(){
                 app.mobileApp.navigate('components/loginModelView/view.html');
             }, 10);
-        }
-        var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
-            isListmenu = false,
-            backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
-            dataSourceOptions = shoppingCartViewModel.get('_dataSourceOptions'),
-            dataSource;
+        }else {
+            var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
+                isListmenu = false,
+                backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
+                dataSourceOptions = shoppingCartViewModel.get('_dataSourceOptions'),
+                dataSource;
 
-        if (param || isListmenu) {
-            backbutton.show();
-            backbutton.css('visibility', 'visible');
-        } else {
-            if (e.view.element.find('header [data-role="navbar"] [data-role="button"]').length) {
-                backbutton.hide();
+            if (param || isListmenu) {
+                backbutton.show();
+                backbutton.css('visibility', 'visible');
             } else {
-                backbutton.css('visibility', 'hidden');
+                if (e.view.element.find('header [data-role="navbar"] [data-role="button"]').length) {
+                    backbutton.hide();
+                } else {
+                    backbutton.css('visibility', 'hidden');
+                }
             }
-        }
 
-        dataSource = new kendo.data.DataSource(dataSourceOptions);
-        shoppingCartViewModel.set('dataSource', dataSource);
-        fetchFilteredData(param);
+
+            shoppingCartViewModel.getTaxRate(function (rate, error) {
+                if (error) {
+                    alert(error);
+                } else {
+                    shoppingCartViewModel.taxRate = rate;
+                    shoppingCartViewModel.getPointRule(function (item, error) {
+                        if (error) {
+                            alert(error);
+                        } else {
+                            shoppingCartViewModel.pointRule = item;
+                            dataSource = new kendo.data.DataSource(dataSourceOptions);
+                            shoppingCartViewModel.set('dataSource', dataSource);
+                            fetchFilteredData(param);
+                        }
+                    });
+                }
+            });
+
+
+        }
     });
 
 })(app.shoppingCartView);
