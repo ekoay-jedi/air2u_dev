@@ -1,0 +1,116 @@
+<div data-role="view" data-title="Details" data-model="app.productListView.productListViewModel" data-bind="events: { show: detailsShow }" id="productListViewModelScreen" class="screen screen--detail">
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+            <a data-role="backbutton" data-align="left">Back</a>
+            <span data-bind="text: currentItem['ProductName']"></span>
+            <a data-role="button" data-click="showAllCarts" data-align="right" data-icon="cart"></a>
+            <script>
+                $("[data-click=showAllCarts]").click(function() {
+                    app.mobileApp.navigate('components/shoppingCartView/view.html');
+                });
+            </script>
+        </div>
+    </header>
+
+    <div class="details-content screen__content screen__content--details">
+        <div class="km-listview-wrapper">
+            <ul class="km-listview km-list km-listinset details-fields">
+                <li><div data-bind="text: currentItem.ProductName"></div></li>
+                <li>
+                    <div data-role="scrollview"
+                         data-source="photoDS"
+                         data-template="SmallGalleryTemplate"
+                         data-content-height="100%"
+                         data-enable-pager="false"
+                         id = "SmallGalleryInner">
+                    </div>
+                    <script id="SmallGalleryTemplate" type="text/x-kendo-template">
+                        <div align="center">
+                            <img src="#= img #" style="width: auto; height: 180px" data-role="page"/>
+                        </div>
+                    </script>
+                </li>
+                <li>
+                    <table width="100%">
+                        <tr >
+                            <td colspan = "2" >
+                                <h4>Purchase with Airpoint and Cash:</h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="50%">
+                                <h4>PV: <text data-bind="text: currentItem.pvPrice"></text></h4>
+                            </td>
+                            <td>
+                                <h4>CV: <text data-bind="text: currentItem.cvPrice"></text></h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4>Stock: <text data-bind="text: currentItem.QTY"/></h4>
+                            </td>
+                            <td>
+                                Qty:<input type="text" id="qtyField" name="qtyField" value="1" style="margin-left: 30px; margin-top: 33px; text-align: center; width: 10px; margin-right: 60px";
+                                           pattern="[0-9]" maxlength="4"/>
+                                </h4>
+                            </td>
+                            <td align="right">
+                                <img src="resources/shopping_cart.png" width="30px" height="30px"
+                                     data-align="right" data-click="addtocart">
+                                <script>
+                                    var el = new Everlive("o6yuauaw7f5m56jb");
+
+                                    $("[data-click=addtocart]").click(function() {
+                                        var qty = document.getElementById("qtyField").value;
+                                        var stock = app.productListView.productListViewModel.get("currentItem.QTY");
+                                        if (qty>stock){
+                                            alert('Out of stock！');
+                                            document.getElementById("qtyField").value = stock;
+                                        }  else {
+                                            //var el = new Everlive("o6yuauaw7f5m56jb");
+                                            if (app.currentUser.Id != "") {
+                                                var productId =
+                                                    app.productListView.productListViewModel.get("originalItem.Id");
+                                                var userId = app.currentUser.Id;
+                                                var cartData = el.data('ProductCart');
+                                                var query = new Everlive.Query();
+                                                query.where().eq('productId', productId).eq('userId', userId);
+                                                cartData.get(query).then(function (data) {
+                                                    if (data["count"] > 0) {
+                                                        alert('Existed in cart!');
+                                                    } else {
+                                                        cartData.create({
+                                                                'productId': productId,
+                                                                'qty': 1,
+                                                                'userId': userId,
+                                                                'product': productId
+                                                            },
+                                                            function (data) {
+                                                                alert('Add to cart successfully!');
+                                                            },
+                                                            function (error) {
+                                                                alert('Fail to add to cart!');
+                                                            });
+                                                    }
+                                                });
+                                            } else {
+                                                alert("You do not login,Please login first.");
+                                                setTimeout(function(){
+                                                    app.mobileApp.navigate('components/loginModelView/view.html');
+                                                }, 10);
+                                            }
+                                        }
+                                    });
+                                </script>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li><h4><div name="produceDesc" data-bind="text: productDesc"></div></h4></li>
+            </ul>
+        </div>
+    </div>
+    <!-- START_CUSTOM_CODE_productListViewModel -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+    <!-- END_CUSTOM_CODE_productListViewModel -->
+</div>
