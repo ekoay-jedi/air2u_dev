@@ -544,8 +544,10 @@ app.localization.registerView('shoppingCartView');
                     });
                 }
             });
-
-
+            
+            dataSource = new kendo.data.DataSource(dataSourceOptions);
+            shoppingCartViewModel.set('dataSource', dataSource);
+            fetchFilteredData(param);
         }
     });
 
