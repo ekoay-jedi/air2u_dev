@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width">
+    <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet">
+
+    <link href="styles/overrides.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+
+    <script src="cordova.js"></script>
+    <script src="kendo/js/jquery.min.js"></script>
+    <script src="kendo/js/kendo.mobile.min.js"></script>
+    <script src="app.js"></script>
+    <script src="bower_components/everlive/min/everlive.all.min.js"></script>
+    <script src="dataProviders/backendServices.js"></script>
+</head>
+
+<body id="kendoUiMobileApp">
+    <script src="components/testView/index.js"></script>
+    <script src="components/loginModelView/index.js"></script>
+    <script src="components/productListView/index.js"></script>
+    <script src="components/subCategoryView/index.js"></script>
+    <script src="components/myProfileView/index.js"></script>
+    <script src="components/aboutUsView/index.js"></script>
+    <script src="components/deliveryPoliciesView/index.js"></script>
+    <script src="components/purchaseHistoryView/index.js"></script>
+    <script src="components/orderDetailView/index.js"></script>
+    <script src="components/searchView/index.js"></script>
+    <script src="components/checkoutView/index.js"></script>
+    <script src="components/shoppingCartView/index.js"></script>
+    <script src="components/home/index.js"></script>
+    <div data-role="layout" data-id="main">
+        <header data-role="header">
+            <div data-role="navbar">
+                <span data-role="view-title"></span>
+                <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+            </div>
+        </header>
+    </div>
+
+    <div data-role="layout" data-id="main-nonav">
+        <header data-role="header">
+            <div data-role="navbar">
+                <span data-role="view-title"></span>
+            </div>
+        </header>
+    </div>
+
+    <div id="appDrawer" data-role="drawer" data-title="Air2U">
+        <header data-role="header">
+            <div data-role="navbar">
+                <span data-role="view-title"></span>
+            </div>
+        </header>
+        <ul id="navigation-container" data-role="listview">
+            <li><a href="components/home/view.html" data-icon="home"><span class="navigation-link-text" data-bind="text: strings.home.title"></span></a></li>
+            <li><a href="components/shoppingCartView/view.html" data-icon="cart"><span class="navigation-link-text" data-bind="text: strings.shoppingCartView.title"></span></a></li>
+            <li><a href="components/checkoutView/view.html" data-icon="action"><span class="navigation-link-text" data-bind="text: strings.checkoutView.title"></span></a></li>
+            <li><a href="components/purchaseHistoryView/view.html" data-icon="bookmarks"><span class="navigation-link-text" data-bind="text: strings.purchaseHistoryView.title"></span></a></li>
+            <li><a href="components/deliveryPoliciesView/view.html" data-icon="globe"><span class="navigation-link-text" data-bind="text: strings.deliveryPoliciesView.title"></span></a></li>
+            <li><a href="components/aboutUsView/view.html" data-icon="info"><span class="navigation-link-text" data-bind="text: strings.aboutUsView.title"></span></a></li>
+            <li><a href="components/myProfileView/view.html" data-icon="contacts"><span class="navigation-link-text" data-bind="text: strings.myProfileView.title"></span></a></li>
+            <li><a href="components/loginModelView/view.html" data-icon="mostrecent"><span class="navigation-link-text" data-bind="text: strings.loginModelView.title"></span></a></li>
+            <li><a href="components/testView/view.html" data-icon="wifi"><span class="navigation-link-text" data-bind="text: strings.testView.title"></span></a></li>
+        </ul>
+    </div>
+    <div id="notify" class="notify-pop-up">
+        <span class="notify-pop-up__content"></span>
+    </div>
+    <!--  start index html save -->
+    <!--  end index html save -->
+
+    <!-- START_CUSTOM_CODE_kendoUiMobileApp -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_kendoUiMobileApp -->
+</body>
+
+</html>
