@@ -90,17 +90,26 @@ app.localization.registerView('orderDetailView');
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
-                    var item = dataItem.Product.ProductImages;
-                    if (item && item.length > 0) {
-                        dataItem['ProductImagesUrl'] =
-                            processImage(item[0]);
+                    if(dataItem.Product) {
+                        var item = dataItem.Product.ProductImages;
+                        if (item && item.length > 0) {
+                            dataItem['ProductImagesUrl'] =
+                                processImage(item[0]);
+                        } else {
+                            dataItem['ProductImagesUrl'] = "resources/default.png";
+                        }
                     }else{
-                        dataItem['ProductImagesUrl'] = "resources/default.png";
+                        this.data().remove(dataItem);
+                        // alert('Sorry! This product does not exist.');
                     }
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);
                     /// end flattenLocation property
 
+                }
+                if(this.data().length==0){
+                    document.getElementById("checkoutBtn").style.display="none";
+                    alert('None product can be found.')
                 }
             },
             error: function(e) {
@@ -187,9 +196,9 @@ app.localization.registerView('orderDetailView');
                 return result;
             },
             itemClick: function(e) {
-                // var dataItem = e.dataItem || orderDetailViewModel.originalItem;
-                //
-                // app.mobileApp.navigate('#components/orderDetailView/details.html?uid=' + dataItem.uid);
+                var dataItem = e.dataItem || orderDetailViewModel.originalItem;
+
+                app.mobileApp.navigate('#components/orderDetailView/details.html?uid=' + dataItem.uid);
 
             },
             detailsShow: function(e) {
@@ -206,22 +215,25 @@ app.localization.registerView('orderDetailView');
                 var item = uid,
                     dataSource = orderDetailViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item).Product;
-                var imgitem = itemModel.ProductImages;
-                // alert(imgitem);
-                if (imgitem.count>0){
-                    orderDetailViewModel.set("ProductImagesUrl",imgitem[0]);
-                }
+                if(itemModel) {
+                    var imgitem = itemModel.ProductImages;
+                    var item = itemModel.ProductImages;
+                    if (item && item.length > 0) {
+                        orderDetailViewModel.set("ProductImagesUrl", processImage(item[0]));
+                    } else {
+                        orderDetailViewModel.set("ProductImagesUrl", "resources/default.png");
+                    }
+                    if (!itemModel.ProductName) {
+                        itemModel.ProductName = String.fromCharCode(160);
+                    }
 
-                if (!itemModel.ProductName) {
-                    itemModel.ProductName = String.fromCharCode(160);
-                }
+                    /// start detail form initialization
+                    /// end detail form initialization
 
-                /// start detail form initialization
-                /// end detail form initialization
-
-                var descitem = itemModel.ProductDescription;
-                if (!descitem.count>0) {
-                    orderDetailViewModel.set("productDesc",descitem[0]);
+                    var descitem = itemModel.ProductDescription;
+                    if (!descitem.count > 0) {
+                        orderDetailViewModel.set("productDesc", descitem[0]);
+                    }
                 }
                 // alert(itemModel.ProductName);
                 orderDetailViewModel.set('originalItem', itemModel);

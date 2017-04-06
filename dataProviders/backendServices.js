@@ -43,6 +43,7 @@
 
     function _readyTimeout() {
         if (!provider.sbReady) {
+            registerRemoteNotification(provider);
             provider.sbReady = true;
             provider.emit('sbReady');
         }
@@ -67,7 +68,6 @@
         _readyTimeout();
     });
 
-    registerRemoteNotification(provider);
     window.setTimeout(_readyTimeout, 2000);
 
 }());

@@ -58,7 +58,7 @@
     <footer data-role="footer" id="cartFooter">
         <div data-role="navbar" class="footer-text" style="height: 50px;">
             <div>
-                <input type="checkbox" data-align="left" data-bind="checked: shoppingCartViewModel.allChecked"/>
+                <input id="allChecked" type="checkbox" data-align="left" data-bind="checked: shoppingCartViewModel.allChecked"/>
             </div>
             <div id="cartPrice">
                 Total Price: <span id="totalPrice" data-bind="text: shoppingCartViewModel.total"></span><br/>
@@ -75,7 +75,7 @@
     <!-- END_CUSTOM_CODE_shoppingCartViewModel -->
     <script type="text/x-kendo-template" id="shoppingCartViewModelTemplate">
         <div class="image-with-text" id="cartProduct">
-            <input style="float: left; position: inherit; margin-right: 10px;margin-top: 30px" type="checkbox" data-bind="checked: cchecked"/>
+            <input style="float: left; position: inherit; margin-right: 10px;margin-top: 30px;-webkit-appearance: normal;" type="checkbox" data-bind="checked: cchecked"/>
             <img src="#: productIdUrl #" onerror="javascript:src='resources/default.png'" style="margin-top: 20px">
             <div style="overflow: hidden; white-space: normal; text-overflow: ellipsis; height: 45px"><h4>#: product['ProductName'] #</h4></div>
             <div>
@@ -86,6 +86,7 @@
                 # if (product['cvPrice'] > 0) { #
                 <p>Price: <span style="color: red;">#: product['cvPrice'] #</span></p>
                 #}#
+                <!--<p><span id="plus_qty">  +  </span><span>#: qty #</span><span id="minus_qty">  -  </span></p>-->
             </div>
 
         </div>

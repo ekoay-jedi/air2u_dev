@@ -144,6 +144,10 @@ app.localization.registerView('productListView');
                         'ProductImagesUrl': {
                             field: 'ProductImagesUrl',
                             defaultValue: 'http://img1.imgtn.bdimg.com/it/u=3024194923,2121226372&fm=23&gp=0.jpg'
+                        },
+                        'ProductSpecifications': {
+                            field: 'ProductSpecifications',
+                            defaultValue: '--'
                         }
                     }
                 }
@@ -238,11 +242,11 @@ app.localization.registerView('productListView');
                 });
                 photoDS.read();
 
-                setTimeout(function() {
-                    if (app.currentUser.Id.length > 0) {
-                        window.location.href = "#userinfo";
-                    }
-                }, 2000);
+                // setTimeout(function() {
+                //     if (app.currentUser.Id.length > 0) {
+                //         window.location.href = "#userinfo";
+                //     }
+                // }, 2000);
                 productListViewModel.setCurrentItemByUid(uid);
 
                 /// start detail form show
@@ -252,7 +256,7 @@ app.localization.registerView('productListView');
                 var item = uid,
                     dataSource = productListViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item);
-                var imgitem = itemModel.ProductImages;
+                var imgitem = itemModel["ProductImages"];
                 if (typeof imgitem != 'undefined' && imgitem.count>0){
                     itemModel.ProductImagesUrl = processImage(imgitem[0]);
                 }

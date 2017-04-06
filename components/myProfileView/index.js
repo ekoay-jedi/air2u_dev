@@ -35,9 +35,16 @@ app.myProfileView = kendo.observable({
             introduceName = app.currentUser.IntroducerName;
             introduceContact = app.currentUser.IntroducerContact;
             introduceEmail = app.currentUser.IntroducerEmail;
-
             currentPoint = app.currentUser.CurrentPoint;
             lastqwarded = app.currentUser.LatestAwardedPoint;
+
+            if(currentPoint == "undefined"){
+                currentPoint = 0;
+            }
+            if(lastqwarded == "undefined"){
+                lastqwarded=0;
+            }
+
 
             app.myProfileView.set("usernameinfo", username);
             app.myProfileView.set("emailinfo", email);
@@ -45,7 +52,11 @@ app.myProfileView = kendo.observable({
             app.myProfileView.set("phone", phone);
             app.myProfileView.set("state", state);
             app.myProfileView.set("status", status);
-            app.myProfileView.set("card", card);
+            //app.myProfileView.set("card", card);
+
+
+
+
             $('#layout_point').html("PV "+currentPoint);
 
             $("#save").attr("disabled", true);
@@ -55,7 +66,7 @@ app.myProfileView = kendo.observable({
             $("#phone").attr("disabled", true);
             $("#state").attr("disabled", true);
             $("#status").attr("disabled", true);
-            $("#card").attr("disabled", true);
+            //$("#card").attr("disabled", true);
             $("#introduce_name").attr("disabled", true);
             $("#introduce_contact").attr("disabled", true);
             $("#introduce_email").attr("disabled", true);
@@ -156,7 +167,7 @@ app.myProfileView = kendo.observable({
             $("#state").attr("disabled", false);
             $("#emailinfo").attr("disabled", false);
             $("#status").attr("disabled", false);
-            $("#card").attr("disabled", false);
+            //$("#card").attr("disabled", false);
             $("#introduce_name").attr("disabled", false);
             $("#introduce_contact").attr("disabled", false);
             $("#introduce_email").attr("disabled", false);
@@ -165,7 +176,7 @@ app.myProfileView = kendo.observable({
             var username = $("#usernameinfo").val();
             var address = $("#defaultaddress").val();
             var phone = $("#phone").val();
-            var card = $("#card").val();
+            //var card = $("#card").val();
             var state = $("#state").val();
             var status = $("#status").val();
             var introduceName = $("#introduce_name").val();
@@ -182,9 +193,10 @@ app.myProfileView = kendo.observable({
                     if (address == "") {
                         alert("address can not empty");
                     } else {
-                        var re = /^1\d{10}$/;
+                        //var re = /^1\d{10}$/;
+                        var re=/^\d{8,}$/;//the phone minlength is 8
                         if (re.test(phone)) {
-                            alert("Update "+username+" "+card+" "+phone+" "+state);
+                            alert("Update "+username/*+" "+card*/+" "+phone+" "+state);
 
                             el.Users.updateSingle({
                                     'Id': userid,
@@ -209,7 +221,7 @@ app.myProfileView = kendo.observable({
                                     $("#state").attr("disabled", true);
                                     $("#emailinfo").attr("disabled", true);
                                     $("#status").attr("disabled", true);
-                                    $("#card").attr("disabled", true);
+                                    //$("#card").attr("disabled", true);
                                     $("#introduce_name").attr("disabled", true);
                                     $("#introduce_contact").attr("disabled", true);
                                     $("#introduce_email").attr("disabled", true);

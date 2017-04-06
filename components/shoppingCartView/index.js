@@ -7,7 +7,7 @@ app.shoppingCartView = kendo.observable({
 app.localization.registerView('shoppingCartView');
 
 // START_CUSTOM_CODE_shoppingCartView
-// Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
+// Add custom code here. Forl more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 
 // END_CUSTOM_CODE_shoppingCartView
 (function(parent) {
@@ -318,7 +318,7 @@ app.localization.registerView('shoppingCartView');
                 var data = dataProvider.data('Order');
                 data.create(order,
                     function(data){
-                        shoppingCartViewModel.updateUserWithOrder(order, function (user, error) {
+                        shoppingCartViewModel.updateUserWithOrder(order, function (error, user) {
                             callback(error, data);
                         });
                     },
@@ -346,7 +346,6 @@ app.localization.registerView('shoppingCartView');
             },
 
             updateProductOrders: function(order, pOrders, callback) {
-                console.log("update order: " + JSON.stringify(order));
                 var ids = [];
                 for (var i = 0; i < pOrders.length; i++) {
                     var pOrder = pOrders[i];
@@ -412,7 +411,7 @@ app.localization.registerView('shoppingCartView');
                                 ret = defaultRule;
                             }
                         }else {
-                            ret = retult[0];
+                            ret = result[0];
                         }
                         callback(ret);
                     }else {
@@ -427,11 +426,23 @@ app.localization.registerView('shoppingCartView');
                 var point = 0
                 if (price > 0) {
                     var pointRule = shoppingCartViewModel.get('pointRule');
+                    console.log("point rule: pv: " + pointRule.pv + " cv: " + pointRule.cv + " price: " + price);
                     var cv = parseFloat(pointRule.cv);
                     var pv = parseFloat(pointRule.pv);
                     point = ((price - price % cv) / cv) * pv;
                 }
                 return point;
+            },
+
+            checkIfHaveEnoughtPoints: function () {
+                var source = shoppingCartViewModel.get('dataSource');
+                var data = source.data();
+                shoppingCartViewModel.updateTotalPrice(data);
+                var currentPV = shoppingCartViewModel.get("pv");
+                if (app.currentUser.CurrentPoint < currentPV) {
+                    return false;
+                }
+                return true;
             },
 
 
@@ -441,7 +452,8 @@ app.localization.registerView('shoppingCartView');
             pv: 0,
             allChecked: false,
             taxRate: 0,
-            pointRule: {}
+            pointRule: {},
+            manualUnAllChecked: false
 
         });
 
@@ -450,6 +462,16 @@ app.localization.registerView('shoppingCartView');
         var data = source.data();
 
         if (e.field == 'dataSource') {
+            if (!shoppingCartViewModel.checkIfHaveEnoughtPoints()) {
+                var itemLength = e.items.length;
+                for (var j = 0; i < itemLength; i++) {
+                    var item = e.items[i];
+                    var checked = item.get("cchecked");
+                    item.cchecked = !checked;
+                }
+                alert("Your point is not enough for this action");
+            }
+            shoppingCartViewModel.updateTotalPrice(data);
             var checkedCount = 0;
             for (var i = 0; i < data.length; i++) {
                 var item = data[i];
@@ -457,32 +479,40 @@ app.localization.registerView('shoppingCartView');
                     checkedCount = checkedCount + 1;
                 }
             }
+            $("#cartListView").data().kendoMobileListView.refresh();
 
             if (checkedCount == data.length && data.length > 0) {
-                shoppingCartViewModel.set('allChecked', true);
-            }else if (checkedCount == 0) {
-                shoppingCartViewModel.set('allChecked', false);
+                shoppingCartViewModel.allChecked = true;
+            }else {
+                shoppingCartViewModel.allChecked = false;
             }
-            shoppingCartViewModel.updateTotalPrice(data);
 
-            var currentPV = shoppingCartViewModel.get("pv");
-            if (app.currentUser.CurrentPoint < currentPV) {
-                alert("Your point is not enough for this action");
-                var itemLength = e.items.length;
-                for (var j = 0; i < itemLength; i++) {
-                    var item = e.items[i];
-                    var checked = item.get("cchecked");
-                    item.set("cchecked", !checked);
-                }
-            }
+            $("#allChecked").prop("checked", shoppingCartViewModel.allChecked);
         }else if (e.field == 'allChecked') {
             var checked = this.get(e.field);
+            if (checked) {
+                var totalPV = 0;
+                for (var i = 0; i < data.length; i++) {
+                    var item = data[i];
+                    totalPV += parseFloat(item.product.pvPrice);
+                }
+
+                if (app.currentUser.CurrentPoint < totalPV) {
+                    $("#allChecked").prop("checked", !checked);
+                    alert("Your point is not enough for this action");
+                    shoppingCartViewModel.allChecked = !checked;
+                    return;
+                }
+            }
+
             for (var i = 0; i < data.length; i++) {
                 var item = data[i];
                 if (item.get('cchecked') != checked) {
-                    item.set('cchecked', checked);
+                    item.cchecked = checked;
                 }
             }
+
+            $("#cartListView").data().kendoMobileListView.refresh();
             //shoppingCartViewModel.updateTotalPrice(data);
         }
     });
@@ -548,6 +578,7 @@ app.localization.registerView('shoppingCartView');
             dataSource = new kendo.data.DataSource(dataSourceOptions);
             shoppingCartViewModel.set('dataSource', dataSource);
             fetchFilteredData(param);
+
         }
     });
 

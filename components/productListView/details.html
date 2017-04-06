@@ -15,7 +15,9 @@
     <div class="details-content screen__content screen__content--details">
         <div class="km-listview-wrapper">
             <ul class="km-listview km-list km-listinset details-fields">
-                <li><div data-bind="text: currentItem.ProductName"></div></li>
+                <li><div data-bind="text: currentItem.ProductName"></div>
+                    <h6>Specification: <text data-bind="text: currentItem.ProductSpecifications"/></h6>
+                </li>
                 <li>
                     <div data-role="scrollview"
                          data-source="photoDS"

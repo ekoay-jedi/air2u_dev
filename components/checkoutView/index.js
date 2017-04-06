@@ -62,7 +62,7 @@ app.localization.registerView('checkoutView');
                             for (var iteminside in datainside) {
                                 if (iteminside == 'totalPrice') {
                                     totalprice = datainside[iteminside];
-                                    $("#total-price").text("RMB "+totalprice);
+                                    $("#total-price").text("RM "+totalprice);
                                 }
                             }
                         }

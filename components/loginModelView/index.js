@@ -44,8 +44,8 @@ app.loginModelView = kendo.observable({
                 }, function (error) {
 
                 });
-                window.location.href = "#userinfo";
-                //app.mobileApp.navigate('components/home/view.html');
+               // window.location.href = "#userinfo";
+                app.mobileApp.navigate('components/home/view.html');
             }, function () {
                 //navigator.notification.alert("Unfortunately we could not find your account.");
                 alert("Unfortunately we could not find your account.");
@@ -59,6 +59,13 @@ app.registerView = kendo.observable({
         //var introducername = this.introducername;
         //var introducercontact = this.introducercontact;
         var introduceremail = this.introduceremail;
+
+        var email=/^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+
+        if(!email.test(this.introduceremail)){
+            alert("Email Address is not verify format.");
+            return;
+        }
 
         if (!this.username) {
             //navigator.notification.alert("Username is required.");
