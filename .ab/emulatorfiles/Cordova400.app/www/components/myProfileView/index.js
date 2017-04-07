@@ -2,7 +2,7 @@
 
 app.myProfileView = kendo.observable({
 	onShow: function () {
-		var el = new Everlive('o6yuauaw7f5m56jb');
+		var el = new Everlive('emqn75r4njlqhrtx');
 		var data = el.data('Users');
 		data.getById('f701bc80-db33-11e6-ba7d-ed8ffe6e33d3')
 			.then(function (data) {							

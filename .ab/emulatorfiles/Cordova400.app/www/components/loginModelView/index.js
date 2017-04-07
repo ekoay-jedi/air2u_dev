@@ -1,6 +1,6 @@
 'use strict';
 
-var apiKey = "o6yuauaw7f5m56jb";
+var apiKey = "emqn75r4njlqhrtx";
 var el = new Everlive(apiKey);
 
 app.loginModelView = kendo.observable({

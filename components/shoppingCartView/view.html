@@ -12,7 +12,7 @@
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
             <a data-role="button" data-click="deleteItems" data-align="right" data-icon="delete"></a>
             <script>
-                var el = new Everlive("o6yuauaw7f5m56jb");
+                var el = app.data.backendServices;
                 var cartData = el.data('ProductCart');
                 $("[data-click=deleteItems]").click(function() {
                     var source = app.shoppingCartView.shoppingCartViewModel.get('dataSource');

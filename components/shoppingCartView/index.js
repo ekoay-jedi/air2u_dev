@@ -467,7 +467,9 @@ app.localization.registerView('shoppingCartView');
                 for (var j = 0; i < itemLength; i++) {
                     var item = e.items[i];
                     var checked = item.get("cchecked");
-                    item.cchecked = !checked;
+                    if (checked) {
+                        item.cchecked = !checked;
+                    }
                 }
                 alert("Your point is not enough for this action");
             }

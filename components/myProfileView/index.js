@@ -1,7 +1,6 @@
 'use strict';
 
-var apiKey = "o6yuauaw7f5m56jb";
-var el = new Everlive(apiKey);
+var el = app.data.backendServices;
 var username;
 var address;
 var phone;

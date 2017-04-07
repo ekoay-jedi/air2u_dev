@@ -1,6 +1,5 @@
 'use strict';
 
-var apiKey = "o6yuauaw7f5m56jb";
 var el = new Everlive(apiKey);
 app.purchaseHistoryView = kendo.observable({
     onShow: function() {},

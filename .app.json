@@ -308,7 +308,7 @@
       "type": "kendo-ui-mobile:dataProvider",
       "name": "backendServices",
       "source": "everlive",
-      "everliveKey": "o6yuauaw7f5m56jb",
+      "everliveKey": "emqn75r4njlqhrtx",
       "offlineStorage": true,
       "title": "Backend Services"
     }
