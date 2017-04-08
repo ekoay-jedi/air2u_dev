@@ -1,0 +1,35 @@
+<div data-role="view" data-title="View" data-layout="main-nonav" data-model="app.productListView" data-show="app.productListView.onShow" data-after-show="app.productListView.afterShow" id="productListViewScreen" class="screen">
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+            <a data-role="backbutton" data-align="left">Back</a>
+            <span data-bind="text: strings.productListView.title"></span>
+
+            <!--<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>-->
+
+        </div>
+    </header>
+
+
+    <!-- START_CUSTOM_CODE_productListView -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_productListView -->
+    <ul class="masterDetailView" data-role="listview" data-auto-bind="false" data-style="inset" data-template="productListViewModelTemplate" data-bind="source: productListViewModel.dataSource, events: {click: productListViewModel.itemClick}" data-pull-to-refresh="true"
+    data-endless-scroll="false">
+    </ul>
+
+
+    <!-- START_CUSTOM_CODE_productListViewModel -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_productListViewModel -->
+    <script type="text/x-kendo-template" id="productListViewModelTemplate">
+        <div class="image-with-text">
+            # data = app.productListView.productListViewModel.fixHierarchicalData(data); #
+
+            <img src="#: data['ProductImagesUrl'] #" onerror="javascript:src='resources/default.png'">
+            <h3>#: data['ProductName'] #</h3>
+            <p>#: data['cvPrice'] #</p>
+        </div>
+    </script>
+</div>

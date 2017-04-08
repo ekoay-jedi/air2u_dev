@@ -1,0 +1,41 @@
+<div data-role="view" data-title="View" data-layout="main-nonav" data-model="app.orderDetailView" data-show="app.orderDetailView.onShow" data-after-show="app.orderDetailView.afterShow" id="orderDetailViewScreen" class="screen">
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+
+            <span>Purchase History Detail</span>
+
+            <a data-role="backbutton" data-align="left">Back</a>
+            <a data-role="button" id="checkoutBtn" data-click="opencheckout" data-align="right">Checkout</a>
+            <script>
+                $("[data-click=opencheckout]").click(function() {
+                    app.mobileApp.navigate('components/checkoutView/view.html?orderId='+orderID);
+                });
+            </script>
+        </div>
+    </header>
+
+
+    <!-- START_CUSTOM_CODE_orderDetailView -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_orderDetailView -->
+    <ul class="masterDetailView" data-role="listview" data-auto-bind="false" data-style="inset" data-template="orderDetailViewModelTemplate" data-bind="source: orderDetailViewModel.dataSource, events: {click: orderDetailViewModel.itemClick}" data-pull-to-refresh="true"
+        data-endless-scroll="false">
+    </ul>
+
+
+    <!-- START_CUSTOM_CODE_orderDetailViewModel -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_orderDetailViewModel -->
+    <script type="text/x-kendo-template" id="orderDetailViewModelTemplate">
+        <div class="image-with-text">
+            # data = app.orderDetailView.orderDetailViewModel.fixHierarchicalData(data); #
+            <img src="#: data['ProductImagesUrl'] #" onerror="this.src='resources/default.png'" style="margin-top:
+            10px">
+            <div style="overflow: hidden; white-space: normal; text-overflow: ellipsis; height: 45px"><h4>#: data['Product'].ProductName #</h4></div>
+            <p>CV:#: data['Product'].cvPrice # PV: #: data['Product'].pvPrice #</p>
+            <p>Qty:#: data['OrderQTY'] #</p>
+        </div>
+    </script>
+</div>
