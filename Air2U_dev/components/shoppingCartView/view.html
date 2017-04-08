@@ -1,0 +1,94 @@
+<div data-role="view" data-title="View"
+     data-layout="main"
+     data-model="app.shoppingCartView"
+     data-show="app.shoppingCartView.onShow"
+     data-after-show="app.shoppingCartView.afterShow"
+     id="shoppingCartViewScreen" class="screen">
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+
+            <span data-bind="text: strings.shoppingCartView.title"></span>
+
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+            <a data-role="button" data-click="deleteItems" data-align="right" data-icon="delete"></a>
+            <script>
+                var el = app.data.backendServices;
+                var cartData = el.data('ProductCart');
+                $("[data-click=deleteItems]").click(function() {
+                    var source = app.shoppingCartView.shoppingCartViewModel.get('dataSource');
+                    var data = source.data();
+                    var opItems = data.slice();
+                    for (var i = 0; i <opItems.length; i++) {
+                        var item = opItems[i];
+                        if (item.cchecked) {
+                            var id = item["Id"];
+                            cartData.destroySingle({Id: id},
+                                function(){
+                                    source.remove(item);
+                                    var resultList = $('#cartListView').data('kendoMobileListView');
+                                    resultList.dataSource.read();
+                                    resultList.refresh();
+                                },
+                                function(error){
+                                    alert(JSON.stringify(error));
+                                });
+                        }
+                    }
+
+                });
+            </script>
+        </div>
+    </header>
+
+    <!-- START_CUSTOM_CODE_shoppingCartView -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_shoppingCartView -->
+    <ul class="masterDetailView"
+        data-role="listview"
+        data-auto-bind="false"
+        data-style="inset"
+        data-template="shoppingCartViewModelTemplate"
+        data-bind="source: shoppingCartViewModel.dataSource"
+        data-pull-to-refresh="false"
+        data-endless-scroll="false"
+        id = "cartListView">
+    </ul>
+
+    <footer data-role="footer" id="cartFooter">
+        <div data-role="navbar" class="footer-text" style="height: 50px;">
+            <div>
+                <input id="allChecked" type="checkbox" data-align="left" data-bind="checked: shoppingCartViewModel.allChecked"/>
+            </div>
+            <div id="cartPrice">
+                Total Price: <span id="totalPrice" data-bind="text: shoppingCartViewModel.total"></span><br/>
+                PV:<span id="totalPV" data-bind="text: shoppingCartViewModel.pv"></span>
+            </div>
+            <a data-role="button" data-align="right" style="color: white;" data-click="app.shoppingCartView.shoppingCartViewModel.checkout">Checkout</a>
+        </div>
+    </footer>
+
+
+    <!-- START_CUSTOM_CODE_shoppingCartViewModel -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_shoppingCartViewModel -->
+    <script type="text/x-kendo-template" id="shoppingCartViewModelTemplate">
+        <div class="image-with-text" id="cartProduct">
+            <input style="float: left; position: inherit; margin-right: 10px;margin-top: 30px;-webkit-appearance: normal;" type="checkbox" data-bind="checked: cchecked"/>
+            <img src="#: productIdUrl #" onerror="javascript:src='resources/default.png'" style="margin-top: 20px">
+            <div style="overflow: hidden; white-space: normal; text-overflow: ellipsis; height: 45px"><h4>#: product['ProductName'] #</h4></div>
+            <div>
+                <p>Qty: <span>#: qty #</span></p>
+                # if (product['pvPrice'] > 0) { #
+                <p>PV: <span>#: product['pvPrice'] #</span></p>
+                #}#
+                # if (product['cvPrice'] > 0) { #
+                <p>Price: <span style="color: red;">#: product['cvPrice'] #</span></p>
+                #}#
+                <!--<p><span id="plus_qty">  +  </span><span>#: qty #</span><span id="minus_qty">  -  </span></p>-->
+            </div>
+
+        </div>
+    </script>
+</div>
