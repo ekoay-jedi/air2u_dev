@@ -7,7 +7,7 @@ app.shoppingCartView = kendo.observable({
 app.localization.registerView('shoppingCartView');
 
 // START_CUSTOM_CODE_shoppingCartView
-// Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
+// Add custom code here. Forl more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 
 // END_CUSTOM_CODE_shoppingCartView
 (function(parent) {
@@ -307,10 +307,10 @@ app.localization.registerView('shoppingCartView');
                 }
 
                 var point = shoppingCartViewModel.getPointFromPrice(price);
-
+                var onumber = (new Date()).Format("yyyyMMddhhmmssS");
                 var order = {
                     OrderCustomer: app.currentUser.Id,
-                    OrderNumber: kendo.guid(),
+                    OrderNumber: onumber,
                     Status: 0,
                     totalPrice: price,
                     totalPV: pv,
@@ -321,7 +321,7 @@ app.localization.registerView('shoppingCartView');
                 var data = dataProvider.data('Order');
                 data.create(order,
                     function(data){
-                        shoppingCartViewModel.updateUserWithOrder(order, function (user, error) {
+                        shoppingCartViewModel.updateUserWithOrder(order, function (error, user) {
                             callback(error, data);
                         });
                     },
@@ -414,7 +414,7 @@ app.localization.registerView('shoppingCartView');
                                 ret = defaultRule;
                             }
                         }else {
-                            ret = retult[0];
+                            ret = result[0];
                         }
                         callback(ret);
                     }else {
@@ -429,6 +429,7 @@ app.localization.registerView('shoppingCartView');
                 var point = 0
                 if (price > 0) {
                     var pointRule = shoppingCartViewModel.get('pointRule');
+                    console.log("point rule: pv: " + pointRule.pv + " cv: " + pointRule.cv + " price: " + price);
                     var cv = parseFloat(pointRule.cv);
                     var pv = parseFloat(pointRule.pv);
                     point = ((price - price % cv) / cv) * pv;
@@ -441,7 +442,8 @@ app.localization.registerView('shoppingCartView');
                 var data = source.data();
                 shoppingCartViewModel.updateTotalPrice(data);
                 var currentPV = shoppingCartViewModel.get("pv");
-                if (app.currentUser.CurrentPoint < currentPV) {
+				var userPV =  parseFloat(app.currentUser.CurrentPoint) || 0;
+                if (userPV < parseFloat(currentPV)) {
                     return false;
                 }
                 return true;
@@ -454,9 +456,26 @@ app.localization.registerView('shoppingCartView');
             pv: 0,
             allChecked: false,
             taxRate: 0,
-            pointRule: {}
+            pointRule: {},
+            manualUnAllChecked: false
 
         });
+
+    Date.prototype.Format = function (fmt) { //author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
 
     shoppingCartViewModel.bind('change', function(e) {
         var source = shoppingCartViewModel.get('dataSource');
@@ -464,16 +483,19 @@ app.localization.registerView('shoppingCartView');
 
         if (e.field == 'dataSource') {
             if (!shoppingCartViewModel.checkIfHaveEnoughtPoints()) {
-                var itemLength = e.items.length;
-                for (var j = 0; i < itemLength; i++) {
-                    var item = e.items[i];
-                    var checked = item.get("cchecked");
-                    item.cchecked = !checked;
+                if(e.items){
+					var len = e.items.length;
+                    for (var i = 0; i < len; i++) {
+                        var item = e.items[i];
+                        var checked = item.get("cchecked");
+                        if (checked) {
+                            item.cchecked = !checked;
+                        }
+                    }
+                    alert("Your point is not enough for this action");
                 }
-                alert("Your point is not enough for this action");
             }
             shoppingCartViewModel.updateTotalPrice(data);
-
             var checkedCount = 0;
             for (var i = 0; i < data.length; i++) {
                 var item = data[i];
@@ -483,13 +505,11 @@ app.localization.registerView('shoppingCartView');
             }
             $("#cartListView").data().kendoMobileListView.refresh();
 
-
             if (checkedCount == data.length && data.length > 0) {
                 shoppingCartViewModel.allChecked = true;
-            }else if (checkedCount == 0) {
+            }else {
                 shoppingCartViewModel.allChecked = false;
             }
-            shoppingCartViewModel.updateTotalPrice(data);
 
             $("#allChecked").prop("checked", shoppingCartViewModel.allChecked);
         }else if (e.field == 'allChecked') {
@@ -500,8 +520,7 @@ app.localization.registerView('shoppingCartView');
                     var item = data[i];
                     totalPV += parseFloat(item.product.pvPrice);
                 }
-
-                if (parseFloat(app.currentUser.CurrentPoint) < totalPV) {
+                if (parseFloat(app.currentUser.CurrentPoint) < parseFloat(totalPV)) {
                     $("#allChecked").prop("checked", !checked);
                     alert("Your point is not enough for this action");
                     shoppingCartViewModel.allChecked = !checked;
@@ -515,10 +534,9 @@ app.localization.registerView('shoppingCartView');
                     item.cchecked = checked;
                 }
             }
-
+			
             shoppingCartViewModel.updateTotalPrice(data);
             $("#cartListView").data().kendoMobileListView.refresh();
-
         }
     });
 
@@ -579,7 +597,10 @@ app.localization.registerView('shoppingCartView');
                     });
                 }
             });
-
+            
+            dataSource = new kendo.data.DataSource(dataSourceOptions);
+            shoppingCartViewModel.set('dataSource', dataSource);
+            fetchFilteredData(param);
 
         }
     });

@@ -2,11 +2,11 @@
   "ProjectName": "Air2U_dev",
   "ProjectGuid": "3b8f6517-956d-4245-963c-a3416b784dca",
   "projectVersion": 1,
-  "AppIdentifier": "com.telerik.Air2Udev",
+  "AppIdentifier": "com.innovationo2o.air2u",
   "DisplayName": "Air2U_dev",
   "Author": "",
   "Description": "Air2U_dev",
-  "BundleVersion": "1.0",
+  "BundleVersion": "1.0409",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1",

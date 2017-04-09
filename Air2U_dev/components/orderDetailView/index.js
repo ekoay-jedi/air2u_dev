@@ -230,7 +230,7 @@ app.localization.registerView('orderDetailView');
                     /// end detail form initialization
 
                     var descitem = itemModel.ProductDescription;
-                    if (!descitem.count > 0) {
+                    if (descitem && !descitem.count > 0) {
                         orderDetailViewModel.set("productDesc", descitem[0]);
                     }
                 }

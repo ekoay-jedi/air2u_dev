@@ -121,6 +121,14 @@
         });
     };
 
+	app.showLoading = function () {
+        $("#kendoUiMobileApp").LoadingOverlay('show');
+    };
+
+    app.hideLoading = function () {
+        $("#kendoUiMobileApp").LoadingOverlay('hide');
+    };
+
     /// start kendo binders
     kendo.data.binders.widget.buttonText = kendo.data.Binder.extend({
         init: function(widget, bindings, options) {

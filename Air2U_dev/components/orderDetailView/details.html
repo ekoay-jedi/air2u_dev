@@ -43,7 +43,7 @@
 
                                     $("[data-click=addtocart]").click(function() {
                                         var qty = document.getElementById("qtyField").value;
-                                        var stock = app.productListView.productListViewModel.get("currentItem.QTY");
+										var stock = app.orderDetailView.orderDetailViewModel.get("currentItem.QTY");
                                         if (qty>stock){
                                             alert('Out of stock！');
                                             document.getElementById("qtyField").value = stock;
@@ -51,7 +51,7 @@
                                             //var el = new Everlive("o6yuauaw7f5m56jb");
                                             if (app.currentUser.Id != "") {
                                                 var productId =
-                                                        app.productListView.productListViewModel.get("originalItem.Id");
+                                                        app.orderDetailView.orderDetailViewModel.get("originalItem.Id");
                                                 var userId = app.currentUser.Id;
                                                 var cartData = el.data('ProductCart');
                                                 var query = new Everlive.Query();
