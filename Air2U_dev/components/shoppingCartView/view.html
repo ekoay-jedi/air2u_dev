@@ -61,7 +61,9 @@
                 <input id="allChecked" type="checkbox" data-align="left" data-bind="checked: shoppingCartViewModel.allChecked"/>
             </div>
             <div id="cartPrice">
-                Total Price: <span id="totalPrice" data-bind="text: shoppingCartViewModel.total"></span><br/>
+                Total Price: <span id="totalPrice" data-bind="text: shoppingCartViewModel.total"></span>
+                Tax: <span id="taxPrie" data-bind="text: shoppingCartViewModel.tax"></span>
+                <br/>
                 PV:<span id="totalPV" data-bind="text: shoppingCartViewModel.pv"></span>
             </div>
             <a data-role="button" data-align="right" style="color: white;" data-click="app.shoppingCartView.shoppingCartViewModel.checkout">Checkout</a>

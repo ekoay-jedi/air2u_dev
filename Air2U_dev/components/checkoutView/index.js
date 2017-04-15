@@ -1,12 +1,14 @@
 'use strict';
-var el = app.data.backendServices;
-var totalprice;
-var orderid;
 app.checkoutView = kendo.observable({
     onShow: function () {
     },
     afterShow: function () {
-    }
+    },
+    orderid: null,
+    totalPrice: 0,
+    totalPoint: 0,
+    earnPoint: 0,
+    tax: 0
 });
 app.localization.registerView('checkoutView');
 
@@ -31,57 +33,68 @@ app.localization.registerView('checkoutView');
 
         checkoutViewModel = kendo.observable({
             submit: function () {
-                el.data('Order').updateSingle({Id: orderid, 'Status': 1},
+                var el = app.data.backendServices;
+                app.showLoading();
+                el.data('Order').updateSingle({Id: parent.orderid, 'Status': 1},
                     function (data) {
-                        alert( "Order  Created Successfully");
-                        app.mobileApp.navigate('components/purchaseHistoryView/view.html');
-                        //alert(JSON.stringify(data));
+                        checkoutViewModel.updateUserWithOrder(function (error, data) {
+                            app.hideLoading();
+                            if (error) {
+                                alert(JSON.stringify(error));
+                            }else {
+                                alert( "Order  Created Successfully");
+                                app.mobileApp.navigate('components/purchaseHistoryView/view.html');
+                            }
+                        });
                     },
                     function (error) {
+                        app.hideLoading();
                         alert(JSON.stringify(error));
                     });
             },
-            /// start add model functions
-            /// end add model functions
 
             cancel: function () {
+                app.mobileApp.navigate("components/shoppingCartView/view.html");
+            },
+
+            updateUserWithOrder: function (callback) {
+                var el = app.data.backendServices;
+
+            var userTotalPoint = parseFloat(app.currentUser.CurrentPoint || '0') +
+                    parseFloat(parent.earnPoint) - parseFloat(parent.totalPoint);                el.Users.updateSingle({
+                        'Id': app.currentUser.Id,
+                        'LatestAwardedPoint' : parent.earnPoint,
+                        'CurrentPoint' : userTotalPoint
+                    },
+                    function (data) {
+                        app.currentUser.LatestAwardedPoint = parent.earnPoint;
+                        app.currentUser.CurrentPoint = userTotalPoint;
+                        callback(null, app.currentUser);
+                    },
+                    function (error) {
+                        callback(error);
+                    });
             }
         });
 
-    /// start form functions
-    /// end form functions
 
     parent.set('onShow', function _onShow(e) {
-        orderid=e.view.params.orderId;
-        el.data('Order').getById(orderid)
-            .then(function (data) {
-                    for (var item in data) {
-                        if (item == 'result') {
-                            var datainside = data[item];
-                            for (var iteminside in datainside) {
-                                if (iteminside == 'totalPrice') {
-                                    totalprice = datainside[iteminside];
-                                    $("#total-price").text("RM "+totalprice);
-                                }
-                            }
-                        }
-                    }
+        var orderId = e.view.params.orderId;
+        var totalPrice = e.view.params.price;
+        var totalPoint = e.view.params.point;
+        var earnPoint = e.view.params.gotPoint;
+        var tax = e.view.params.tax;
 
+        parent.orderid = orderId;
+        parent.totalPrice = totalPrice;
+        parent.totalPoint = totalPoint;
+        parent.earnPoint = earnPoint;
+        parent.tax = tax;
 
-                },
-                function (error) {
-                    alert(JSON.stringify(error));
-                });
-
-        var that = parent;
-        that.set('addFormData', {
-            /// start add form data init
-            /// end add form data init
-        });
-
-
-        /// start add form show
-        /// end add form show
+        $("#total-price").text("RM "+ totalPrice);
+        $("#tax").text("RM "+ tax);
+        $("#total-point").text(totalPoint);
+        $("#earn-point").text(earnPoint);
     });
     parent.set('checkoutViewModel', checkoutViewModel);
 })(app.checkoutView);

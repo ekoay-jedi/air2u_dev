@@ -260,6 +260,9 @@ app.localization.registerView('productListView');
                 var item = uid,
                     dataSource = productListViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item);
+				if (!itemModel) {
+					return null;
+				}
                 var imgitem = itemModel["ProductImages"];
                 if (typeof imgitem != 'undefined' && imgitem.count>0){
                     itemModel.ProductImagesUrl = processImage(imgitem[0]);

@@ -80,6 +80,8 @@ app.localization.registerView('shoppingCartView');
                         //{
                         //    "Authorization" : app.currentUser.access_token
                         //}
+				serverFiltering: true,
+                filter: { field: 'userId', operator: 'eq', value: app.currentUser.Id },
                 dataProvider: dataProvider
             },
             change: function(e) {
@@ -209,8 +211,9 @@ app.localization.registerView('shoppingCartView');
                 totalPV = totalPV.toFixed(2);
 
                 var taxRate = shoppingCartViewModel.get("taxRate");
-                totalP = totalP + totalP * taxRate;
+                var tax = totalP * taxRate;
                 totalP = totalP.toFixed(2);
+                tax = tax.toFixed(2);
 
                 var currentTotal = shoppingCartViewModel.get('total');
                 if (currentTotal != totalP) {
@@ -221,11 +224,16 @@ app.localization.registerView('shoppingCartView');
                 if (totalPV != currentPV) {
                     shoppingCartViewModel.set('pv', totalPV);
                 }
+                var curretTax = shoppingCartViewModel.get('tax');
+                if (tax != curretTax) {
+                    shoppingCartViewModel.set('tax', tax);
+                }
             },
             /// start masterDetails view model functions
             /// end masterDetails view model function
             checkout: function (e) {
                 var totalP = shoppingCartViewModel.get('total');
+                var tax = shoppingCartViewModel.get('tax');
                 var totalPV = shoppingCartViewModel.get('pv');
                 var source = shoppingCartViewModel.get('dataSource');
                 var data = source.data();
@@ -250,19 +258,22 @@ app.localization.registerView('shoppingCartView');
                              alert(JSON.stringify(error));
                          }else {
                              var retP = pdata['result'];
-                             shoppingCartViewModel.createOrder(retP, totalP, totalPV, function(error, odata) {
+                             shoppingCartViewModel.createOrder(retP, totalP, totalPV, function(error, retOrder) {
                                  if (error) {
                                      app.hideLoading();
                                      alert(JSON.stringify(error));
                                  }else {
-                                     var retO = odata['result'];
-                                     shoppingCartViewModel.updateProductOrders(retO, retP, function(error, data) {
+                                     var earnPoint = retOrder.Point;
+                                     console.log("order: " + JSON.stringify(retOrder));
+                                     shoppingCartViewModel.updateProductOrders(retOrder, retP, function(error, data) {
                                          app.hideLoading();
-                                         if (error) {
-                                             alert(JSON.stringify(error));
-                                         }else {
-                                             app.mobileApp.navigate("components/checkoutView/view.html?orderId=" + retO.Id );
-                                         }
+                                         var query = 'orderId=' + retOrder.Id
+                                             + '&price=' + totalP
+                                             + '&point=' + totalPV
+                                             + '&tax=' + tax
+                                             + '&gotPoint=' + earnPoint;
+                                         console.log("query: " + query);
+                                         app.mobileApp.navigate("components/checkoutView/view.html?" + query);
                                      });
                                  }
                              });
@@ -316,36 +327,19 @@ app.localization.registerView('shoppingCartView');
                     totalPV: pv,
                     Point: point,
                     OrderProductOrder: pOrderIds,
-                    Owner: app.currentUser.Id
+                    Owner: app.currentUser.Id,
                 };
                 var data = dataProvider.data('Order');
                 data.create(order,
                     function(data){
-                        shoppingCartViewModel.updateUserWithOrder(order, function (error, user) {
-                            callback(error, data);
-                        });
+                            var retOrder = data['result'];
+                            retOrder.Point = point;
+                            callback(null, retOrder);
                     },
                     function(error){
                         callback(error);
                     }
                 );
-            },
-
-            updateUserWithOrder: function (order, callback) {
-                var userTotalPoint = parseFloat(app.currentUser.CurrentPoint) + order.Point - order.totalPV;
-                dataProvider.Users.updateSingle({
-                        'Id': app.currentUser.Id,
-                         'LatestAwardedPoint' : order.Point,
-                         'CurrentPoint' : userTotalPoint
-                    },
-                    function (data) {
-                         app.currentUser.LatestAwardedPoint = order.Point;
-                         app.currentUser.CurrentPoint = userTotalPoint;
-                         callback(null, app.currentUser);
-                    },
-                    function (error) {
-                        callback(error);
-                    });
             },
 
             updateProductOrders: function(order, pOrders, callback) {
@@ -355,6 +349,7 @@ app.localization.registerView('shoppingCartView');
                     ids.push(pOrder.Id);
                  }
 
+                console.log("product : " + JSON.stringify(ids));
                 var data = dataProvider.data('ProductOrder');
                 var query = new Everlive.Query();
                 query.where().isin('Id', ids);
@@ -442,7 +437,8 @@ app.localization.registerView('shoppingCartView');
                 var data = source.data();
                 shoppingCartViewModel.updateTotalPrice(data);
                 var currentPV = shoppingCartViewModel.get("pv");
-				var userPV =  parseFloat(app.currentUser.CurrentPoint) || 0;
+                var userPV =  parseFloat(app.currentUser.CurrentPoint) || 0;
+                console.log("check current pv: " + currentPV + " user pv: " + userPV);
                 if (userPV < parseFloat(currentPV)) {
                     return false;
                 }
@@ -456,6 +452,7 @@ app.localization.registerView('shoppingCartView');
             pv: 0,
             allChecked: false,
             taxRate: 0,
+            tax: 0,
             pointRule: {},
             manualUnAllChecked: false
 
@@ -484,7 +481,7 @@ app.localization.registerView('shoppingCartView');
         if (e.field == 'dataSource') {
             if (!shoppingCartViewModel.checkIfHaveEnoughtPoints()) {
                 if(e.items){
-					var len = e.items.length;
+                    var len = e.items.length;
                     for (var i = 0; i < len; i++) {
                         var item = e.items[i];
                         var checked = item.get("cchecked");
@@ -492,8 +489,8 @@ app.localization.registerView('shoppingCartView');
                             item.cchecked = !checked;
                         }
                     }
-                    alert("Your point is not enough for this action");
                 }
+                alert("Your point is not enough for this action");
             }
             shoppingCartViewModel.updateTotalPrice(data);
             var checkedCount = 0;
@@ -534,7 +531,7 @@ app.localization.registerView('shoppingCartView');
                     item.cchecked = checked;
                 }
             }
-			
+
             shoppingCartViewModel.updateTotalPrice(data);
             $("#cartListView").data().kendoMobileListView.refresh();
         }
