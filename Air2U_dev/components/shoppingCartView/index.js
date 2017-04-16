@@ -206,8 +206,16 @@ app.localization.registerView('shoppingCartView');
                         var itemQty = parseFloat(item.qty || 0);
                         var cv = item.product.cvPrice || "0";
                         var correctCV = cv.replace(/[^0-9\.]+/g,"");
-                        totalP = totalP + parseFloat(correctCV) * itemQty ;
-                        totalPV = totalPV + parseFloat(item.product.pvPrice || 0) * itemQty;
+                        correctCV = parseFloat(correctCV);
+                        if (isNaN(correctCV)) {
+                            correctCV = 0;
+                        }
+                        totalP = totalP + correctCV * itemQty ;
+                        var correctPV = parseFloat(item.product.pvPrice || "0");
+                        if (isNaN(correctPV)) {
+                            correctPV = 0;
+                        }
+                        totalPV = totalPV + correctPV * itemQty;
                     }
                 }
 

@@ -63,49 +63,61 @@
                                     var el = app.data.backendServices;
 
                                     $("[data-click=addtocart]").click(function() {
-                                        var qty = parseInt(document.getElementById("qtyField").value);
-                                        var stock = parseInt(app.productListView.productListViewModel.get("currentItem.QTY"));
-                                        if (qty>stock){
-                                            alert('Out of stock！');
-                                            document.getElementById("qtyField").value = stock;
-                                        }  else {
-                                            if (app.currentUser.Id != "") {
-                                                var productId =
-                                                    app.productListView.productListViewModel.get("originalItem.Id");
-                                                var userId = app.currentUser.Id;
-                                                var cartData = el.data('ProductCart');
-                                                var query = new Everlive.Query();
-                                                query.where().eq('productId', productId).eq('userId', userId);
-                                                cartData.get(query).then(function (data) {
-                                                    if (data["count"] > 0) {
-                                                        var nqty = data["result"][0].qty+qty;
-                                                        cartData.updateSingle({Id: data["result"][0].Id, 'qty': nqty},
-                                                            function (data) {
-                                                                alert('Add to cart successfully!');
-                                                            },
-                                                            function (error) {
-                                                                alert('Fail to add to cart!');
-                                                            });
-                                                    } else {
-                                                        cartData.create({
-                                                                'productId': productId,
-                                                                'qty': qty,
-                                                                'userId': userId,
-                                                                'product': productId
-                                                            },
-                                                            function (data) {
-                                                                alert('Add to cart successfully!');
-                                                            },
-                                                            function (error) {
-                                                                alert('Fail to add to cart!');
-                                                            });
-                                                    }
-                                                });
+                                        if (checkSubmitFlag==false){
+                                            checkSubmitFlag = true;
+                                            var qty = parseInt(document.getElementById("qtyField").value);
+                                            var stock = parseInt(app.productListView.productListViewModel.get("currentItem.QTY"));
+                                            if (qty>stock){
+                                                checkSubmitFlag = false;
+                                                alert('Out of stock！');
+                                                document.getElementById("qtyField").value = stock;
+                                            } else if (qty < 1) {
+                                                checkSubmitFlag = false;
+                                                alert('Qty cannnot be 0！');
                                             } else {
-                                                alert("You do not login,Please login first.");
-                                                setTimeout(function(){
-                                                    app.mobileApp.navigate('components/loginModelView/view.html');
-                                                }, 10);
+                                                if (app.currentUser.Id != "") {
+                                                    var productId =
+                                                        app.productListView.productListViewModel.get("originalItem.Id");
+                                                    var userId = app.currentUser.Id;
+                                                    var cartData = el.data('ProductCart');
+                                                    var query = new Everlive.Query();
+                                                    query.where().eq('productId', productId).eq('userId', userId);
+                                                    cartData.get(query).then(function (data) {
+                                                        if (data["count"] > 0) {
+                                                            var nqty = data["result"][0].qty+qty;
+                                                            cartData.updateSingle({Id: data["result"][0].Id, 'qty': nqty},
+                                                                function (data) {
+                                                                    checkSubmitFlag = false;
+                                                                    alert('Add to cart successfully!');
+                                                                },
+                                                                function (error) {
+                                                                    checkSubmitFlag = false;
+                                                                    alert('Fail to add to cart!');
+                                                                });
+                                                        } else {
+                                                            cartData.create({
+                                                                    'productId': productId,
+                                                                    'qty': qty,
+                                                                    'userId': userId,
+                                                                    'product': productId
+                                                                },
+                                                                function (data) {
+                                                                    checkSubmitFlag = false;
+                                                                    alert('Add to cart successfully!');
+                                                                },
+                                                                function (error) {
+                                                                    checkSubmitFlag = false;
+                                                                    alert('Fail to add to cart!');
+                                                                });
+                                                        }
+                                                    });
+                                                } else {
+                                                    checkSubmitFlag = false;
+                                                    alert("You do not login,Please login first.");
+                                                    setTimeout(function(){
+                                                        app.mobileApp.navigate('components/loginModelView/view.html');
+                                                    }, 10);
+                                                }
                                             }
                                         }
                                     });

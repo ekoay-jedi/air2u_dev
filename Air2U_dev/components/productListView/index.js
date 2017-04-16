@@ -4,6 +4,7 @@ var filter;
 var curItem;
 var photoDS;
 var pointRule;
+var checkSubmitFlag;
 app.productListView = kendo.observable({
     onShow: function() {},
     afterShow: function() {}
@@ -309,6 +310,7 @@ app.localization.registerView('productListView');
                 var item = uid,
                     dataSource = productListViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item);
+                checkSubmitFlag = false;
                 if (!itemModel) {
                     return null;
                 }

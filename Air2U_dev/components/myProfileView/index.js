@@ -40,10 +40,10 @@ app.myProfileView = kendo.observable({
             currentPoint = parseFloat(app.currentUser.CurrentPoint);
             lastqwarded = parseFloat(app.currentUser.LatestAwardedPoint);
 
-            if(currentPoint == undefined /*||isNaN(currentPoint)*/){
+            if(currentPoint == undefined ||isNaN(currentPoint)){
                 currentPoint = 0;
             }
-            if(lastqwarded == undefined/*||isNaN(lastqwarded)*/){
+            if(lastqwarded == undefined||isNaN(lastqwarded)){
                 lastqwarded=0;
             }
 

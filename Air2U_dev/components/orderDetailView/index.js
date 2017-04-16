@@ -2,6 +2,7 @@
 var el = app.data.backendServices;
 var orderID;
 var pointRule;
+var checkSubmitFlag;
 app.orderDetailView = kendo.observable({
     // opencheckout: function () {
     //    alert("------ "+orderID);
@@ -259,6 +260,7 @@ app.localization.registerView('orderDetailView');
                 var item = uid,
                     dataSource = orderDetailViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item).Product;
+                checkSubmitFlag = false;
                 if(itemModel) {
                     if (!itemModel.ProductName) {
                         itemModel.ProductName = String.fromCharCode(160);

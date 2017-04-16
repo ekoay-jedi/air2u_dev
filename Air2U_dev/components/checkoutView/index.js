@@ -12,7 +12,6 @@ app.checkoutView = kendo.observable({
     address:null,
     shippingFees: [],
     selectedFee: null,
-    selectSheet:null
 });
 app.localization.registerView('checkoutView');
 
@@ -114,7 +113,6 @@ app.localization.registerView('checkoutView');
         parent.set('address', deAddress);
 
         checkoutViewModel.updateCheckoutView();
-        parent.selectSheet = document.getElementById('selectlink');
         $('#selectlink').on('change', function () {
             var index = this.selectedIndex;
             if (index > 0) {
@@ -134,10 +132,13 @@ app.localization.registerView('checkoutView');
         el.data('ShippingFee').get().then(function(data){
                 var result = data["result"];
                 parent.shippingFees = result;
-
+                $('#selectlink').empty();
+                var defaultOption = $('<option>').val("0").text("Select shipping method");
+                $('#selectlink').append(defaultOption);
                 for (var item in result){
-                    item=result[item];
-                    parent.selectSheet.add(new Option(item.ItemName,item.Charges))
+                    item = result[item];
+                    var option = $('<option>').val(item.Charges).text(item.ItemName);
+                    $('#selectlink').append(option);
                     //alert(item.ItemName+"---"+item.Charges);
                 }
                 },
