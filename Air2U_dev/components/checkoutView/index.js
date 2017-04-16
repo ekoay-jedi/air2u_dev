@@ -8,7 +8,11 @@ app.checkoutView = kendo.observable({
     totalPrice: 0,
     totalPoint: 0,
     earnPoint: 0,
-    tax: 0
+    tax: 0,
+    address:null,
+    shippingFees: [],
+    selectedFee: null,
+    selectSheet:null
 });
 app.localization.registerView('checkoutView');
 
@@ -34,8 +38,16 @@ app.localization.registerView('checkoutView');
         checkoutViewModel = kendo.observable({
             submit: function () {
                 var el = app.data.backendServices;
+                if (!parent.selectedFee) {
+                    alert('Please select a shipping');
+                    return;
+                }
+
                 app.showLoading();
-                el.data('Order').updateSingle({Id: parent.orderid, 'Status': 1},
+                el.data('Order').updateSingle({Id: parent.orderid,
+                                               'Status': 1,
+                                               'ShippingFee' : parent.selectedFee.Id,
+                                               'Address' : (parent.address || "")},
                     function (data) {
                         checkoutViewModel.updateUserWithOrder(function (error, data) {
                             app.hideLoading();
@@ -60,8 +72,9 @@ app.localization.registerView('checkoutView');
             updateUserWithOrder: function (callback) {
                 var el = app.data.backendServices;
 
-            var userTotalPoint = parseFloat(app.currentUser.CurrentPoint || '0') +
-                    parseFloat(parent.earnPoint) - parseFloat(parent.totalPoint);                el.Users.updateSingle({
+                var userTotalPoint = parseFloat(app.currentUser.CurrentPoint || "0") +
+                    parseFloat(parent.earnPoint) - parseFloat(parent.totalPoint);
+                el.Users.updateSingle({
                         'Id': app.currentUser.Id,
                         'LatestAwardedPoint' : parent.earnPoint,
                         'CurrentPoint' : userTotalPoint
@@ -74,27 +87,67 @@ app.localization.registerView('checkoutView');
                     function (error) {
                         callback(error);
                     });
+            },
+
+            updateCheckoutView: function () {
+                $("#total-price").text("RM "+ parent.totalPrice);
+                $("#tax").text("RM "+ parent.tax);
+                $("#total-point").text(parent.totalPoint);
+                $("#earn-point").text(parent.earnPoint);
             }
         });
 
 
     parent.set('onShow', function _onShow(e) {
         var orderId = e.view.params.orderId;
-        var totalPrice = e.view.params.price;
-        var totalPoint = e.view.params.point;
-        var earnPoint = e.view.params.gotPoint;
-        var tax = e.view.params.tax;
+        var totalPrice = parseFloat(e.view.params.price);
+        var totalPoint = parseFloat(e.view.params.point);
+        var earnPoint = parseFloat(e.view.params.gotPoint);
+        var tax = totalPrice * parseFloat(app.data.taxRate || 0);
+        var deAddress = app.currentUser.DeliveryAddress;
 
         parent.orderid = orderId;
-        parent.totalPrice = totalPrice;
+        parent.totalPrice = (totalPrice + tax);
         parent.totalPoint = totalPoint;
         parent.earnPoint = earnPoint;
         parent.tax = tax;
+        parent.set('address', deAddress);
 
-        $("#total-price").text("RM "+ totalPrice);
-        $("#tax").text("RM "+ tax);
-        $("#total-point").text(totalPoint);
-        $("#earn-point").text(earnPoint);
+        checkoutViewModel.updateCheckoutView();
+        parent.selectSheet = document.getElementById('selectlink');
+        $('#selectlink').on('change', function () {
+            var index = this.selectedIndex;
+            if (index > 0) {
+                var selectedFeeObj = parent.shippingFees[index - 1];
+                parent.selectedFee = selectedFeeObj;
+            }
+            var fee = parseFloat(this.value);
+            console.log("fee: " + fee + ", index: " + index);
+            var totalPrice = parseFloat(parent.totalPrice) + fee;
+            var tax = totalPrice * (app.data.taxRate || 0);
+            parent.set('totalPrice', (totalPrice + tax));
+            parent.set('tax', tax);
+            checkoutViewModel.updateCheckoutView();
+        });
+
+        var el = app.data.backendServices;
+        el.data('ShippingFee').get().then(function(data){
+                var result = data["result"];
+                parent.shippingFees = result;
+
+                for (var item in result){
+                    item=result[item];
+                    parent.selectSheet.add(new Option(item.ItemName,item.Charges))
+                    //alert(item.ItemName+"---"+item.Charges);
+                }
+                },
+                function(error){
+                    alert(JSON.stringify(error));
+                });
+
+
+
+
     });
     parent.set('checkoutViewModel', checkoutViewModel);
 })(app.checkoutView);

@@ -6,7 +6,7 @@
             <!--<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>-->
 
         </div>
-        <div style="margin-top:10px" align="center">
+        <div style="margin-top:10px; height: 40px" align="center">
             <select id="filterSelected" style="width: 25%; align-content: center" onchange="filterChange()">
                 <option value="00" selected="selected">All</option>
                 <option value="10">Cash only</option>
@@ -14,16 +14,8 @@
                 <option value="11">Cash & Points</option>
             </select>
             <input style="width: 50%" type="search" name="search" id="search" placeholder="Name..."/>
-            <button style="width: 60px; color: white; border-color: #f5907c;background-color: #f5907c" data-click="searchResult">Search</button>
+            <button style="height: 36px;" data-role="button" data-click="searchResult">Search</button>
             <script>
-                $('#search').bind('keypress',function(event){
-                    if(event.keyCode == 13) {
-                        // keyword = $("#search").val();
-                        // var resultList = $('#resultListView').data('kendoMobileListView');
-                        // resultList.dataSource.read();
-                        // resultList.refresh();
-                    }
-                });
                 $("[data-click=searchResult]").click(function() {
                     keyword = $("#search").val();
                     filter = $("#filterSelected").val();
@@ -54,16 +46,20 @@
 
     <!-- END_CUSTOM_CODE_productListViewModel -->
     <script type="text/x-kendo-template" id="productListViewModelTemplate">
-        <div class="image-with-text">
+        <div class="image-with-text" style="height: 100px">
             # data = app.productListView.productListViewModel.fixHierarchicalData(data); #
 
-            <img style="margin-top: 10px; height: 100px" src="#: data['ProductImagesUrl'] #" onerror="this.src='resources/default.png'">
-            <div style="overflow: hidden; white-space: normal; text-overflow: ellipsis; height: 45px"><h4>#:
-                data['ProductName']
-                #</h4></div>
-            <p><font color="red">CV: #: data['cvPrice'] #</font></p>
-            <p>Qty: #: data['QTY'] #</p>
-            <p>PV: #: data['pvPrice'] #</p>
+            <img style="height: 100%" src="#: data['ProductImagesUrl'] #" onerror="this.src='resources/default.png'">
+            <div style="font-size: 18px">
+                <p style="max-height: 35px;text-overflow:ellipsis; overflow: hidden;"><b>#: data['ProductName'] #</b></p>
+                # if (data['pvPrice'] > 0) { #
+                <p>Air pt: <span>#: data['pvPrice'] #</span></p>
+                #}#
+                # if (data['cvPrice'] > 0) { #
+                <p>Price: RM#: data['cvPrice'] #</p>
+                #}#
+                <p>Qty: #: data['QTY'] #</p>
+            </div>
         </div>
     </script>
 </div>

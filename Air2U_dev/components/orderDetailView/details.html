@@ -2,7 +2,17 @@
     <header data-role="header">
         <div data-role="navbar" class="header-text">
             <a data-role="backbutton" data-align="left">Back</a>
+            <a data-role="button" data-click="backToHome" data-align="left" data-icon="home"></a>
             <span data-bind="text: currentItem['ProductName']"></span>
+            <a data-role="button" data-click="showAllCarts" data-align="right" data-icon="cart"></a>
+            <script>
+                $("[data-click=showAllCarts]").click(function() {
+                    app.mobileApp.navigate('components/shoppingCartView/view.html');
+                });
+                $("[data-click=backToHome]").click(function() {
+                    app.mobileApp.navigate('components/home/view.html');
+                });
+            </script>
         </div>
     </header>
 
@@ -10,7 +20,11 @@
         <div class="km-listview-wrapper">
             <ul class="km-listview km-list km-listinset details-fields">
                 <li><div data-bind="text: currentItem.ProductName"></div></li>
-                <li><img data-bind="attr: { src: currentItem.ProductImagesUrl }" width="100%" height="auto" onerror="this.src='resources/default.png'"></li>
+                <li>
+                    <div align="center">
+                        <img data-bind="attr: {src: img}" style="width: auto; height: 180px" onerror="this.src='resources/default.png'"/>
+                    </div>
+                </li>
                 <li>
                     <table width="100%">
                         <tr >
@@ -20,10 +34,10 @@
                         </tr>
                         <tr>
                             <td width="50%">
-                                <h4>PV: <text data-bind="text: currentItem.pvPrice"></text></h4>
+                                <h4>Price: RM<text data-bind="text: currentItem.cvPrice"></text></h4>
                             </td>
                             <td>
-                                <h4>CV: <text data-bind="text: currentItem.cvPrice"></text></h4>
+                                <h4>Air pt: <text data-bind="text: currentItem.pvPrice"></text></h4>
                             </td>
                         </tr>
                         <tr>
@@ -31,9 +45,7 @@
                                 <h4>Stock: <text data-bind="text: currentItem.QTY"/></h4>
                             </td>
                             <td>
-                                Qty:<input type="text" id="qtyField" name="qtyField" value="1" style="margin-left: 30px; margin-top: 33px; text-align: center; width: 10px; margin-right: 60px";
-                                           pattern="[0-9]" maxlength="4"/>
-                                </h4>
+                                <h4>Qty: <input style="top: inherit;text-align: center; margin-right: 50px; width: 50px; margin-top: 9px" type="text" name="qtyField" id="qtyField" value="1" pattern="[0-9]" maxlength="4"/></h4>
                             </td>
                             <td align="right">
                                 <img src="resources/shopping_cart.png" width="30px" height="30px"
@@ -42,40 +54,46 @@
                                     var el = app.data.backendServices;
 
                                     $("[data-click=addtocart]").click(function() {
-                                        var qty = document.getElementById("qtyField").value;
-										var stock = app.orderDetailView.orderDetailViewModel.get("currentItem.QTY");
+                                        var qty = parseInt(document.getElementById("qtyField").value);
+                                        var stock = parseInt(app.orderDetailView.orderDetailViewModel.get("currentItem.QTY"));
                                         if (qty>stock){
                                             alert('Out of stock！');
                                             document.getElementById("qtyField").value = stock;
                                         }  else {
-                                            //var el = new Everlive("o6yuauaw7f5m56jb");
                                             if (app.currentUser.Id != "") {
                                                 var productId =
-                                                        app.orderDetailView.orderDetailViewModel.get("originalItem.Id");
+                                                    app.orderDetailView.orderDetailViewModel.get("originalItem.Id");
                                                 var userId = app.currentUser.Id;
                                                 var cartData = el.data('ProductCart');
                                                 var query = new Everlive.Query();
                                                 query.where().eq('productId', productId).eq('userId', userId);
                                                 cartData.get(query).then(function (data) {
                                                     if (data["count"] > 0) {
-                                                        alert('Existed in cart!');
+                                                        var nqty = data["result"][0].qty+qty;
+                                                        cartData.updateSingle({Id: data["result"][0].Id, 'qty': nqty},
+                                                            function (data) {
+                                                                alert('Add to cart successfully!');
+                                                            },
+                                                            function (error) {
+                                                                alert('Fail to add to cart!');
+                                                            });
                                                     } else {
                                                         cartData.create({
-                                                                    'productId': productId,
-                                                                    'qty': qty,
-                                                                    'userId': userId,
-                                                                    'product': productId
-                                                                },
-                                                                function (data) {
-                                                                    alert('Add to cart successfully!');
-                                                                },
-                                                                function (error) {
-                                                                    alert('Fail to add to cart!');
-                                                                });
+                                                                'productId': productId,
+                                                                'qty': qty,
+                                                                'userId': userId,
+                                                                'product': productId
+                                                            },
+                                                            function (data) {
+                                                                alert('Add to cart successfully!');
+                                                            },
+                                                            function (error) {
+                                                                alert('Fail to add to cart!');
+                                                            });
                                                     }
                                                 });
                                             } else {
-                                                navigator.notification.alert("You do not login,Please login first.");
+                                                alert("You do not login,Please login first.");
                                                 setTimeout(function(){
                                                     app.mobileApp.navigate('components/loginModelView/view.html');
                                                 }, 10);
@@ -85,9 +103,16 @@
                                 </script>
                             </td>
                         </tr>
+                        <tr>
+                            <td colspan = "2">
+                                <p style="padding: 0px">You could earn <b><text data-bind="text: earnPoints"></text></b> Points from per product.</p>
+                            </td>
+                        </tr>
                     </table>
                 </li>
-                <li><h4><div name="produceDesc" data-bind="text: productDesc"></div></h4></li>
+                <li><h4>Specification</h4>
+                    <div name="produceDesc" style="font-size: 14px" data-bind="text: productDesc"/>
+                </li>
             </ul>
         </div>
     </div>

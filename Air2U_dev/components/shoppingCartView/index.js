@@ -73,14 +73,14 @@ app.localization.registerView('shoppingCartView');
                                 "TargetTypeName": "Product"
                             }
                         })
-                        //"X-Everlive-Filter": JSON.stringify({
-                        //    'Owner': app.currentUser.Id
-                        //})
+                        // "X-Everlive-Filter": JSON.stringify({
+                        //    'userId': app.currentUser.Id
+                        // })
                     }},
                         //{
                         //    "Authorization" : app.currentUser.access_token
                         //}
-				serverFiltering: true,
+                serverFiltering: true,
                 filter: { field: 'userId', operator: 'eq', value: app.currentUser.Id },
                 dataProvider: dataProvider
             },
@@ -103,6 +103,7 @@ app.localization.registerView('shoppingCartView');
                     }else {
                         dataItem['productIdUrl'] = "resources/default.png";
                     }
+                    dataItem['stock'] = product.QTY;
 
                     /// start flattenLocation property
                     flattenLocationProperties(dataItem);
@@ -110,7 +111,6 @@ app.localization.registerView('shoppingCartView');
                 }
             },
             error: function(e) {
-
                 if (e.xhr) {
                     var errorText = "";
                     try {
@@ -203,8 +203,11 @@ app.localization.registerView('shoppingCartView');
                 for (var i = 0; i < data.length; i++) {
                     var item = data[i];
                     if (item.cchecked) {
-                        totalP = totalP + parseFloat(item.product.cvPrice);
-                        totalPV = totalPV + parseFloat(item.product.pvPrice);
+                        var itemQty = parseFloat(item.qty || 0);
+                        var cv = item.product.cvPrice || "0";
+                        var correctCV = cv.replace(/[^0-9\.]+/g,"");
+                        totalP = totalP + parseFloat(correctCV) * itemQty ;
+                        totalPV = totalPV + parseFloat(item.product.pvPrice || 0) * itemQty;
                     }
                 }
 
@@ -235,6 +238,13 @@ app.localization.registerView('shoppingCartView');
                 var totalP = shoppingCartViewModel.get('total');
                 var tax = shoppingCartViewModel.get('tax');
                 var totalPV = shoppingCartViewModel.get('pv');
+
+                var currentPoint = parseFloat(app.currentUser.CurrentPoint) || 0;
+                if (totalPV > currentPoint) {
+                    alert("Your currentPoint is " + currentPoint + ", this order need point " + totalPV +
+                        "Your point is not enought for this order, please uncheck some items and check out again");
+                     return;
+                }
                 var source = shoppingCartViewModel.get('dataSource');
                 var data = source.data();
                 var checkedProducts = [];
@@ -252,11 +262,11 @@ app.localization.registerView('shoppingCartView');
                 }
                 app.showLoading();
                 source.one('sync', function() {
-                     shoppingCartViewModel.createProductOrders(checkedProducts, function(error, pdata) {
+                     shoppingCartViewModel.createProductOrders(checkedProducts, function(error, pdata, length) {
                          if (error) {
                              app.hideLoading();
                              alert(JSON.stringify(error));
-                         }else {
+                         }else if (length>0){
                              var retP = pdata['result'];
                              shoppingCartViewModel.createOrder(retP, totalP, totalPV, function(error, retOrder) {
                                  if (error) {
@@ -270,7 +280,7 @@ app.localization.registerView('shoppingCartView');
                                          var query = 'orderId=' + retOrder.Id
                                              + '&price=' + totalP
                                              + '&point=' + totalPV
-                                             + '&tax=' + tax
+                                             // + '&tax=' + tax
                                              + '&gotPoint=' + earnPoint;
                                          console.log("query: " + query);
                                          app.mobileApp.navigate("components/checkoutView/view.html?" + query);
@@ -287,27 +297,45 @@ app.localization.registerView('shoppingCartView');
                 var pOrders = [];
                 for(var i = 0; i < productCarts.length; i++) {
                     var productCard = productCarts[i];
-                    console.log("productCart: " + JSON.stringify(productCard));
-                    var productPrice = parseFloat(productCard.qty) * parseFloat(productCard.cvPrice);
-                    var earnedPoint = shoppingCartViewModel.getPointFromPrice(productPrice);
-                    var pOrder = {
-                        OrderQTY : productCard.qty,
-                        Product: productCard.product.Id,
-                        EarnedPV: earnedPoint,
-                        Owner: app.currentUser.Id
-                    };
-                    pOrders.push(pOrder);
+                    var newQty = productCard.stock-productCard.qty;
+                    if (newQty >=0){
+                        console.log("productCart: " + JSON.stringify(productCard));
+                        shoppingCartViewModel.updateProduct(productCard.productId,newQty,null);
+                        var productPrice = parseFloat(productCard.qty) * parseFloat(productCard.cvPrice);
+                        var earnedPoint = shoppingCartViewModel.getPointFromPrice(productPrice);
+                        var pOrder = {
+                            OrderQTY : productCard.qty,
+                            Product: productCard.product.Id,
+                            EarnedPV: earnedPoint,
+                            Owner: app.currentUser.Id
+                        };
+                        pOrders.push(pOrder);
+                    }else{
+                        app.hideLoading();
+                        alert("Qty is not enough for '"+productCard.ProductName+'"');
+                    }
                 }
 
                 var data = dataProvider.data('ProductOrder');
                 data.create(pOrders,
                     function(data){
-                       callback(null, data);
+                       callback(null, data, pOrders.length);
                     },
                     function(error){
                         callback(error);
                     }
                 );
+            },
+
+            updateProduct: function (productId, qty, callback) {
+                var data = dataProvider.data('Product')
+                data.updateSingle({Id: productId, 'QTY': qty},
+                    function (data) {
+                        callback(null, data);
+                    },
+                    function (error) {
+                        callback(error);
+                    });
             },
 
             createOrder: function(productOders,price,pv, callback) {
@@ -432,18 +460,18 @@ app.localization.registerView('shoppingCartView');
                 return point;
             },
 
-            checkIfHaveEnoughtPoints: function () {
-                var source = shoppingCartViewModel.get('dataSource');
-                var data = source.data();
-                shoppingCartViewModel.updateTotalPrice(data);
-                var currentPV = shoppingCartViewModel.get("pv");
-                var userPV =  parseFloat(app.currentUser.CurrentPoint) || 0;
-                console.log("check current pv: " + currentPV + " user pv: " + userPV);
-                if (userPV < parseFloat(currentPV)) {
-                    return false;
-                }
-                return true;
-            },
+            // checkIfHaveEnoughtPoints: function () {
+            //     var source = shoppingCartViewModel.get('dataSource');
+            //     var data = source.data();
+            //     shoppingCartViewModel.updateTotalPrice(data);
+            //     var currentPV = parseFloat(shoppingCartViewModel.get("pv")) || 0;
+            //     var userPV =  parseFloat(app.currentUser.CurrentPoint) || 0;
+            //     console.log("check current pv: " + currentPV + " user pv: " + userPV);
+            //     if (userPV < currentPV) {
+            //         return false;
+            //     }
+            //     return true;
+            // },
 
 
 
@@ -479,19 +507,19 @@ app.localization.registerView('shoppingCartView');
         var data = source.data();
 
         if (e.field == 'dataSource') {
-            if (!shoppingCartViewModel.checkIfHaveEnoughtPoints()) {
-                if(e.items){
-                    var len = e.items.length;
-                    for (var i = 0; i < len; i++) {
-                        var item = e.items[i];
-                        var checked = item.get("cchecked");
-                        if (checked) {
-                            item.cchecked = !checked;
-                        }
-                    }
-                }
-                alert("Your point is not enough for this action");
-            }
+            // if (!shoppingCartViewModel.checkIfHaveEnoughtPoints()) {
+            //     if(e.items){
+            //         var len = e.items.length;
+            //         for (var i = 0; i < len; i++) {
+            //             var item = e.items[i];
+            //             var checked = item.get("cchecked");
+            //             if (checked) {
+            //                 item.cchecked = !checked;
+            //             }
+            //         }
+            //     }
+            //     alert("Your point is not enough for this action");
+            // }
             shoppingCartViewModel.updateTotalPrice(data);
             var checkedCount = 0;
             for (var i = 0; i < data.length; i++) {
@@ -499,41 +527,50 @@ app.localization.registerView('shoppingCartView');
                 if (item.cchecked) {
                     checkedCount = checkedCount + 1;
                 }
-            }
-            $("#cartListView").data().kendoMobileListView.refresh();
 
+                var itemQty = parseFloat(item.qty || 0);
+                var itemStock = parseFloat(item.product.QTY || 0);
+                if (itemQty > itemStock) {
+                    alert("This item's qty exceed its stock");
+                    item.set('qty', itemStock);
+                }
+            }
+            // $("#cartListView").data().kendoMobileListView.refresh();
+            var previousAllChecked = shoppingCartViewModel.get('allChecked');
             if (checkedCount == data.length && data.length > 0) {
                 shoppingCartViewModel.allChecked = true;
             }else {
                 shoppingCartViewModel.allChecked = false;
             }
 
-            $("#allChecked").prop("checked", shoppingCartViewModel.allChecked);
+            if (previousAllChecked != shoppingCartViewModel.get('allChecked')) {
+                $("#allChecked").prop("checked", shoppingCartViewModel.allChecked);
+            }
         }else if (e.field == 'allChecked') {
             var checked = this.get(e.field);
-            if (checked) {
-                var totalPV = 0;
-                for (var i = 0; i < data.length; i++) {
-                    var item = data[i];
-                    totalPV += parseFloat(item.product.pvPrice);
-                }
-                if (parseFloat(app.currentUser.CurrentPoint) < parseFloat(totalPV)) {
-                    $("#allChecked").prop("checked", !checked);
-                    alert("Your point is not enough for this action");
-                    shoppingCartViewModel.allChecked = !checked;
-                    return;
-                }
-            }
+            // if (checked) {
+            //     var totalPV = 0;
+            //     for (var i = 0; i < data.length; i++) {
+            //         var item = data[i];
+            //         totalPV += parseFloat(item.product.pvPrice);
+            //     }
+            //     if (parseFloat(app.currentUser.CurrentPoint) < parseFloat(totalPV)) {
+            //         $("#allChecked").prop("checked", !checked);
+            //         alert("Your point is not enough for this action");
+            //         shoppingCartViewModel.allChecked = !checked;
+            //         return;
+            //     }
+            // }
 
             for (var i = 0; i < data.length; i++) {
                 var item = data[i];
                 if (item.get('cchecked') != checked) {
-                    item.cchecked = checked;
+                    item.set('cchecked', checked);
                 }
             }
 
-            shoppingCartViewModel.updateTotalPrice(data);
-            $("#cartListView").data().kendoMobileListView.refresh();
+            // shoppingCartViewModel.updateTotalPrice(data);
+            // $("#cartListView").data().kendoMobileListView.refresh();
         }
     });
 
@@ -576,25 +613,27 @@ app.localization.registerView('shoppingCartView');
                 }
             }
 
-
-            shoppingCartViewModel.getTaxRate(function (rate, error) {
-                if (error) {
-                    alert(error);
-                } else {
-                    shoppingCartViewModel.taxRate = rate;
-                    shoppingCartViewModel.getPointRule(function (item, error) {
-                        if (error) {
-                            alert(error);
-                        } else {
-                            shoppingCartViewModel.pointRule = item;
-                            dataSource = new kendo.data.DataSource(dataSourceOptions);
-                            shoppingCartViewModel.set('dataSource', dataSource);
-                            fetchFilteredData(param);
-                        }
-                    });
-                }
-            });
-            
+            if (!(app.data.taxRate && app.data.pointRule)) {
+                shoppingCartViewModel.getTaxRate(function (rate, error) {
+                    if (error) {
+                        alert(error);
+                    } else {
+                        shoppingCartViewModel.taxRate = rate;
+                        app.data.taxRate = rate;
+                        shoppingCartViewModel.getPointRule(function (item, error) {
+                            if (error) {
+                                alert(error);
+                            } else {
+                                shoppingCartViewModel.pointRule = item;
+                                app.data.pointRule = item;
+                                dataSource = new kendo.data.DataSource(dataSourceOptions);
+                                shoppingCartViewModel.set('dataSource', dataSource);
+                                fetchFilteredData(param);
+                            }
+                        });
+                    }
+                });
+            }
             dataSource = new kendo.data.DataSource(dataSourceOptions);
             shoppingCartViewModel.set('dataSource', dataSource);
             fetchFilteredData(param);

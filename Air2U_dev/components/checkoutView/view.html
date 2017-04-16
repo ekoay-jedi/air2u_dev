@@ -18,14 +18,14 @@
         <form style="font-size: 16px;">
             <ul class="form-content" data-role="listview" data-style="inset">
                 <li class="form-content-item">
-                    <div id="shoppingcartField" class="field field--image imageListItem km-label-above">
-                        <img src="resources/shopping_cart.png" style="float: left;">
-                        <div style="margin-top: 15px;margin-left: 20px;">
-                            <h1 style="float: left;margin-left: 20px;color: black;">My Total: </h1>
-                            <h1 style="float: right;margin-right: 20px;color: black;" name="total-price"
-                                id="total-price"></h1></div>
+                    <!--<div id="shoppingcartField" class="field field&#45;&#45;image imageListItem km-label-above">-->
+                        <!--<img src="resources/shopping_cart.png" style="float: left;">-->
+                        <div style="margin-top: 15px;">
+                            <h2 style="float: left;margin-left: 20px;color: black;">My Total: </h2>
+                            <h2 style="float: right;margin-right: 20px;color: black;" name="total-price"
+                                id="total-price"></h2></div>
 
-                    </div>
+                    <!--</div>-->
                 </li>
                 <li>
                     <div>
@@ -54,8 +54,8 @@
 
             <ul>
 
-                <li style="list-style-type: none;font-size: 25px;color: black;margin-top: 20px">
-                    <div style="margin-bottom: 20px;">
+                <li style="list-style-type: none;">
+                    <!--<div style="margin-bottom: 20px;">
                         <h3 style="color: black;">Shipping Method</h3>
                     </div>
                     <input type="radio" name="pay-for-e-bank"
@@ -66,9 +66,22 @@
                     <h3 style="color: black;">HLB Online</h3>
                     <input type="radio" name="pay-for-e-bank"
                            style="float: left;position: inherit;margin-right: 20px;"/>
-                    <h3 style="color: black;">PBOnline</h3>
+                    <h3 style="color: black;">PBOnline</h3>-->
+                    <select style="font-size: 25px;float: left;color: black;margin-bottom: 20px" id="selectlink" name="selectlink">
+                        <option value="0" selected="selected" >Select shipping method</option>
+                    </select>
+
                 </li>
+
+                <li data-bind="click: addressdetail" style="list-style-type: none;font-size: 25px;color: black;margin-top: 20px;margin-right: 20px">
+                    <label for="defaultaddress" id="addresslabel" name="addresslabel" style="color: black;font-size: 25px">Address:</label>
+                    <textarea id="defaultaddress" name="defaultaddress" data-bind="value: address" rows="3"
+                              type="text" style="color: black;font-size: 25px"></textarea>
+                </li>
+
+
             </ul>
+
 
 
         </form>

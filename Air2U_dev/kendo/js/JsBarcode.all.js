@@ -673,7 +673,7 @@ var defaults = {
 	textAlign: "center",
 	textPosition: "bottom",
 	textMargin: 2,
-	fontSize: 20,
+	fontSize: 50,
 	background: "#ffffff",
 	lineColor: "#000000",
 	margin: 10,

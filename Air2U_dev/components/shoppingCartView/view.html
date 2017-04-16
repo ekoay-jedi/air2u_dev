@@ -62,7 +62,7 @@
             </div>
             <div id="cartPrice">
                 Total Price: <span id="totalPrice" data-bind="text: shoppingCartViewModel.total"></span>
-                Tax: <span id="taxPrie" data-bind="text: shoppingCartViewModel.tax"></span>
+                <!--Tax: <span id="taxPrie" data-bind="text: shoppingCartViewModel.tax"></span>-->
                 <br/>
                 PV:<span id="totalPV" data-bind="text: shoppingCartViewModel.pv"></span>
             </div>
@@ -76,18 +76,24 @@
 
     <!-- END_CUSTOM_CODE_shoppingCartViewModel -->
     <script type="text/x-kendo-template" id="shoppingCartViewModelTemplate">
-        <div class="image-with-text" id="cartProduct">
+        <div class="image-with-text" id="cartProduct" style="height: 100px">
             <input style="float: left; position: inherit; margin-right: 10px;margin-top: 30px;-webkit-appearance: normal;" type="checkbox" data-bind="checked: cchecked"/>
-            <img src="#: productIdUrl #" onerror="javascript:src='resources/default.png'" style="margin-top: 20px">
-            <div style="overflow: hidden; white-space: normal; text-overflow: ellipsis; height: 45px"><h4>#: product['ProductName'] #</h4></div>
-            <div>
-                <p>Qty: <span>#: qty #</span></p>
+            <img style="height: 100%" src="#: productIdUrl #" onerror="this.src='resources/default.png'">
+            <div style="font-size: 18px">
+                <p style="max-height: 35px;text-overflow:ellipsis; overflow: hidden;"><b>#: product['ProductName'] #</b></p>
                 # if (product['pvPrice'] > 0) { #
-                <p>PV: <span>#: product['pvPrice'] #</span></p>
+                <p>Air pt: <span>#: product['pvPrice'] #</span></p>
                 #}#
                 # if (product['cvPrice'] > 0) { #
-                <p>Price: <span style="color: red;">#: product['cvPrice'] #</span></p>
+                <p>Price: RM#: product['cvPrice'] #</p>
                 #}#
+                <p>Qty: <input type="text"
+                               name="qtyField"
+                               id="qtyField"
+                               style="top: inherit;text-align: left; margin-right: 50px; width: 50px; margin-top: 9px"
+                               data-bind="value: qty"
+                               pattern="[0-9]"
+                               maxlength="4"/></p>
                 <!--<p><span id="plus_qty">  +  </span><span>#: qty #</span><span id="minus_qty">  -  </span></p>-->
             </div>
 

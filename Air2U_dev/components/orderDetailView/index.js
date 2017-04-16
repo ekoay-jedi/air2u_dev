@@ -1,6 +1,7 @@
 'use strict';
 var el = app.data.backendServices;
 var orderID;
+var pointRule;
 app.orderDetailView = kendo.observable({
     // opencheckout: function () {
     //    alert("------ "+orderID);
@@ -194,6 +195,50 @@ app.localization.registerView('orderDetailView');
 
                 return result;
             },
+            getPointRule: function () {
+                var dataProvider = app.data.backendServices;
+                var data = dataProvider.data('PointRule');
+                var query = new Everlive.Query();
+                var currentDate = new Date();
+                var isoStr = currentDate.toISOString();
+                query.where().or().eq('IsSelected', true).gte('EndDate', isoStr).done();
+                data.get(query).then(function (data) {
+                    var result = data['result'];
+                    if (Array.isArray(result)) {
+                        var ret = null;
+                        if (result.length > 1) {
+                            var defaultRule = null;
+                            for (var i = 0; i < result.length; i++) {
+                                if (result[i]["RuleName"] == "Default Point") {
+                                    defaultRule = result[i];
+                                }
+
+                                if (result[i]["IsSelected"]) {
+                                    ret = result[i];
+                                    break;
+                                }
+                            }
+
+                            if (!ret) {
+                                ret = defaultRule;
+                            }
+                        }else {
+                            ret = result[0];
+                        }
+                        pointRule = ret;
+                        console.log("point rule: pv: " + ret.pv + " cv: " + ret.cv + " price: ");
+                    }else {
+                        alert("get point rule: " + JSON.stringify(data));
+                    }
+                }, function (error) {
+                    pointRule = null;
+                });
+            },
+            getPointFromPrice: function(price){
+                var cv = parseFloat(pointRule.cv);
+                var pv = parseFloat(pointRule.pv);
+                return ((price - price % cv) / cv) * pv;
+            },
             itemClick: function(e) {
                 var dataItem = e.dataItem || orderDetailViewModel.originalItem;
 
@@ -215,18 +260,13 @@ app.localization.registerView('orderDetailView');
                     dataSource = orderDetailViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item).Product;
                 if(itemModel) {
-                    var imgitem = itemModel.ProductImages;
-                    var item = itemModel.ProductImages;
-                    if (item && item.length > 0) {
-                        orderDetailViewModel.set("ProductImagesUrl", processImage(item[0]));
-                    } else {
-                        orderDetailViewModel.set("ProductImagesUrl", "resources/default.png");
-                    }
                     if (!itemModel.ProductName) {
                         itemModel.ProductName = String.fromCharCode(160);
                     }
-
+                    orderDetailViewModel.set("img", dataSource.getByUid(item).ProductImagesUrl);
                     /// start detail form initialization
+                    var earnPoint = orderDetailViewModel.getPointFromPrice(itemModel.cvPrice);
+                    orderDetailViewModel.set("earnPoints", earnPoint);
                     /// end detail form initialization
 
                     var descitem = itemModel.ProductDescription;
@@ -267,6 +307,7 @@ app.localization.registerView('orderDetailView');
     }
 
     parent.set('onShow', function(e) {
+        orderDetailViewModel.getPointRule();
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,
             backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),

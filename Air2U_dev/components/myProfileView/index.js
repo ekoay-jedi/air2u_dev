@@ -20,8 +20,9 @@ var lastqwarded;
 app.myProfileView = kendo.observable({
     onShow: function () {
         $("#rightview").text("Edit");
-
+        var imagehead = document.getElementById("userheadview");
         if (app.currentUser.Id != "") {
+            imagehead.src = "/resources/head.png";
             userid = app.currentUser.Id;
             username = app.currentUser.Username;
             email = app.currentUser.Email;
@@ -34,13 +35,15 @@ app.myProfileView = kendo.observable({
             introduceName = app.currentUser.IntroducerName;
             introduceContact = app.currentUser.IntroducerContact;
             introduceEmail = app.currentUser.IntroducerEmail;
-            currentPoint = app.currentUser.CurrentPoint;
-            lastqwarded = app.currentUser.LatestAwardedPoint;
+          /*  currentPoint = app.currentUser.CurrentPoint;
+            lastqwarded = app.currentUser.LatestAwardedPoint;*/
+            currentPoint = parseFloat(app.currentUser.CurrentPoint);
+            lastqwarded = parseFloat(app.currentUser.LatestAwardedPoint);
 
-            if(currentPoint == undefined){
+            if(currentPoint == undefined /*||isNaN(currentPoint)*/){
                 currentPoint = 0;
             }
-            if(lastqwarded == undefined){
+            if(lastqwarded == undefined/*||isNaN(lastqwarded)*/){
                 lastqwarded=0;
             }
 
@@ -85,7 +88,7 @@ app.myProfileView = kendo.observable({
             }
 
 
-            var imagehead = document.getElementById("userheadview");
+
             if (avatar != null) {
                 el.Files.getById(avatar).then(function (data) {
                         for (var item in data) {
@@ -169,16 +172,16 @@ app.myProfileView = kendo.observable({
             $("#emailinfo").attr("disabled", false);
             $("#status").attr("disabled", false);
             //$("#card").attr("disabled", false);
-            $("#introduce_name").attr("disabled", false);
-            $("#introduce_contact").attr("disabled", false);
-            $("#introduce_email").attr("disabled", false);
+            //$("#introduce_name").attr("disabled", true);
+            //$("#introduce_contact").attr("disabled", true);
+            //$("#introduce_email").attr("disabled", true);
 
             document.getElementById("emailinfo").style.color="grey";
             document.getElementById("state").style.color="grey";
             document.getElementById("phone").style.color="grey";
-            document.getElementById("introduce_name").style.color="grey";
-            document.getElementById("introduce_contact").style.color="grey";
-            document.getElementById("introduce_email").style.color="grey";
+            document.getElementById("introduce_name").style.color="black";
+            document.getElementById("introduce_contact").style.color="black";
+            document.getElementById("introduce_email").style.color="black";
             document.getElementById("defaultaddress").style.color="grey";
 
 
@@ -205,13 +208,13 @@ app.myProfileView = kendo.observable({
                 }
             }
 
-            if(introduceEmail != ""){
+           /* if(introduceEmail != ""){
                 var emailMat=/^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
                 if(!emailMat.test(introduceEmail)){
                     alert("Introducer Email Address is not verify format.");
                     return;
                 }
-            }
+            }*/
 
 
 
@@ -316,18 +319,14 @@ app.myloyaltypointView = kendo.observable({
         /* JsBarcode("#barcode4",
          "f701bc80-db33-11e6-ba7d-ed8ffe6e33d3",
          {displayValue: true});*/
+        //userid=userid.substr(userid.lastIndexOf("-")+1,userid.length);
         JsBarcode("#barcode4", userid, {displayValue: true});
 
         var img = document.getElementById('barcode4');
         img.style.width = "100%"
         img.style.height = "auto"
 
-        /* var qrcode = new QRCode(document.getElementById("qrcode"), {
-         width : 200,
-         height : 200
-         });
 
-         qrcode.makeCode(userid);*/
 
     },
     buyproduct: function () {

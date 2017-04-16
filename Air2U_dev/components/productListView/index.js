@@ -3,6 +3,7 @@ var keyword;
 var filter;
 var curItem;
 var photoDS;
+var pointRule;
 app.productListView = kendo.observable({
     onShow: function() {},
     afterShow: function() {}
@@ -213,12 +214,60 @@ app.localization.registerView('productListView');
 
                 return result;
             },
+
             itemClick: function(e) {
                 var dataItem = e.dataItem || productListViewModel.originalItem;
                 curItem = dataItem;
                 app.mobileApp.navigate('components/productListView/details.html?uid=' + dataItem.uid+'&productId='+dataItem.productId);
 
             },
+
+            getPointRule: function () {
+                var dataProvider = app.data.backendServices;
+                var data = dataProvider.data('PointRule');
+                var query = new Everlive.Query();
+                var currentDate = new Date();
+                var isoStr = currentDate.toISOString();
+                query.where().or().eq('IsSelected', true).gte('EndDate', isoStr).done();
+                data.get(query).then(function (data) {
+                    var result = data['result'];
+                    if (Array.isArray(result)) {
+                        var ret = null;
+                        if (result.length > 1) {
+                            var defaultRule = null;
+                            for (var i = 0; i < result.length; i++) {
+                                if (result[i]["RuleName"] == "Default Point") {
+                                    defaultRule = result[i];
+                                }
+
+                                if (result[i]["IsSelected"]) {
+                                    ret = result[i];
+                                    break;
+                                }
+                            }
+
+                            if (!ret) {
+                                ret = defaultRule;
+                            }
+                        }else {
+                            ret = result[0];
+                        }
+                        pointRule = ret;
+                        console.log("point rule: pv: " + ret.pv + " cv: " + ret.cv + " price: ");
+                    }else {
+                        alert("get point rule: " + JSON.stringify(data));
+                    }
+                }, function (error) {
+                    pointRule = null;
+                });
+            },
+
+            getPointFromPrice: function(price){
+                var cv = parseFloat(pointRule.cv);
+                var pv = parseFloat(pointRule.pv);
+                return ((price - price % cv) / cv) * pv;
+            },
+
             detailsShow: function(e) {
                 var uid = e.view.params.uid,
                     dataSource = productListViewModel.get('dataSource'),
@@ -260,10 +309,14 @@ app.localization.registerView('productListView');
                 var item = uid,
                     dataSource = productListViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item);
-				if (!itemModel) {
-					return null;
-				}
-                var imgitem = itemModel["ProductImages"];
+                if (!itemModel) {
+                    return null;
+                }
+                
+                var imgitem = [];
+                if(itemModel && itemModel.hasOwnProperty('ProductImages')) {
+                    imgitem = itemModel["ProductImages"];
+                }
                 if (typeof imgitem != 'undefined' && imgitem.count>0){
                     itemModel.ProductImagesUrl = processImage(imgitem[0]);
                 }
@@ -271,6 +324,8 @@ app.localization.registerView('productListView');
                 if (!itemModel.ProductName) {
                     itemModel.ProductName = String.fromCharCode(160);
                 }
+                var earnPoint = productListViewModel.getPointFromPrice(itemModel.cvPrice);
+                productListViewModel.set("earnPoints", earnPoint);
 
                 /// start detail form initialization
                 /// end detail form initialization
@@ -319,6 +374,9 @@ app.localization.registerView('productListView');
         keyword = "";
         $("#search").val('');
         $("#filterSelected").val('00');
+        if (!pointRule){
+            pointRule = productListViewModel.getPointRule();
+        }
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,
             backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
