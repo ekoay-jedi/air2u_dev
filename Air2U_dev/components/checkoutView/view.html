@@ -21,67 +21,53 @@
                     <!--<div id="shoppingcartField" class="field field&#45;&#45;image imageListItem km-label-above">-->
                         <!--<img src="resources/shopping_cart.png" style="float: left;">-->
                         <div style="margin-top: 15px;">
-                            <h2 style="float: left;margin-left: 20px;color: black;">My Total: </h2>
-                            <h2 style="float: right;margin-right: 20px;color: black;" name="total-price"
+                            <h2 style="float: left;margin-left: 2px;color: black;">My Total: </h2>
+                            <h2 style="float: right;margin-right: 2px;color: black;" name="total-price"
                                 id="total-price"></h2></div>
 
                     <!--</div>-->
                 </li>
                 <li>
                     <div>
-                        <h2 style="float: left;margin-left: 10px;color: black;">Tax: </h2>
-                        <h2 style="float: right;margin-right: 10px;color: black;" name="tax" id="tax"></h2>
+                        <h2 style="float: left;margin-left: 2px;color: black;">Tax: </h2>
+                        <h2 style="float: right;margin-right: 2px;color: black;" name="tax" id="tax"></h2>
                     </div>
 
                 </li>
                 <li>
                     <div>
-                        <h2 style="float: left;margin-left: 10px;color: black;">Use Loyalty Point: </h2>
-                        <h2 style="float: right;margin-right: 10px;color: black;" name="total-point" id="total-point"></h2>
+                        <h2 style="float: left;margin-left: 2px;color: black;">Use Loyalty Point: </h2>
+                        <h2 style="float: right;margin-right: 2px;color: black;" name="total-point" id="total-point"></h2>
                     </div>
 
                 </li>
 
                 <li>
                     <div>
-                        <h2 style="float: left;margin-left: 10px;color: black;">Earn Point: </h2>
-                        <h2 style="float: right;margin-right: 10px;color: black;" name="earn-point" id="earn-point"></h2>
+                        <h2 style="float: left;margin-left: 2px;color: black;">Earn Point: </h2>
+                        <h2 style="float: right;margin-right: 2px;color: black;" name="earn-point" id="earn-point"></h2>
                     </div>
 
                 </li>
-
-            </ul>
-
-            <ul>
-
-                <li style="list-style-type: none;">
-                    <!--<div style="margin-bottom: 20px;">
-                        <h3 style="color: black;">Shipping Method</h3>
+               <!-- <li>
+                    <div >
+                        <h2 style="float: left;margin-left: 10px;color: black;">Shipping Fees: </h2>
+                        <h2 style="float: right;margin-right: 10px;color: black;" name="shippingfees" id="shippingfees" data-bind="text: shippingfees"></h2>
                     </div>
-                    <input type="radio" name="pay-for-e-bank"
-                           style="float: left;position: inherit;margin-right: 20px;"/>
-                    <h3 style="color: black;">Maybank2U</h3>
-                    <input type="radio" name="pay-for-e-bank"
-                           style="float: left;position: inherit;margin-right: 20px;"/>
-                    <h3 style="color: black;">HLB Online</h3>
-                    <input type="radio" name="pay-for-e-bank"
-                           style="float: left;position: inherit;margin-right: 20px;"/>
-                    <h3 style="color: black;">PBOnline</h3>-->
-                    <select style="font-size: 25px;float: left;color: black;margin-bottom: 20px" id="selectlink" name="selectlink">
+
+                </li>-->
+                <li >
+                    <select style="font-size: 25px;float: left;color: black;width: inherit;margin-left: 10px" id="selectlink" name="selectlink">
                     </select>
 
                 </li>
-
                 <li data-bind="click: addressdetail" style="list-style-type: none;font-size: 25px;color: black;margin-top: 20px;margin-right: 20px">
                     <label for="defaultaddress" id="addresslabel" name="addresslabel" style="color: black;font-size: 25px">Address:</label>
                     <textarea id="defaultaddress" name="defaultaddress" data-bind="value: address" rows="3"
                               type="text" style="color: black;font-size: 25px"></textarea>
                 </li>
 
-
             </ul>
-
-
 
         </form>
         <div class="button-group" style="margin-top: 25%">

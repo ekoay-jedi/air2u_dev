@@ -643,6 +643,7 @@ app.localization.registerView('shoppingCartView');
                 });
             }
             dataSource = new kendo.data.DataSource(dataSourceOptions);
+            app.data.cart = dataSource;
             shoppingCartViewModel.set('dataSource', dataSource);
             fetchFilteredData(param);
 

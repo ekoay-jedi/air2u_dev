@@ -118,6 +118,7 @@ app.localization.registerView('checkoutView');
         parent.earnPoint = earnPoint;
         parent.tax = tax;
         parent.set('address', deAddress);
+        app.checkoutView.set('shippingfees',0);
 
         checkoutViewModel.updateCheckoutView();
         $('#selectlink').on('change', function () {
@@ -125,6 +126,8 @@ app.localization.registerView('checkoutView');
             if (index > 0) {
                 var selectedFeeObj = parent.shippingFees[index - 1];
                 parent.selectedFee = selectedFeeObj;
+            }else{
+                parent.selectedFee = null;
             }
             var fee = parseFloat(this.value);
             console.log("fee: " + fee + ", index: " + index);
@@ -133,6 +136,7 @@ app.localization.registerView('checkoutView');
             var tax = totalPrice * (app.data.taxRate || 0);
             tax = tax.toFixed(2);
             parent.set('tax', tax);
+            parent.set('shippingfees', parent.selectSheet.options[parent.selectSheet.selectedIndex].value);
             checkoutViewModel.updateCheckoutView();
         });
 
@@ -145,7 +149,7 @@ app.localization.registerView('checkoutView');
                 $('#selectlink').append(defaultOption);
                 for (var item in result){
                     item = result[item];
-                    var option = $('<option>').val(item.Charges).text(item.ItemName);
+                    var option = $('<option>').val(item.Charges).text("( RM "+item.Charges+" )"+item.ItemName);
                     $('#selectlink').append(option);
                     //alert(item.ItemName+"---"+item.Charges);
                 }
@@ -153,6 +157,7 @@ app.localization.registerView('checkoutView');
                 function(error){
                     alert(JSON.stringify(error));
                 });
+
 
 
 
