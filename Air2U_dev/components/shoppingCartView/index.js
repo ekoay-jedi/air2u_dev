@@ -243,14 +243,17 @@ app.localization.registerView('shoppingCartView');
             /// start masterDetails view model functions
             /// end masterDetails view model function
             checkout: function (e) {
+                // e.preventDefault();
+                // e.stopPropagation();
                 var totalP = shoppingCartViewModel.get('total');
                 var tax = shoppingCartViewModel.get('tax');
                 var totalPV = shoppingCartViewModel.get('pv');
 
                 var currentPoint = parseFloat(app.currentUser.CurrentPoint) || 0;
                 if (totalPV > currentPoint) {
-                    alert("Your currentPoint is " + currentPoint + ", this order need point " + totalPV +
-                        "Your point is not enought for this order, please uncheck some items and check out again");
+                    var warningText =  "Your currentPoint is " + currentPoint + ", this order need point " + totalPV +
+                        ", Your point is not enought for this order, please uncheck some items and check out again";
+                    alert(warningText);
                      return;
                 }
                 var source = shoppingCartViewModel.get('dataSource');
@@ -359,6 +362,7 @@ app.localization.registerView('shoppingCartView');
                     OrderCustomer: app.currentUser.Id,
                     OrderNumber: onumber,
                     Status: 0,
+                    OrderType: 0,
                     totalPrice: price,
                     totalPV: pv,
                     Point: point,
