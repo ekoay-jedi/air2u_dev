@@ -89,7 +89,14 @@ app.localization.registerView('checkoutView');
             },
 
             updateCheckoutView: function () {
-                $("#total-price").text("RM "+ parent.totalPrice);
+                var fee = 0;
+                if (parent.selectedFee) {
+                    fee = parseFloat(parent.selectedFee.Charges || '0');
+                }
+                var price = parent.totalPoint +
+                            parent.tax +
+                            fee;
+                $("#total-price").text("RM "+ price);
                 $("#tax").text("RM "+ parent.tax);
                 $("#total-point").text(parent.totalPoint);
                 $("#earn-point").text(parent.earnPoint);
@@ -106,7 +113,7 @@ app.localization.registerView('checkoutView');
         var deAddress = app.currentUser.DeliveryAddress;
 
         parent.orderid = orderId;
-        parent.totalPrice = (totalPrice + tax);
+        parent.totalPrice = totalPrice;
         parent.totalPoint = totalPoint;
         parent.earnPoint = earnPoint;
         parent.tax = tax;
@@ -122,8 +129,9 @@ app.localization.registerView('checkoutView');
             var fee = parseFloat(this.value);
             console.log("fee: " + fee + ", index: " + index);
             var totalPrice = parseFloat(parent.totalPrice) + fee;
+            totalPrice = totalPrice.toFixed(2);
             var tax = totalPrice * (app.data.taxRate || 0);
-            parent.set('totalPrice', (totalPrice + tax));
+            tax = tax.toFixed(2);
             parent.set('tax', tax);
             checkoutViewModel.updateCheckoutView();
         });

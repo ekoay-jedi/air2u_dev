@@ -261,6 +261,7 @@ app.localization.registerView('orderDetailView');
                     dataSource = orderDetailViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item).Product;
                 checkSubmitFlag = false;
+                $("#qtyField").val(1);
                 if(itemModel) {
                     if (!itemModel.ProductName) {
                         itemModel.ProductName = String.fromCharCode(160);

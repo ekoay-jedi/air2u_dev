@@ -311,6 +311,7 @@ app.localization.registerView('productListView');
                     dataSource = productListViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(item);
                 checkSubmitFlag = false;
+                $("#qtyField").val(1);
                 if (!itemModel) {
                     return null;
                 }
