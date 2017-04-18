@@ -23,12 +23,10 @@
 
     <!-- END_CUSTOM_CODE_subCategoryViewModel -->
     <script type="text/x-kendo-template" id="subCategoryViewModelTemplate">
-        <div class="image-with-text" style="height: 80px">
+        <div class="image-with-text" style="height: 60px">
             # data = app.subCategoryView.subCategoryViewModel.fixHierarchicalData(data); #
-
-            <img style="height:100%" src="#: data['cateImgUrlUrl'] #" onerror="this.src='resources/default.jpg'"/>
-            <div style="font-size: 18px">#: data['Categoryname'] #</div>
-
+            <img style="height: auto; width:auto; max-height: 60px; max-width: 80px; vertical-align: middle" src="#: data['cateImgUrlUrl'] #" onerror="javascript:src='resources/default.png'"/>
+            <div style="font-size: 18px; margin-left: 100px">#: data['Categoryname'] #</div>
         </div>
     </script>
 </div>
