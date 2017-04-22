@@ -174,16 +174,15 @@ app.localization.registerView('checkoutView');
         var totalPrice = parseFloat(e.view.params.price);
         var totalPoint = parseFloat(e.view.params.point);
         var earnPoint = parseFloat(e.view.params.gotPoint);
-        var tax = totalPrice * parseFloat(app.data.taxRate || 0);
+        var tax = totalPrice * parseFloat(app.data.taxRate || '0');
         var deAddress = app.currentUser.HomeAddress;
 
         parent.orderid = orderId;
         parent.totalPrice = totalPrice;
         parent.totalPoint = totalPoint;
         parent.earnPoint = earnPoint;
-        parent.tax = tax.toFixed(2);
+        parent.tax = parseFloat(tax.toFixed(2));
         parent.set('address', deAddress);
-        app.checkoutView.set('shippingfees',0);
 
         checkoutViewModel.updateCheckoutView();
         $('#selectlink').on('change', function () {
@@ -195,13 +194,12 @@ app.localization.registerView('checkoutView');
                 parent.selectedFee = null;
             }
             var fee = parseFloat(this.value);
-            console.log("fee: " + fee + ", index: " + index);
             var totalPrice = parseFloat(parent.totalPrice) + fee;
             totalPrice = totalPrice.toFixed(2);
-            var tax = totalPrice * (app.data.taxRate || 0);
-            tax = tax.toFixed(2);
+            var tax = totalPrice * parseFloat(app.data.taxRate || 0);
+            tax = parseFloat(tax.toFixed(2));
             parent.set('tax', tax);
-            parent.set('shippingfees', parent.selectSheet.options[parent.selectSheet.selectedIndex].value);
+            parent.set('totalPrice', totalPrice);
             checkoutViewModel.updateCheckoutView();
         });
 
