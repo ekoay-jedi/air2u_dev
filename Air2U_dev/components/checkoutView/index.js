@@ -195,11 +195,10 @@ app.localization.registerView('checkoutView');
             }
             var fee = parseFloat(this.value);
             var totalPrice = parseFloat(parent.totalPrice) + fee;
-            totalPrice = totalPrice.toFixed(2);
+            totalPrice = parseFloat(totalPrice.toFixed(2));
             var tax = totalPrice * parseFloat(app.data.taxRate || 0);
             tax = parseFloat(tax.toFixed(2));
             parent.set('tax', tax);
-            parent.set('totalPrice', totalPrice);
             checkoutViewModel.updateCheckoutView();
         });
 
