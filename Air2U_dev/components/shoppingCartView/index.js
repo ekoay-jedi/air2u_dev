@@ -625,27 +625,26 @@ app.localization.registerView('shoppingCartView');
                 }
             }
 
-            if (!(app.data.taxRate && app.data.pointRule)) {
-                shoppingCartViewModel.getTaxRate(function (rate, error) {
-                    if (error) {
-                        alert(error);
-                    } else {
-                        shoppingCartViewModel.taxRate = rate;
-                        app.data.taxRate = rate;
-                        shoppingCartViewModel.getPointRule(function (item, error) {
-                            if (error) {
-                                alert(error);
-                            } else {
-                                shoppingCartViewModel.pointRule = item;
-                                app.data.pointRule = item;
-                                dataSource = new kendo.data.DataSource(dataSourceOptions);
-                                shoppingCartViewModel.set('dataSource', dataSource);
-                                fetchFilteredData(param);
-                            }
-                        });
-                    }
-                });
-            }
+            shoppingCartViewModel.getTaxRate(function (rate, error) {
+                if (error) {
+                    alert(error);
+                } else {
+                    shoppingCartViewModel.taxRate = rate;
+                    app.data.taxRate = rate;
+                    shoppingCartViewModel.getPointRule(function (item, error) {
+                        if (error) {
+                            alert(error);
+                        } else {
+                            shoppingCartViewModel.pointRule = item;
+                            app.data.pointRule = item;
+                            dataSource = new kendo.data.DataSource(dataSourceOptions);
+                            shoppingCartViewModel.set('dataSource', dataSource);
+                            fetchFilteredData(param);
+                        }
+                    });
+                }
+            });
+            
             dataSource = new kendo.data.DataSource(dataSourceOptions);
             app.data.cart = dataSource;
             shoppingCartViewModel.set('dataSource', dataSource);
