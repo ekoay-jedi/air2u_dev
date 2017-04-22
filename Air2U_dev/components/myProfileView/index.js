@@ -16,8 +16,25 @@ var introduceEmail;
 
 var currentPoint;
 var lastqwarded;
+var fullName;
+
+
+
+
+
+
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    alert("mary----- "+navigator.camera);
+    //that._capturePhoto.apply(that,arguments);
+}
+
+
 
 app.myProfileView = kendo.observable({
+    _pictureSource: null,
+
+    _destinationType: null,
     onShow: function () {
         $("#rightview").text("Edit");
         var imagehead = document.getElementById("userheadview");
@@ -26,7 +43,7 @@ app.myProfileView = kendo.observable({
             userid = app.currentUser.Id;
             username = app.currentUser.Username;
             email = app.currentUser.Email;
-            address = app.currentUser.DeliveryAddress;
+            address = app.currentUser.HomeAddress;
             phone = app.currentUser.ContactNumber;
             state = app.currentUser.State;
             status = app.currentUser.Status;
@@ -35,6 +52,8 @@ app.myProfileView = kendo.observable({
             introduceName = app.currentUser.IntroducerName;
             introduceContact = app.currentUser.IntroducerContact;
             introduceEmail = app.currentUser.IntroducerEmail;
+            fullName=app.currentUser.FullName;
+
           /*  currentPoint = app.currentUser.CurrentPoint;
             lastqwarded = app.currentUser.LatestAwardedPoint;*/
             currentPoint = parseFloat(app.currentUser.CurrentPoint);
@@ -54,6 +73,7 @@ app.myProfileView = kendo.observable({
             app.myProfileView.set("phone", phone);
             app.myProfileView.set("state", state);
             app.myProfileView.set("status", status);
+            app.myProfileView.set("full_name", fullName);
             //app.myProfileView.set("card", card);
 
 
@@ -72,6 +92,7 @@ app.myProfileView = kendo.observable({
             $("#introduce_name").attr("disabled", true);
             $("#introduce_contact").attr("disabled", true);
             $("#introduce_email").attr("disabled", true);
+            $("#full_name").attr("disabled", true);
 
 
 
@@ -109,6 +130,16 @@ app.myProfileView = kendo.observable({
             } else {
                 imagehead.src = "/resources/head.png";
             }
+
+
+
+
+
+
+
+
+
+
         } else {
            /* $('#layout_point').html("PV4445555");*/
              navigator.notification.alert("You do not login,Please login first.");
@@ -159,6 +190,73 @@ app.myProfileView = kendo.observable({
     afterShow: function () {
 
     },
+
+    fff: function(){
+        alert("mary----- ");
+
+        var that=app.myProfileView;
+        that._pictureSource = navigator.camera.PictureSourceType;
+        that._destinationType = navigator.camera.DestinationType;
+        that._getPhotoFromAlbum.apply(that,arguments);
+    },
+
+    _capturePhoto: function() {
+        var that = this;
+
+        // Take picture using device camera and retrieve image as base64-encoded string.
+        navigator.camera.getPicture(function(){
+            that._onPhotoDataSuccess.apply(that,arguments);
+        },function(){
+            that._onFail.apply(that,arguments);
+        },{
+            quality: 50,
+            destinationType: that._destinationType.DATA_URL
+        });
+    },
+
+    _getPhotoFromAlbum: function() {
+        var that= app.myProfileView;
+        // On Android devices, pictureSource.PHOTOLIBRARY and
+        // pictureSource.SAVEDPHOTOALBUM display the same photo album.
+        that._getPhoto(that._pictureSource.SAVEDPHOTOALBUM)
+    },
+
+    _getPhoto: function(source) {
+        var that = app.myProfileView;
+        // Retrieve image file location from specified source.
+        navigator.camera.getPicture(function(){
+            that._onPhotoURISuccess.apply(that,arguments);
+        }, function(){
+            cameraApp._onFail.apply(that,arguments);
+        }, {
+            quality: 50,
+            destinationType: cameraApp._destinationType.FILE_URI,
+            sourceType: source
+        });
+    },
+
+    _onPhotoDataSuccess: function(imageData) {
+        var smallImage = document.getElementById('userheadview');
+        smallImage.style.display = 'block';
+
+        // Show the captured photo.
+        smallImage.src = "data:image/jpeg;base64," + imageData;
+    },
+
+    _onPhotoURISuccess: function(imageURI) {
+        var smallImage = document.getElementById('userheadview');
+        smallImage.style.display = 'block';
+
+        // Show the captured photo.
+        smallImage.src = imageURI;
+    },
+
+    _onFail: function(message) {
+        alert(message);
+    },
+
+
+
     editprofile: function () {
         var righttitle = $("#rightview").text();
 
@@ -171,6 +269,7 @@ app.myProfileView = kendo.observable({
             $("#state").attr("disabled", false);
             $("#emailinfo").attr("disabled", false);
             $("#status").attr("disabled", false);
+            $("#full_name").attr("disabled", false);
             //$("#card").attr("disabled", false);
             //$("#introduce_name").attr("disabled", true);
             //$("#introduce_contact").attr("disabled", true);
@@ -183,6 +282,7 @@ app.myProfileView = kendo.observable({
             document.getElementById("introduce_contact").style.color="black";
             document.getElementById("introduce_email").style.color="black";
             document.getElementById("defaultaddress").style.color="grey";
+            document.getElementById("full_name").style.color="grey";
 
 
         } else if (righttitle == "Save") {
@@ -197,7 +297,7 @@ app.myProfileView = kendo.observable({
             var introduceContact = $("#introduce_contact").val();
             var introduceEmail = $("#introduce_email").val();
             var email = $("#emailinfo").val();
-
+            var fullname=$("#full_name").val();
 
 
             if (phone!=""){
@@ -222,7 +322,7 @@ app.myProfileView = kendo.observable({
                 el.Users.updateSingle({
                         'Id': userid,
                         'Username': username,
-                        'DeliveryAddress': address,
+                        'HomeAddress': address,
                         'ContactNumber': phone,
                         'Card': card,
                         'State': state,
@@ -230,7 +330,9 @@ app.myProfileView = kendo.observable({
                         'IntroducerName': introduceName,
                         'IntroducerContact': introduceContact,
                         'IntroducerEmail': introduceEmail,
-                        'Email': email
+                        'Email': email,
+                        'FullName': fullname
+
                     },
                     function (data) {
                         alert("Update myProfile Info successfully");
@@ -246,7 +348,7 @@ app.myProfileView = kendo.observable({
                         $("#introduce_name").attr("disabled", true);
                         $("#introduce_contact").attr("disabled", true);
                         $("#introduce_email").attr("disabled", true);
-
+                        $("#full_name").attr("disabled", true);
 
                         document.getElementById("emailinfo").style.color="black";
                         document.getElementById("state").style.color="black";
@@ -255,7 +357,7 @@ app.myProfileView = kendo.observable({
                         document.getElementById("introduce_contact").style.color="black";
                         document.getElementById("introduce_email").style.color="black";
                         document.getElementById("defaultaddress").style.color="black";
-
+                        document.getElementById("full_name").style.color="black";
 
                     },
                     function (error) {
@@ -305,6 +407,12 @@ app.myProfileView = kendo.observable({
      }
      },*/
 });
+
+
+
+
+
+
 app.localization.registerView('myProfileView');
 
 app.myloyaltypointView = kendo.observable({

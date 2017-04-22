@@ -14,16 +14,95 @@
                 });
             </script>
         </div>
+        <style>
+            #wrap ul,
+            #wrap li {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            #wrap {
+                width: 300px;
+                height: 200px;
+                margin: 0 auto;
+                position: relative;
+                overflow: hidden;
+            }
+
+            #wrap li {
+                float: left;
+            }
+
+            #tips li {
+                margin: 5px;
+                border: 1px solid #f60;
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+                text-align: center;
+                color: white;
+                cursor: pointer;
+            }
+
+            .active {
+                background: #f60;
+            }
+
+            /*img {*/
+            /*vertical-align: top;*/
+            /*width: 300px;*/
+            /*height: auto;*/
+            /*}*/
+
+            #content {
+                /*width: 1800px;*/
+                position: absolute;
+                /*left: -900px;*/
+            }
+
+            #content li {
+                float: left;
+            }
+
+            #tips {
+                position: absolute;
+                right: 20px;
+                bottom: 5px;
+            }
+        </style>
     </header>
 
     <div class="details-content screen__content screen__content--details">
         <div class="km-listview-wrapper">
             <ul class="km-listview km-list km-listinset details-fields">
                 <li><div data-bind="text: currentItem.ProductName"></div></li>
-                <li>
-                    <div align="center">
-                        <img data-bind="attr: {src: img}" style="width: auto; height: 180px" onerror="this.src='resources/default.png'"/>
+                <li style="width: 100%">
+                    <div id="wrap" style="width: 300px">
+                        <ul id="content">
+                            <div id="gallery">
+                            </div>
+                        </ul>
+                        <ul id="tips">
+                        </ul>
                     </div>
+                    <script>
+                        var wrap = document.getElementById('wrap');
+                        var content = document.getElementById('content');
+
+                        var timer = setInterval(app.orderDetailView.orderDetailViewModel.autoPlay, 2000);
+                        wrap.onmouseover = function(){
+                            //这里如果把事件绑定到ul上的话，那么鼠标移入，下面对饮的li会不起作用，
+                            clearInterval(timer);                       //因为li的层级比较高，所以应该把事件绑定到大的div上
+                        }
+                        wrap.onmouseout = function(){
+                            timer = setInterval(app.orderDetailView.orderDetailViewModel.autoPlay,2000);
+                            //setInterval(autoPlay,2000);   不能这么写，凡是开的定时器，必须得赋值，要不然总会多开一个定时器，导致速度加快
+                        }
+                        wrap.onclick = function () {
+                            app.mobileApp.navigate('components/orderDetailView/bigImage.html');
+                        }
+                    </script>
                 </li>
                 <li>
                     <table width="100%">
@@ -45,7 +124,7 @@
                                 <h4>Stock: <text data-bind="text: currentItem.QTY"/></h4>
                             </td>
                             <td>
-                                <h4>Qty: <input style="top: inherit;text-align: center; margin-right: 50px; width: 50px; margin-top: 9px" type="text" name="qtyField" id="qtyField" value="1" pattern="[0-9]" maxlength="4"/></h4>
+                                <h4>Qty: <input style="top: inherit;text-align: center; margin-right: 50px; width: 50px; margin-top: 9px" type="text" name="qtyField" id="qtyField" value="1" pattern="[0-9]" maxlength="4" onchange="this.value=this.value.replace(/\D/g,'')"/></h4>
                             </td>
                             <td align="right">
                                 <img src="resources/shopping_cart.png" width="30px" height="30px"
@@ -120,13 +199,17 @@
                         </tr>
                         <tr>
                             <td colspan = "2">
-                                <p style="padding: 0px">You could earn <b><text data-bind="text: earnPoints"></text></b> Points from per product.</p>
+                                <p style="padding: 0px">Purchase this product and earn <b><text data-bind="text: earnPoints"></text></b> Airpoint now!</p>
                             </td>
                         </tr>
                     </table>
                 </li>
+                <li>
+                    <h4>Description</h4>
+                    <div name="produceDesc" style="font-size: 14px" data-bind="text: productDesc"></div>
+                </li>
                 <li><h4>Specification</h4>
-                    <div name="produceDesc" style="font-size: 14px" data-bind="text: productDesc"/>
+                    <div name="produceDesc" style="font-size: 14px" data-bind="text: currentItem.ProductSpecifications"/>
                 </li>
             </ul>
         </div>

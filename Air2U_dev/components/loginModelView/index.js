@@ -27,7 +27,7 @@ app.loginModelView = kendo.observable({
             alert("Password is required.");
             return;
         }
-        el.Users.login(this.username, this.password,
+        el.Users.login(this.username.toLowerCase(), this.password,
             function (data) {
                 for (var item in data['result']) {
                     if (data['result'].hasOwnProperty(item)) {
@@ -90,7 +90,7 @@ app.registerView = kendo.observable({
             AppRoles: [customerRoleId]
         };
 
-        el.Users.register(this.username, this.password, attrs,
+        el.Users.register(this.username.toLowerCase(), this.password, attrs,
             function () {
                 app.currentUser.Id = "";
                 //navigator.notification.alert("Your account was successfully created.");

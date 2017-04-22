@@ -1,8 +1,11 @@
 'use strict';
 var el = app.data.backendServices;
 var orderID;
+var curItem;
 var pointRule;
 var checkSubmitFlag;
+var now;
+var aLi;
 app.orderDetailView = kendo.observable({
     // opencheckout: function () {
     //    alert("------ "+orderID);
@@ -242,20 +245,131 @@ app.localization.registerView('orderDetailView');
             },
             itemClick: function(e) {
                 var dataItem = e.dataItem || orderDetailViewModel.originalItem;
-
+                curItem = dataItem.Product;
                 app.mobileApp.navigate('#components/orderDetailView/details.html?uid=' + dataItem.uid);
 
             },
+
+            imgShow: function() {
+                // var curImg = photoPaths[now];
+                var photoPath = 'resources/default.png';
+                if (curItem['ProductImages']){
+                    photoPath = processImage(curItem["ProductImages"][now]);
+                }
+                var imgtemp = '<img id="bigImg" style="width: auto; height: auto; max-width: 100%; max-width: 100%" src="'+photoPath+'" alt="">';
+                $("#bigImg").replaceWith(imgtemp);
+            },
+
             detailsShow: function(e) {
                 var uid = e.view.params.uid,
                     dataSource = orderDetailViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(uid).Product;
+
+                var tiptemp = "";
+                var imgtemp = "";
+                var content = document.getElementById('gallery');
+                if (curItem['ProductImages']){
+                    imgtemp = '<div id="gallery">';
+                    tiptemp = '<ul id="tips">';
+                    for (var i = 0; i < curItem['ProductImages'].length; i++) {
+                        var imgPath = processImage(curItem["ProductImages"][i]);
+                        imgtemp += '<li style="width: 300px; height: 200px"><img style="width: auto; height: 100%" src="'+ imgPath +'" alt=""></li>';
+                        tiptemp += '<li>'+(i+1)+'</li>';
+                        // photoPaths.append(imgPath);
+                    }
+                    imgtemp += "</div>";
+                    tiptemp += "</ul>"
+                    var size = curItem['ProductImages'].length;
+                }else{
+                    imgtemp = '<div id="gallery" style="width: 300px;height: 200px"><li style="width: 300px; height: 200px"><img style="width: auto; height: 100%" src="resources/default.png" alt=""></li></div>';
+                    tiptemp = '<ul id="tips"><li>1</li></ul>';
+                    // photoPaths.append("resources/default.png");
+                }
+                // console.log(imgtemp);
+
+                $("#gallery").replaceWith(imgtemp);
+                $("#tips").replaceWith(tiptemp);
+
+
+                var content = document.getElementById('content');
+                var tips = document.getElementById('tips');
+                aLi = tips.getElementsByTagName('li');
+                now = 0;
+                for (var i = 0; i < aLi.length; i++) {
+                    aLi[0].className = 'active';                //把初始状态定义好
+                    content.style.left = 0 +'px';
+                    aLi[i].index = i; //自定义属性
+                    // aLi[i].onclick = function() {
+                    //     now = this.index;
+                    //     orderDetailViewModel.play();
+                    // }
+                }
 
                 orderDetailViewModel.setCurrentItemByUid(uid);
 
                 /// start detail form show
                 /// end detail form show
             },
+            play: function () {
+                for (var j = 0; j < aLi.length; j++) {
+                    aLi[j].className = '';
+                }
+                aLi[now].className = 'active';
+
+                //this.index = now;                         //反过来写就不对了大兄弟
+                //content.style.left = -400 * this.index + 'px';
+                var content = document.getElementById('content');
+                orderDetailViewModel.startMove(content, {
+                    left: -300 * now,
+                });
+            },
+
+            autoPlay:function () {
+                now++;
+                if (now == aLi.length) {
+                    now = 0;
+                }
+                orderDetailViewModel.play();
+            },
+
+            getStyle:function (obj,name){
+                if(obj.currentStyle){
+                    return obj.currentStyle[name];
+                } else{
+                    return getComputedStyle(obj,false)[name];
+                }
+            },
+
+            startMove:function (obj, json, fnEnd) {
+                clearInterval(obj.timer);
+                obj.timer = setInterval(function() {
+                    var bStop = true;
+                    for (var attr in json) {
+                        var cur = 0;
+                        if (attr == "opacity") {
+                            cur = Math.round(parseFloat(orderDetailViewModel.getStyle(obj, attr)) * 100);
+                        } else {
+                            cur = parseInt(orderDetailViewModel.getStyle(obj, attr))
+                        }
+                        var speed = (json[attr] - cur) / 10;
+                        speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+                        if (cur !== json[attr]) {
+                            bStop = false;
+                        };
+                        if (attr == "opacity") {
+                            obj.style.opacity = (speed + cur) / 100;
+                            obj.style.filter = 'alpha(opacity:' + (speed + cur) + ')';
+                        } else {
+                            obj.style[attr] = cur + speed + 'px';
+                        }
+                    }
+                    if (bStop) {
+                        clearInterval(obj.timer);
+                        if (fnEnd) fnEnd();
+                    }
+                }, 30)
+            },
+
             setCurrentItemByUid: function(uid) {
                 var item = uid,
                     dataSource = orderDetailViewModel.get('dataSource'),

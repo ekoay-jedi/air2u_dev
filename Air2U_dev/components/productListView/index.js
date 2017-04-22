@@ -2,9 +2,11 @@
 var keyword;
 var filter;
 var curItem;
-var photoDS;
 var pointRule;
 var checkSubmitFlag;
+var now;
+var aLi;
+// var photoPaths;
 app.productListView = kendo.observable({
     onShow: function() {},
     afterShow: function() {}
@@ -223,6 +225,16 @@ app.localization.registerView('productListView');
 
             },
 
+            imgShow: function() {
+                // var curImg = photoPaths[now];
+                var photoPath = 'resources/default.png';
+                if (curItem['ProductImages']){
+                    photoPath = processImage(curItem["ProductImages"][now]);
+                }
+                var imgtemp = '<img style="width: auto; height: auto; max-width: 100%; max-width: 100%" src="'+photoPath+'" alt="">';
+                $("#bigImg").replaceWith(imgtemp);
+            },
+
             getPointRule: function () {
                 var dataProvider = app.data.backendServices;
                 var data = dataProvider.data('PointRule');
@@ -274,38 +286,111 @@ app.localization.registerView('productListView');
                     dataSource = productListViewModel.get('dataSource'),
                     itemModel = dataSource.getByUid(uid);
 
-                var photos = new Array();
+                var tiptemp = "";
+                var imgtemp = "";
+                var content = document.getElementById('gallery');
                 if (curItem['ProductImages']){
+                    imgtemp = '<div id="gallery">';
+                    tiptemp = '<ul id="tips">';
                     for (var i = 0; i < curItem['ProductImages'].length; i++) {
-                        var photo = new Object();
-                        photo.img = processImage(curItem['ProductImages'][i]);
-                        photos.push(photo);
+                        var imgPath = processImage(curItem["ProductImages"][i]);
+                        imgtemp += '<li style="width: 300px; height: 200px"><img style="width: auto; height: 100%" src="'+ imgPath +'" alt=""></li>';
+                        tiptemp += '<li>'+(i+1)+'</li>';
+                        // photoPaths.append(imgPath);
                     }
+                    imgtemp += "</div>";
+                    tiptemp += "</ul>"
+                    var size = curItem['ProductImages'].length;
                 }else{
-                    var photo = new Object();
-                    photo.img = "resources/default.png";
-                    photos.push(photo);
+                    imgtemp = '<div id="gallery" style="width: 300px;height: 200px"><li style="width: 300px; height: 200px"><img style="width: auto; height: 100%" src="resources/default.png" alt=""></li></div>';
+                    tiptemp = '<ul id="tips"><li>1</li></ul>';
+                    // photoPaths.append("resources/default.png");
                 }
-                var template = kendo.template($("#SmallGalleryTemplate").html());
-                photoDS = new kendo.data.DataSource({
-                    data: photos,
-                    change: function () {
-                        $("#SmallGalleryInner").html(kendo.render(template, photos));
-                    },
-                    pageSize:photos.length
-                });
-                photoDS.read();
+                // console.log(imgtemp);
 
-                // setTimeout(function() {
-                //     if (app.currentUser.Id.length > 0) {
-                //         window.location.href = "#userinfo";
-                //     }
-                // }, 2000);
+                $("#gallery").replaceWith(imgtemp);
+                $("#tips").replaceWith(tiptemp);
+
+
+                var content = document.getElementById('content');
+                var tips = document.getElementById('tips');
+                aLi = tips.getElementsByTagName('li');
+                now = 0;
+                for (var i = 0; i < aLi.length; i++) {
+                    aLi[0].className = 'active';                //把初始状态定义好
+                    content.style.left = 0 +'px';
+                    aLi[i].index = i; //自定义属性
+                    // aLi[i].onclick = function() {
+                    //     now = this.index;
+                    //     productListViewModel.play();
+                    // }
+                }
+
                 productListViewModel.setCurrentItemByUid(uid);
 
                 /// start detail form show
                 /// end detail form show
             },
+            play: function () {
+                for (var j = 0; j < aLi.length; j++) {
+                    aLi[j].className = '';
+                }
+                aLi[now].className = 'active';
+
+                //this.index = now;                         //反过来写就不对了大兄弟
+                //content.style.left = -400 * this.index + 'px';
+                var content = document.getElementById('content');
+                productListViewModel.startMove(content, {
+                    left: -300 * now,
+                });
+            },
+
+            autoPlay:function () {
+                now++;
+                if (now == aLi.length) {
+                    now = 0;
+                }
+                productListViewModel.play();
+            },
+
+            getStyle:function (obj,name){
+                if(obj.currentStyle){
+                    return obj.currentStyle[name];
+                } else{
+                    return getComputedStyle(obj,false)[name];
+                }
+            },
+
+            startMove:function (obj, json, fnEnd) {
+                clearInterval(obj.timer);
+                obj.timer = setInterval(function() {
+                    var bStop = true;
+                    for (var attr in json) {
+                        var cur = 0;
+                        if (attr == "opacity") {
+                            cur = Math.round(parseFloat(productListViewModel.getStyle(obj, attr)) * 100);
+                        } else {
+                            cur = parseInt(productListViewModel.getStyle(obj, attr))
+                        }
+                        var speed = (json[attr] - cur) / 10;
+                        speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+                        if (cur !== json[attr]) {
+                            bStop = false;
+                        };
+                        if (attr == "opacity") {
+                            obj.style.opacity = (speed + cur) / 100;
+                            obj.style.filter = 'alpha(opacity:' + (speed + cur) + ')';
+                        } else {
+                            obj.style[attr] = cur + speed + 'px';
+                        }
+                    }
+                    if (bStop) {
+                        clearInterval(obj.timer);
+                        if (fnEnd) fnEnd();
+                    }
+                }, 30)
+            },
+
             setCurrentItemByUid: function(uid) {
                 var item = uid,
                     dataSource = productListViewModel.get('dataSource'),

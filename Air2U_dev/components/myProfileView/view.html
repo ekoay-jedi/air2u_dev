@@ -43,7 +43,7 @@
     <div style="padding: 10px;/*background-image: url(/resources/infobg.png);*/background-color: #f5907c">
         <div class="teamMate">
             <img src="/resources/head.png" name="userheadview" data-bind="value:userhead" id="userheadview"
-                 class="imgstyle">
+                 class="imgstyle" >
         </div>
         <div class="teamMate">
             <input style="width: 100%;background: none;color: white;border: none;font-size: 18px;text-align: center"
@@ -71,10 +71,21 @@
                 <input type="text" id="usernameinfo"  style="color: grey;margin-top: 10px"/>
             </li>-->
             <li>
+                <button data-role="button"  id="capturePhotoEditButton" data-bind="click: fff">Take  Photo</button>
+            </li>
+
+            <li>
                 <label for="emailinfo" style="color: black;font-size: 18px">Email:</label>
                 <input type="text" id="emailinfo" name="emailinfo" data-bind="value: emailinfo"
                        style="color: black;width: 75%;font-size: 18px"/>
             </li>
+
+            <li>
+                <label for="full_name" style="color: black;font-size: 18px">Full Name:</label>
+                <input id="full_name" name="full_name" data-bind="value: full_name" type="tel"
+                       style="color: grey;width: 75%;font-size: 18px"/>
+            </li>
+
             <li>
                 <label for="state" style="color: black;font-size: 18px">State:</label>
                 <input type="text" id="state" name="state" data-bind="value: state"

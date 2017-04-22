@@ -93,7 +93,8 @@
                                style="top: inherit;text-align: left; padding-left: 40px; margin-top: 9px"
                                data-bind="value: qty"
                                pattern="[0-9]"
-                               maxlength="4"/></p>
+                               maxlength="4"
+                               onchange="this.value=this.value.replace(/\D/g,'')"/></p>
                 <!--<p><span id="plus_qty">  +  </span><span>#: qty #</span><span id="minus_qty">  -  </span></p>-->
             </div>
 
