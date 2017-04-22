@@ -153,7 +153,7 @@ app.localization.registerView('checkoutView');
                 if (parent.selectedFee) {
                     fee = parseFloat(parent.selectedFee.Charges || '0');
                 }
-                var price = parent.totalPoint +
+                var price = parent.totalPrice +
                     parent.tax +
                     fee;
                 return price;
