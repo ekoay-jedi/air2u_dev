@@ -46,5 +46,6 @@
     "ID_RESOLUTION_WXGA",
     "ID_RESOLUTION_HD720P"
   ],
-  "iOSDeploymentTarget": "7.0"
+  "iOSDeploymentTarget": "7.0",
+  "CordovaPluginVariables": {}
 }
