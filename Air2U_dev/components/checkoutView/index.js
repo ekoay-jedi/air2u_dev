@@ -58,16 +58,16 @@ app.localization.registerView('checkoutView');
                     return;
                 }
 
-                var price = checkoutViewModel.getTotalPrice();
-                if (price > 0) {
-                   checkoutViewModel.makePayment(price, function (success, transaction) {
-                       if (success) {
-                           checkoutViewModel.updateInfo(transaction);
-                       }
-                   });
-                }else {
+                // var price = checkoutViewModel.getTotalPrice();
+                // if (price > 0) {
+                //    checkoutViewModel.makePayment(price, function (success, transaction) {
+                //        if (success) {
+                //            checkoutViewModel.updateInfo(transaction);
+                //        }
+                //    });
+                // }else {
                     checkoutViewModel.updateInfo();
-                }
+                // }
             },
 
             makePayment: function (price, callback) {
@@ -84,8 +84,7 @@ app.localization.registerView('checkoutView');
                 if (phone) {
                     parent.paymentDetails.mp_bill_mobile = phone;
                 }
-
-                window.molpay.startMolpay(parent.paymentDetails, function (transactionResult) {
+                window.molpayObj.startMolpay(parent.paymentDetails, function (transactionResult) {
                     var ret = JSON.parse(transactionResult);
                     var status_code  = ret.status_code || "00";
                     $("#molpay").slideUp();
