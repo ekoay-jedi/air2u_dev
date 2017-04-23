@@ -58,6 +58,11 @@ app.localization.registerView('checkoutView');
                     return;
                 }
 
+                if (!parent.address || parent.address.length == 0) {
+                    alert('Please type your address');
+                    return;
+                }
+
                 // var price = checkoutViewModel.getTotalPrice();
                 // if (price > 0) {
                 //    checkoutViewModel.makePayment(price, function (success, transaction) {

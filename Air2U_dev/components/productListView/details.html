@@ -15,8 +15,8 @@
             </script>
         </div>
         <style>
-            #wrap ul,
-            #wrap li {
+            # ul,
+            li {
                 list-style: none;
                 margin: 0;
                 padding: 0;
@@ -30,7 +30,7 @@
                 overflow: hidden;
             }
 
-            #wrap li {
+            li {
                 float: left;
             }
 
@@ -100,7 +100,7 @@
                             //setInterval(autoPlay,2000);   不能这么写，凡是开的定时器，必须得赋值，要不然总会多开一个定时器，导致速度加快
                         }
                         wrap.onclick = function () {
-                            app.mobileApp.navigate('components/productListView/bigImage.html');
+//                            app.mobileApp.navigate('components/productListView/bigImage.html');
                         }
                     </script>
                 </li>
@@ -124,7 +124,7 @@
                                 <h4>Stock: <text data-bind="text: currentItem.QTY"/></h4>
                             </td>
                             <td>
-                                <h4>Qty: <input style="top: inherit;text-align: center; margin-right: 50px; width: 50px; margin-top: 9px" type="text" name="qtyField" id="qtyField" value="1" pattern="[0-9]" maxlength="4" onchange="this.value=this.value.replace(/\D/g,'')"/></h4>
+                                <h4>Qty: <input style="top: inherit;text-align: center; margin-right: 50px; width: 50px; margin-top: 9px" type="text" name="qtyField" id="qtyField" value="1" pattern="[0-9]" maxlength="4"/></h4>
                             </td>
                             <td align="right">
                                 <img src="resources/shopping_cart.png" width="30px" height="30px"

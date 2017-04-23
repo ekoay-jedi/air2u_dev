@@ -61,6 +61,34 @@ app.myProfileView = kendo.observable({
                                 lastqwarded=0;
                             }
 
+                        if(fullName =="undefined" ){
+                            fullName = "";
+                        }
+                        if(phone =="undefined" ){
+                            phone = "";
+                        }
+
+                        if(username =="undefined" ){
+                            username = "";
+                        }
+                        if(email =="undefined" ){
+                            email = "";
+                        }
+
+                        if(address =="undefined" ){
+                            address = "";
+                        }
+                        if(introduceName =="undefined" ){
+                            introduceName = "";
+                        }
+                        if(introduceContact =="undefined" ){
+                            introduceContact = "";
+                        }
+                        if(introduceEmail =="undefined" ){
+                            introduceEmail = "";
+                        }
+
+
                             app.myProfileView.set("usernameinfo", username);
                             app.myProfileView.set("emailinfo", email);
                             app.myProfileView.set("defaultaddress", address);
