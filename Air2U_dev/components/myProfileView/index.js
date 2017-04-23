@@ -26,21 +26,113 @@ app.myProfileView = kendo.observable({
 
     _destinationType: null,
     onShow: function () {
+        $("#rightview").text("Edit");
+        var imagehead = document.getElementById("userheadview");
+        imagehead.src = "/resources/head.png";
         el.Users.currentUser().then(function(data) {
+                    if (data.result == null) {
+                        navigator.notification.alert("You do not login,Please login first.");
+                        setTimeout(function () {
+                            app.mobileApp.navigate('components/loginModelView/view.html');
+                        }, 10);
+                    } else {
+                        var item=data.result;
+                            userid = item.Id;
+                            username = item.Username;
+                            email = item.Email;
+                            address = item.HomeAddress;
+                            phone = item.ContactNumber;
+                            state = item.State;
+                            status = item.Status;
+                            card = item.Card;
+                            avatar = item.Avatar;
+                            introduceName = item.IntroducerName;
+                            introduceContact = item.IntroducerContact;
+                            introduceEmail = item.IntroducerEmail;
+                            fullName=item.FullName;
+
+                            currentPoint = parseFloat(item.CurrentPoint);
+                            lastqwarded = parseFloat(item.LatestAwardedPoint);
+
+                            if(currentPoint == undefined ||isNaN(currentPoint)){
+                                currentPoint = 0;
+                            }
+                            if(lastqwarded == undefined||isNaN(lastqwarded)){
+                                lastqwarded=0;
+                            }
+
+                            app.myProfileView.set("usernameinfo", username);
+                            app.myProfileView.set("emailinfo", email);
+                            app.myProfileView.set("defaultaddress", address);
+                            app.myProfileView.set("phone", phone);
+                            app.myProfileView.set("state", state);
+                            app.myProfileView.set("status", status);
+                            app.myProfileView.set("full_name", fullName);
+                            //app.myProfileView.set("card", card);
+
+
+                            $('#layout_point').html("PV "+currentPoint);
+                            $("#save").attr("disabled", true);
+                            $("#usernameinfo").attr("disabled", true);
+                            $("#emailinfo").attr("disabled", true);
+                            $("#defaultaddress").attr("disabled", true);
+                            $("#phone").attr("disabled", true);
+                            $("#state").attr("disabled", true);
+                            $("#status").attr("disabled", true);
+                            //$("#card").attr("disabled", true);
+                            $("#introduce_name").attr("disabled", true);
+                            $("#introduce_contact").attr("disabled", true);
+                            $("#introduce_email").attr("disabled", true);
+                            $("#full_name").attr("disabled", true);
+
+
+
+                            if (introduceName != "") {
+                                app.myProfileView.set("introduce_name", introduceName);
+                            }
+
+                            if (introduceContact != "") {
+                                app.myProfileView.set("introduce_contact", introduceContact);
+                            }
+
+                            if (introduceEmail != "") {
+                                app.myProfileView.set("introduce_email", introduceEmail);
+                            }
+
+
+                            if (avatar != null) {
+                                el.Files.getById(avatar).then(function (data) {
+                                        for (var item in data) {
+                                            if (item == 'result') {
+                                                var datainside = data[item];
+                                                for (var iteminside in datainside) {
+                                                    if (iteminside == 'Uri') {
+                                                        var iamgeurl = datainside[iteminside];
+                                                        imagehead.src = iamgeurl;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    function (error) {
+                                        alert(JSON.stringify(error));
+                                    });
+                            } else {
+                                imagehead.src = "/resources/head.png";
+                            }
+            }
+
+
             for (var item in data['result']) {
                 if (data['result'].hasOwnProperty(item)) {
                     app.currentUser[item] = data['result'][item];
                 }
             }
-        }, function (error) {
-
-        });
 
 
 
-        $("#rightview").text("Edit");
-        var imagehead = document.getElementById("userheadview");
-        if (app.currentUser.Id != "") {
+
+        /*if (app.currentUser.Id != "") {
             imagehead.src = "/resources/head.png";
             userid = app.currentUser.Id;
             username = app.currentUser.Username;
@@ -56,8 +148,6 @@ app.myProfileView = kendo.observable({
             introduceEmail = app.currentUser.IntroducerEmail;
             fullName=app.currentUser.FullName;
 
-          /*  currentPoint = app.currentUser.CurrentPoint;
-            lastqwarded = app.currentUser.LatestAwardedPoint;*/
             currentPoint = parseFloat(app.currentUser.CurrentPoint);
             lastqwarded = parseFloat(app.currentUser.LatestAwardedPoint);
 
@@ -131,29 +221,42 @@ app.myProfileView = kendo.observable({
             } else {
                 imagehead.src = "/resources/head.png";
             }
+
         } else {
-           /* $('#layout_point').html("PV4445555");*/
+           /!* $('#layout_point').html("PV4445555");*!/
              navigator.notification.alert("You do not login,Please login first.");
              setTimeout(function () {
              app.mobileApp.navigate('components/loginModelView/view.html');
              }, 10);
-        }
+        }*/
+        }, function (error) {
+
+        });
+
+
     },
     afterShow: function () {
 
     },
 
-    changePhoto: function(){
+
+    takePhoto: function(){
         var that=app.myProfileView;
         that._pictureSource = navigator.camera.PictureSourceType;
         that._destinationType = navigator.camera.DestinationType;
-        // that._capturePhotoEdit.apply(that,arguments);
-        //that._getPhotoFromLibrary.apply(that,arguments);
-
+        that._capturePhotoEdit.apply(that,arguments);
         //that._capturePhoto.apply(that,arguments);
-        that._getPhotoFromAlbum.apply(that,arguments);
-
     },
+    selfctLibrary: function(){
+        var that=app.myProfileView;
+        that._pictureSource = navigator.camera.PictureSourceType;
+        that._destinationType = navigator.camera.DestinationType;
+        that._getPhotoFromLibrary.apply(that,arguments);
+        //that._getPhotoFromAlbum.apply(that,arguments);
+    },
+
+
+
     _getPhotoFromAlbum: function() {
         var that= app.myProfileView;
         // On Android devices, pictureSource.PHOTOLIBRARY and pictureSource.SAVEDPHOTOALBUM display the same photo album.
@@ -245,13 +348,12 @@ app.myProfileView = kendo.observable({
 
         el.files.create(file,
             function (data) {
-                alert(data.result.Id);
                 el.Users.updateSingle({
                         'Id': userid,
                         'Avatar': data.result.Id
                     },
                     function (data) {
-                        alert(JSON.stringify(data));
+                        alert("Update myProfile Head successfully");
                     },
                     function (error) {
                         alert(JSON.stringify(error));
