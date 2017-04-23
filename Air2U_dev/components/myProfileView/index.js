@@ -18,24 +18,26 @@ var currentPoint;
 var lastqwarded;
 var fullName;
 
-
-
-
-
-
 document.addEventListener("deviceready", onDeviceReady, false);
-function onDeviceReady() {
-    alert("mary----- "+navigator.camera);
-    //that._capturePhoto.apply(that,arguments);
-}
-
-
+function onDeviceReady() {}
 
 app.myProfileView = kendo.observable({
     _pictureSource: null,
 
     _destinationType: null,
     onShow: function () {
+        el.Users.currentUser().then(function(data) {
+            for (var item in data['result']) {
+                if (data['result'].hasOwnProperty(item)) {
+                    app.currentUser[item] = data['result'][item];
+                }
+            }
+        }, function (error) {
+
+        });
+
+
+
         $("#rightview").text("Edit");
         var imagehead = document.getElementById("userheadview");
         if (app.currentUser.Id != "") {
@@ -109,7 +111,6 @@ app.myProfileView = kendo.observable({
             }
 
 
-
             if (avatar != null) {
                 el.Files.getById(avatar).then(function (data) {
                         for (var item in data) {
@@ -130,16 +131,6 @@ app.myProfileView = kendo.observable({
             } else {
                 imagehead.src = "/resources/head.png";
             }
-
-
-
-
-
-
-
-
-
-
         } else {
            /* $('#layout_point').html("PV4445555");*/
              navigator.notification.alert("You do not login,Please login first.");
@@ -147,115 +138,130 @@ app.myProfileView = kendo.observable({
              app.mobileApp.navigate('components/loginModelView/view.html');
              }, 10);
         }
-
-        /*el.Users.currentUser().then(function (data) {
-         for (var item in data) {
-         if (item == 'result') {
-         if (data[item] == null) {
-         alert("You do not login,Please login first.");
-         app.mobileApp.navigate('components/loginModelView/view.html');
-         } else {
-         var datainside = data[item];
-         for (var iteminside in datainside) {
-         if (iteminside == 'Username') {
-         username = datainside[iteminside];
-         } else if (iteminside == 'DeliveryAddress') {
-         address = datainside[iteminside]
-         } else if (iteminside == 'ContactNumber') {
-         phone = datainside[iteminside]
-         } else if (iteminside == 'Id') {
-         userid = datainside[iteminside]
-         } else if (iteminside == 'State') {
-         state = datainside[iteminside]
-         } else if (iteminside == 'Avatar') {
-         avatar = datainside[iteminside]
-         } else if (iteminside == 'Email') {
-         email = datainside[iteminside]
-         } else if (iteminside == 'Card') {
-         card = datainside[iteminside]
-         } else if (iteminside == 'Status') {
-         status = datainside[iteminside]
-         }
-
-         }
-         }
-         }
-         }
-         },
-         function (error) {
-         alert(JSON.stringify(error));
-         });*/
-
     },
     afterShow: function () {
 
     },
 
-    fff: function(){
-        alert("mary----- ");
-
+    changePhoto: function(){
         var that=app.myProfileView;
         that._pictureSource = navigator.camera.PictureSourceType;
         that._destinationType = navigator.camera.DestinationType;
+        // that._capturePhotoEdit.apply(that,arguments);
+        //that._getPhotoFromLibrary.apply(that,arguments);
+
+        //that._capturePhoto.apply(that,arguments);
         that._getPhotoFromAlbum.apply(that,arguments);
+
     },
-
-    _capturePhoto: function() {
-        var that = this;
-
-        // Take picture using device camera and retrieve image as base64-encoded string.
-        navigator.camera.getPicture(function(){
-            that._onPhotoDataSuccess.apply(that,arguments);
-        },function(){
-            that._onFail.apply(that,arguments);
-        },{
-            quality: 50,
-            destinationType: that._destinationType.DATA_URL
-        });
-    },
-
     _getPhotoFromAlbum: function() {
+        var that= app.myProfileView;
+        // On Android devices, pictureSource.PHOTOLIBRARY and pictureSource.SAVEDPHOTOALBUM display the same photo album.
+        that._getPhoto(that._pictureSource.SAVEDPHOTOALBUM)
+    },
+
+
+    _getPhotoFromLibrary: function() {
         var that= app.myProfileView;
         // On Android devices, pictureSource.PHOTOLIBRARY and
         // pictureSource.SAVEDPHOTOALBUM display the same photo album.
-        that._getPhoto(that._pictureSource.SAVEDPHOTOALBUM)
+        that._getPhoto(that._pictureSource.PHOTOLIBRARY);
+    },
+    _capturePhotoEdit: function() {
+        var that = app.myProfileView;
+        // Take picture using device camera, allow edit, and retrieve image as base64-encoded string.
+        // The allowEdit property has no effect on Android devices.
+        navigator.camera.getPicture(function(){
+            that._onPhotoDataSuccess.apply(that,arguments);
+        }, function(){
+            that._onFail.apply(that,arguments);
+        }, {
+            quality: 50, allowEdit: true,
+            destinationType: that._destinationType.DATA_URL
+        });
     },
 
     _getPhoto: function(source) {
         var that = app.myProfileView;
         // Retrieve image file location from specified source.
+
         navigator.camera.getPicture(function(){
-            that._onPhotoURISuccess.apply(that,arguments);
+            that._onPhotoDataSuccess.apply(that,arguments);
         }, function(){
-            cameraApp._onFail.apply(that,arguments);
+            that._onFail.apply(that,arguments);
         }, {
             quality: 50,
-            destinationType: cameraApp._destinationType.FILE_URI,
+            destinationType: that._destinationType.DATA_URL,
             sourceType: source
         });
     },
 
     _onPhotoDataSuccess: function(imageData) {
+        var that = app.myProfileView;
         var smallImage = document.getElementById('userheadview');
-        smallImage.style.display = 'block';
-
-        // Show the captured photo.
         smallImage.src = "data:image/jpeg;base64," + imageData;
-    },
-
-    _onPhotoURISuccess: function(imageURI) {
-        var smallImage = document.getElementById('userheadview');
-        smallImage.style.display = 'block';
-
-        // Show the captured photo.
-        smallImage.src = imageURI;
+        that._uploadPhoto.apply(that,arguments);
     },
 
     _onFail: function(message) {
-        alert(message);
+        //alert(message);
+    },
+
+   /* _onPhotoURISuccess: function(imageURI) {
+        var el = new Everlive('emqn75r4njlqhrtx');
+        var smallImage = document.getElementById('userheadview');
+
+        // Show the captured photo.
+        alert("mary-----111 "+imageURI);
+
+        smallImage.src = "data:image/jpeg;base64," + imageURI;
+    },
+
+    _capturePhoto: function() {
+    var that = app.myProfileView;
+    // Take picture using device camera and retrieve image as base64-encoded string.
+    navigator.camera.getPicture(function(){
+    that._onPhotoDataSuccess.apply(that,arguments);
+    },function(){
+    that._onFail.apply(that,arguments);
+    },{
+    quality: 50,
+    destinationType: that._destinationType.DATA_URL
+    });
     },
 
 
+    },
+    */
+
+    _uploadPhoto:function (imageData) {
+        var el = new Everlive('emqn75r4njlqhrtx');
+        var file = {
+            "Filename": Math.random().toString(36).substring(2, 15) +".png",
+            "ContentType": "image/png",
+            "CustomField": "customValue",
+            "base64": imageData
+        };
+
+        el.files.create(file,
+            function (data) {
+                alert(data.result.Id);
+                el.Users.updateSingle({
+                        'Id': userid,
+                        'Avatar': data.result.Id
+                    },
+                    function (data) {
+                        alert(JSON.stringify(data));
+                    },
+                    function (error) {
+                        alert(JSON.stringify(error));
+                    });
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            });
+
+    },
 
     editprofile: function () {
         var righttitle = $("#rightview").text();
