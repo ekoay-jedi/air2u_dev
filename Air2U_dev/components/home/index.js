@@ -287,6 +287,7 @@ function processImage(img) {
             dataSourceOptions = homeModel.get('_dataSourceOptions'),
             dataSource;
 
+        app.keepActiveState($(this));
         if (param || isListmenu) {
             backbutton.show();
             backbutton.css('visibility', 'visible');
