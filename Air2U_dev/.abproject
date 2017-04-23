@@ -16,8 +16,11 @@
     "remote-notification"
   ],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "FrameworkVersion": "4.0.0",
+  "FrameworkVersion": "6.4.0",
   "AndroidPermissions": [
+    "android.permission.ACCESS_WIFI_STATE",
+    "android.permission.BIND_NOTIFICATION_LISTENER_SERVICE",
+    "android.permission.CAMERA",
     "android.permission.INTERNET"
   ],
   "DeviceOrientations": [

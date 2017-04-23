@@ -1,8 +1,6 @@
 {
   "CorePlugins": [
-    "com.phonegap.plugins.PushPlugin@3.2.0",
     "cordova-plugin-battery-status",
-    "cordova-plugin-camera",
     "cordova-plugin-console",
     "cordova-plugin-contacts",
     "cordova-plugin-device",
@@ -20,6 +18,7 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "cordova-plugin-vibration",
-    "cordova-plugin-whitelist"
+    "cordova-plugin-whitelist",
+    "com.phonegap.plugins.PushPlugin@3.2.0"
   ]
 }
