@@ -89,6 +89,10 @@ app.localization.registerView('checkoutView');
                 if (phone) {
                     parent.paymentDetails.mp_bill_mobile = phone;
                 }
+
+				if (!window.molpayment) {
+					window.molpayment = new MOLPay();
+				}
                 window.molpayment.startMolpay(parent.paymentDetails, function (transactionResult) {
                     var ret = JSON.parse(transactionResult);
                     var status_code  = ret.status_code || "00";

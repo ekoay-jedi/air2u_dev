@@ -1,5 +1,5 @@
 function MOLPay() {
-    window.open = cordova.InAppBrowser.open
+    window.open = cordova.InAppBrowser.open;
 }
 Element.prototype.remove = function() {
     this.parentElement.removeChild(this)
@@ -187,5 +187,4 @@ MOLPay.prototype.startMolpay = function(a, b) {
     };
     molpayChannelRequestFrame.allowScriptAccess = "always", molpayChannelRequestFrame.setAttribute("src", molpaySdkUrl), hideFrame(molpayChannelRequestFrame), document.body.appendChild(molpayChannelRequestFrame), molpayChannelRequestFrame.addEventListener("load", c)
 };
-window.molpayment = new MOLPay;
 // module.exports = molpay;
