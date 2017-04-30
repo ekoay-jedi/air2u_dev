@@ -15,7 +15,7 @@ app.checkoutView = kendo.observable({
     earnPoint: 0,
     tax: 0,
     address:null,
-    shippingFees: [],
+    shippingFees: null,
     selectedFee: null,
     paymentDetails: {
         'mp_amount' : '0',
@@ -32,7 +32,7 @@ app.checkoutView = kendo.observable({
         'mp_bill_name' : 'AQUA POWER SDN BHD',
         'mp_bill_email' : 'support@air2u.com.my',
         'mp_bill_mobile' : '012-2215511',
-        'mp_sandbox_mode': false
+        'mp_sandbox_mode': true
     }
 });
 app.localization.registerView('checkoutView');
@@ -58,10 +58,10 @@ app.localization.registerView('checkoutView');
 
         checkoutViewModel = kendo.observable({
             submit: function () {
-                // if (!parent.selectedFee) {
-                //     alert('Please select a shipping');
-                //     return;
-                // }
+                if (!parent.selectedFee) {
+                    alert('Please select a shipping');
+                    return;
+                }
 
                 if (!parent.address || parent.address.length == 0) {
                     alert('Please type your address');
@@ -91,20 +91,7 @@ app.localization.registerView('checkoutView');
                     parent.paymentDetails.mp_bill_mobile = phone;
                 }
 
-                // app.mobileApp.navigate('components/checkoutView/payment.html');
-                $("#paymentModal").data("kendoMobileModalView").open();
-                window.molpay.startMolpay(parent.paymentDetails, function (transactionResult) {
-                    var ret = JSON.parse(transactionResult);
-                    var status_code  = ret.status_code || "00";
-                    window.molpay.closeMolpay();
-                    $("#paymentModal").data("kendoMobileModalView").close();
-                    // app.navigate("#:back");
-                    if (status_code == "00") {
-                        alert("Payment Failed");
-                    }else {
-                        checkoutViewModel.updateInfo(transactionResult);
-                    }
-                });
+                app.mobileApp.navigate('components/checkoutView/payment.html');
             },
 
             updateInfo: function (transaction) {
@@ -178,16 +165,17 @@ app.localization.registerView('checkoutView');
         });
 
     parent.set('onPaymentShow', function () {
-        alert("open: " + window.open);
+		$(".molpay").empty();
         window.molpay.startMolpay(parent.paymentDetails, function (transactionResult) {
             var ret = JSON.parse(transactionResult);
             var status_code  = ret.status_code || "00";
-            window.molpay.closeMolpay();
-            app.navigate("#:back");
+			app.mobileApp.navigate("#:back");
             if (status_code == "00") {
                 alert("Payment Failed");
-            }else {
-                checkoutViewModel.updateInfo(transactionResult);
+            }else if(transactionResult["Error"]){
+                alert(transactionResult["Error"]);
+			}else {
+                parent.checkoutViewModel.updateInfo(transactionResult);
             }
         });
     });
@@ -205,7 +193,9 @@ app.localization.registerView('checkoutView');
         parent.totalPoint = totalPoint;
         parent.earnPoint = earnPoint;
         parent.tax = parseFloat(tax.toFixed(2));
-        parent.set('address', deAddress);
+		if(!parent.address) {
+            parent.set('address', deAddress);
+		}
 
         checkoutViewModel.updateCheckoutView();
         $('#selectlink').on('change', function () {
@@ -225,8 +215,9 @@ app.localization.registerView('checkoutView');
             checkoutViewModel.updateCheckoutView();
         });
 
-        var el = app.data.backendServices;
-        el.data('ShippingFee').get().then(function(data){
+        if (!parent.shippingFees) {
+			var el = app.data.backendServices;
+            el.data('ShippingFee').get().then(function(data){
                 var result = data["result"];
                 parent.shippingFees = result;
                 $('#selectlink').empty();
@@ -237,11 +228,11 @@ app.localization.registerView('checkoutView');
                     var option = $('<option>').val(item.Charges).text("( RM "+item.Charges+" )"+item.ItemName);
                     $('#selectlink').append(option);
                     //alert(item.ItemName+"---"+item.Charges);
-                }
-                },
+                }},
                 function(error){
                     alert(JSON.stringify(error));
                 });
+		}     
     });
     parent.set('checkoutViewModel', checkoutViewModel);
 })(app.checkoutView);
