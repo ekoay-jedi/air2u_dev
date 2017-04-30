@@ -264,7 +264,7 @@ app.myProfileView = kendo.observable({
 
     },
     afterShow: function () {
-
+        
     },
 
 

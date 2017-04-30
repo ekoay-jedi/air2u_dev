@@ -3,6 +3,11 @@ app.checkoutView = kendo.observable({
     onShow: function () {
     },
     afterShow: function () {
+
+    },
+
+    onPaymentShow: function () {
+
     },
     orderid: null,
     totalPrice: 0,
@@ -27,7 +32,7 @@ app.checkoutView = kendo.observable({
         'mp_bill_name' : 'AQUA POWER SDN BHD',
         'mp_bill_email' : 'support@air2u.com.my',
         'mp_bill_mobile' : '012-2215511',
-        'mp_sandbox_mode': true
+        'mp_sandbox_mode': false
     }
 });
 app.localization.registerView('checkoutView');
@@ -53,10 +58,10 @@ app.localization.registerView('checkoutView');
 
         checkoutViewModel = kendo.observable({
             submit: function () {
-                if (!parent.selectedFee) {
-                    alert('Please select a shipping');
-                    return;
-                }
+                // if (!parent.selectedFee) {
+                //     alert('Please select a shipping');
+                //     return;
+                // }
 
                 if (!parent.address || parent.address.length == 0) {
                     alert('Please type your address');
@@ -65,17 +70,13 @@ app.localization.registerView('checkoutView');
 
                 var price = checkoutViewModel.getTotalPrice();
                 if (price > 0) {
-                   checkoutViewModel.makePayment(price, function (success, transaction) {
-                       if (success) {
-                           checkoutViewModel.updateInfo(transaction);
-                       }
-                   });
+                   checkoutViewModel.makePayment(price);
                 }else {
                     checkoutViewModel.updateInfo();
                 }
             },
 
-            makePayment: function (price, callback) {
+            makePayment: function (price) {
                 parent.paymentDetails.mp_amount = price;
                 var username = app.currentUser.Username;
                 var email = app.currentUser.Email;
@@ -89,16 +90,19 @@ app.localization.registerView('checkoutView');
                 if (phone) {
                     parent.paymentDetails.mp_bill_mobile = phone;
                 }
-                alert("molpay: " + window.molpayObj);
-                window.molpayObj.startMolpay(parent.paymentDetails, function (transactionResult) {
+
+                // app.mobileApp.navigate('components/checkoutView/payment.html');
+                $("#paymentModal").data("kendoMobileModalView").open();
+                window.molpay.startMolpay(parent.paymentDetails, function (transactionResult) {
                     var ret = JSON.parse(transactionResult);
                     var status_code  = ret.status_code || "00";
-                    $("#molpay").slideUp();
+                    window.molpay.closeMolpay();
+                    $("#paymentModal").data("kendoMobileModalView").close();
+                    // app.navigate("#:back");
                     if (status_code == "00") {
-                        alert(transactionResult);
-                        callback(false);
+                        alert("Payment Failed");
                     }else {
-                        callback(true, transactionResult);
+                        checkoutViewModel.updateInfo(transactionResult);
                     }
                 });
             },
@@ -173,6 +177,20 @@ app.localization.registerView('checkoutView');
             }
         });
 
+    parent.set('onPaymentShow', function () {
+        alert("open: " + window.open);
+        window.molpay.startMolpay(parent.paymentDetails, function (transactionResult) {
+            var ret = JSON.parse(transactionResult);
+            var status_code  = ret.status_code || "00";
+            window.molpay.closeMolpay();
+            app.navigate("#:back");
+            if (status_code == "00") {
+                alert("Payment Failed");
+            }else {
+                checkoutViewModel.updateInfo(transactionResult);
+            }
+        });
+    });
 
     parent.set('onShow', function _onShow(e) {
         var orderId = e.view.params.orderId;

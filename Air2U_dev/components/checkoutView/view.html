@@ -9,7 +9,6 @@
     }
 </style>
 
-
 <div data-role="view" data-title="View" data-layout="main" data-model="app.checkoutView"
      data-show="app.checkoutView.onShow"
      data-after-show="app.checkoutView.afterShow" id="checkoutViewScreen" class="screen">
@@ -76,18 +75,21 @@
             <a class="primary" data-role="button"
                data-bind="events: { click: checkoutViewModel.submit }, buttonText: strings.checkoutView.checkoutViewModel.submitButton"></a>
         </div>
-
-        <div id="molpay" class="molpay"/>
-
     </div>
+
+    <div data-role="modalview" id="paymentModal">
+        <div data-role="scroller">
+            <div id="molpay" class="molpay"/>
+        </div>
+    </div>
+
+
     <!--<header data-role="header">-->
         <!--<div data-role="navbar" class="header-text"><span data-bind="text: strings.checkoutView.title"></span>-->
             <!--&lt;!&ndash;<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"data-icon="drawer-button"></a>&ndash;&gt;-->
             <!--<a data-role="backbutton" data-align="left">Back</a>-->
         <!--</div>-->
     <!--</header>-->
-
-
     <script>
         $(function () {
             $("#usepoint-switch").kendoMobileSwitch({});
