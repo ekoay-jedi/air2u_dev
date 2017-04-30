@@ -1,0 +1,100 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-privacyscreen@0.3.1",
+        "scope": null,
+        "escapedName": "cordova-plugin-privacyscreen",
+        "name": "cordova-plugin-privacyscreen",
+        "rawSpec": "0.3.1",
+        "spec": "0.3.1",
+        "type": "version"
+      },
+      "/private/var/folders/q4/y7d3l59d0dv8tghfp5v69qd80000gn/T/pluginInstallation117330-60882-1gka4te.pgh4fs9k9"
+    ]
+  ],
+  "_cnpm_publish_time": 1462887440887,
+  "_from": "cordova-plugin-privacyscreen@0.3.1",
+  "_hasShrinkwrap": false,
+  "_id": "cordova-plugin-privacyscreen@0.3.1",
+  "_inCache": true,
+  "_location": "/cordova-plugin-privacyscreen",
+  "_nodeVersion": "4.2.6",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/cordova-plugin-privacyscreen-0.3.1.tgz_1462887440425_0.6802383903414011"
+  },
+  "_npmUser": {
+    "name": "devgeeks",
+    "email": "tommy@devgeeks.org"
+  },
+  "_npmVersion": "2.14.12",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-privacyscreen@0.3.1",
+    "scope": null,
+    "escapedName": "cordova-plugin-privacyscreen",
+    "name": "cordova-plugin-privacyscreen",
+    "rawSpec": "0.3.1",
+    "spec": "0.3.1",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npm.taobao.org/cordova-plugin-privacyscreen/download/cordova-plugin-privacyscreen-0.3.1.tgz",
+  "_shasum": "f4de59ad5fd5d6284d27bd978ad8da0f73a629df",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-privacyscreen@0.3.1",
+  "_where": "/private/var/folders/q4/y7d3l59d0dv8tghfp5v69qd80000gn/T/pluginInstallation117330-60882-1gka4te.pgh4fs9k9",
+  "author": {
+    "name": "Tommy-Carlos Willaims",
+    "email": "tommy@devgeeks.org"
+  },
+  "bugs": {
+    "url": "https://github.com/devgeeks/PrivacyScreenPlugin/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-privacyscreen",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "dependencies": {},
+  "description": "Secures your app from displaying a screenshot in task switchers under Android and iOS. Keeps sensitive information private.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "f4de59ad5fd5d6284d27bd978ad8da0f73a629df",
+    "size": 4459,
+    "noattachment": false,
+    "tarball": "http://registry.npm.taobao.org/cordova-plugin-privacyscreen/download/cordova-plugin-privacyscreen-0.3.1.tgz"
+  },
+  "gitHead": "fecea690f5387dab01ed22e3fb2d333e91e095e6",
+  "homepage": "https://github.com/devgeeks/PrivacyScreenPlugin#readme",
+  "keywords": [
+    "privacy",
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "devgeeks",
+      "email": "tommy@devgeeks.org"
+    }
+  ],
+  "name": "cordova-plugin-privacyscreen",
+  "optionalDependencies": {},
+  "publish_time": 1462887440887,
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devgeeks/PrivacyScreenPlugin.git"
+  },
+  "scripts": {},
+  "version": "0.3.1"
+}
