@@ -77,7 +77,11 @@
         </div>
     </div>
 
-    <div data-role="modalview" id="paymentModal">
+    <div data-role="modalview"
+         id="paymentModal"
+         data-before-open="app.checkoutView.paymentOpen"
+         data-close="app.checkoutView.paymentClose"
+         style="width: 100%;">
         <div data-role="scroller">
             <div id="molpay" class="molpay"/>
         </div>

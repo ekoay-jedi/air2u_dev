@@ -9,6 +9,12 @@ app.checkoutView = kendo.observable({
     onPaymentShow: function () {
 
     },
+    paymentOpen: function () {
+        $("#checkoutViewScreen").hide();
+    },
+    paymentClose: function () {
+        $("#checkoutViewScreen").show();
+    },
     orderid: null,
     totalPrice: 0,
     totalPoint: 0,
