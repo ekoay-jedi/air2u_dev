@@ -79,7 +79,7 @@
         <div class="image-with-text" id="cartProduct" style="height: 100px">
             <input style="float: left; position: inherit; margin-right: 10px;margin-top: 30px;-webkit-appearance: normal;" type="checkbox" data-bind="checked: cchecked"/>
             <img style="height: auto; width:auto; max-height: 100px; max-width: 80px; vertical-align: middle" src="#: productIdUrl #" onerror="this.src='resources/default.png'">
-            <div style="font-size: 18px; margin-left: 100px">
+            <div style="font-size: 18px; margin-left: 100px" >
                 <p style="max-height: 38px;text-overflow:ellipsis; overflow: hidden;"><b>#: product['ProductName'] #</b></p>
                 # if (product['pvPrice'] > 0) { #
                 <p>Air pt: <span>#: product['pvPrice'] #</span></p>
@@ -89,12 +89,11 @@
                 #}#
                 <p>Qty: <input type="text"
                                name="qtyField"
-                               id="qtyField"
+                               id="cart_qtyField"
                                style="top: inherit;text-align: left; padding-left: 40px; margin-top: 9px"
                                data-bind="value: qty"
                                pattern="[0-9]"
-                               maxlength="4"
-                               onchange="this.value=this.value.replace(/\D/g,'')"/></p>
+                               maxlength="4"/></p>
                 <!--<p><span id="plus_qty">  +  </span><span>#: qty #</span><span id="minus_qty">  -  </span></p>-->
             </div>
 

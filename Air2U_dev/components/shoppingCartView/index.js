@@ -626,6 +626,14 @@ app.localization.registerView('shoppingCartView');
                 }
             }
 
+            $(document).on('change', '#cart_qtyField', function() {
+                var qtyInput = $(this);
+                var text = qtyInput.val() || "";
+                text = text.replace(/\D/g,'');
+                qtyInput.val(text);
+                this.setSelectionRange(text.length, text.length * 2);
+            });
+
             shoppingCartViewModel.getTaxRate(function (rate, error) {
                 if (error) {
                     alert(error);

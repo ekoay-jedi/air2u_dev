@@ -91,11 +91,11 @@
                         var content = document.getElementById('content');
 
                         var timer = setInterval(app.productListView.productListViewModel.autoPlay, 2000);
-                        wrap.onclick = function () {
-                            if (open) {
-                                app.mobileApp.navigate('components/productListView/bigImage.html');
-                            }
-                        }
+//                        wrap.onclick = function () {
+//                            if (open) {
+//                                app.mobileApp.navigate('components/productListView/bigImage.html');
+//                            }
+//                        }
                     </script>
                 </li>
                 <li>
@@ -118,7 +118,7 @@
                                 <h4>Stock: <text data-bind="text: currentItem.QTY"/></h4>
                             </td>
                             <td>
-                                <h4>Qty: <input style="top: inherit;text-align: center; margin-right: 50px; width: 50px; margin-top: 9px" type="text" name="qtyField" id="qtyField" value="1" pattern="[0-9]" maxlength="4" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,''")/></h4>
+                                <h4>Qty: <input style="top: inherit;text-align: center; margin-right: 50px; width: 50px; margin-top: 9px" type="text" name="qtyField" id="qtyField" value="1" pattern="[0-9]" maxlength="4" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/></h4>
                             </td>
                             <td align="right">
                                 <img src="resources/shopping_cart.png" width="30px" height="30px"
