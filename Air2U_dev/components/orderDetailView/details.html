@@ -91,16 +91,10 @@
                         var content = document.getElementById('content');
 
                         var timer = setInterval(app.orderDetailView.orderDetailViewModel.autoPlay, 2000);
-                        wrap.onmouseover = function(){
-                            //这里如果把事件绑定到ul上的话，那么鼠标移入，下面对饮的li会不起作用，
-                            clearInterval(timer);                       //因为li的层级比较高，所以应该把事件绑定到大的div上
-                        }
-                        wrap.onmouseout = function(){
-                            timer = setInterval(app.orderDetailView.orderDetailViewModel.autoPlay,2000);
-                            //setInterval(autoPlay,2000);   不能这么写，凡是开的定时器，必须得赋值，要不然总会多开一个定时器，导致速度加快
-                        }
                         wrap.onclick = function () {
-//                            app.mobileApp.navigate('components/orderDetailView/bigImage.html');
+                            if (open) {
+                                app.mobileApp.navigate('components/orderDetailView/bigImage.html');
+                            }
                         }
                     </script>
                 </li>

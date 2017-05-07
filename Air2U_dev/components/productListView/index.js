@@ -6,6 +6,7 @@ var pointRule;
 var checkSubmitFlag;
 var now;
 var aLi;
+var open;
 // var photoPaths;
 app.productListView = kendo.observable({
     onShow: function() {},
@@ -231,7 +232,7 @@ app.localization.registerView('productListView');
                 if (curItem['ProductImages']){
                     photoPath = processImage(curItem["ProductImages"][now]);
                 }
-                var imgtemp = '<img style="width: auto; height: auto; max-width: 100%; max-width: 100%" src="'+photoPath+'" alt="">';
+                var imgtemp = '<img id="bigImg" style="width: 100%; height: auto; max-width: 100%; max-width: 100%" src="'+photoPath+'" alt="">';
                 $("#bigImg").replaceWith(imgtemp);
             },
 
@@ -266,7 +267,7 @@ app.localization.registerView('productListView');
                             ret = result[0];
                         }
                         pointRule = ret;
-                        console.log("point rule: pv: " + ret.pv + " cv: " + ret.cv + " price: ");
+                        // console.log("point rule: pv: " + ret.pv + " cv: " + ret.cv + " price: ");
                     }else {
                         alert("get point rule: " + JSON.stringify(data));
                     }
@@ -320,15 +321,12 @@ app.localization.registerView('productListView');
                     aLi[0].className = 'active';                //把初始状态定义好
                     content.style.left = 0 +'px';
                     aLi[i].index = i; //自定义属性
-                    // aLi[i].onclick = function() {
-                    //     now = this.index;
-                    //     productListViewModel.play();
-                    // }
                 }
 
                 productListViewModel.setCurrentItemByUid(uid);
 
                 /// start detail form show
+                open = true;
                 /// end detail form show
             },
             play: function () {
@@ -460,6 +458,7 @@ app.localization.registerView('productListView');
 
     parent.set('onShow', function(e) {
         keyword = "";
+        open = false;
         $("#search").val('');
         $("#filterSelected").val('00');
         if (!pointRule){

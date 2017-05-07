@@ -8,7 +8,21 @@
             <a data-role="button" id="checkoutBtn" data-click="opencheckout" data-align="right">Checkout</a>
             <script>
                 $("[data-click=opencheckout]").click(function() {
-                    app.mobileApp.navigate('components/checkoutView/view.html?orderId='+orderID);
+                    var orderData = el.data('Order');
+                    var query = new Everlive.Query();
+                    query.where().eq('Id', orderID);
+                    orderData.get(query).then(function (data) {
+                        if (data["count"] > 0) {
+                            var item = data["result"][0];
+                            var query = 'orderId=' + orderID
+                                + '&price=' + item["totalPrice"]
+                                + '&point=' + item["totalPV"]
+                                + '&gotPoint=' + item["Point"];
+                            console.log("query: " + query);
+                            app.mobileApp.navigate("components/checkoutView/view.html?" + query);
+                        }
+                    });
+//                    app.mobileApp.navigate('components/checkoutView/view.html?orderId='+orderID);
                 });
             </script>
         </div>

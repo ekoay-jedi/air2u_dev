@@ -70,6 +70,11 @@
         currentItem.addClass('active');
     };
 
+    app.keepActiveStateItem = function _keepActiveStateItem(liId) {
+        $('#navigation-container li.active').removeClass('active');
+        $(liId).addClass('active');
+    };
+
     window.app = app;
 
     app.isOnline = function() {

@@ -6,6 +6,7 @@ var pointRule;
 var checkSubmitFlag;
 var now;
 var aLi;
+var open;
 app.orderDetailView = kendo.observable({
     // opencheckout: function () {
     //    alert("------ "+orderID);
@@ -299,15 +300,12 @@ app.localization.registerView('orderDetailView');
                     aLi[0].className = 'active';                //把初始状态定义好
                     content.style.left = 0 +'px';
                     aLi[i].index = i; //自定义属性
-                    // aLi[i].onclick = function() {
-                    //     now = this.index;
-                    //     orderDetailViewModel.play();
-                    // }
                 }
 
                 orderDetailViewModel.setCurrentItemByUid(uid);
 
                 /// start detail form show
+                open = true;
                 /// end detail form show
             },
             play: function () {
@@ -424,6 +422,7 @@ app.localization.registerView('orderDetailView');
     }
 
     parent.set('onShow', function(e) {
+        open = false;
         orderDetailViewModel.getPointRule();
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,

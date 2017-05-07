@@ -14,6 +14,7 @@ app.loginModelView = kendo.observable({
     },
     afterShow: function() {
         //Todo...
+        app.keepActiveStateItem('#menu06');
     },
     submit: function () {
         if (!this.username) {

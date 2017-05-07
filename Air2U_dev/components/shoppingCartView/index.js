@@ -608,6 +608,7 @@ app.localization.registerView('shoppingCartView');
                 app.mobileApp.navigate('components/loginModelView/view.html');
             }, 10);
         }else {
+            app.keepActiveStateItem('#menu01');
             var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
                 isListmenu = false,
                 backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),

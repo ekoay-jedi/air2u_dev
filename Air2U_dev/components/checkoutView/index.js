@@ -9,6 +9,12 @@ app.checkoutView = kendo.observable({
     onPaymentShow: function () {
 
     },
+    paymentOpen: function () {
+        $("#checkoutViewScreen").hide();
+    },
+    paymentClose: function () {
+        $("#checkoutViewScreen").show();
+    },
     orderid: null,
     totalPrice: 0,
     totalPoint: 0,
@@ -171,7 +177,7 @@ app.localization.registerView('checkoutView');
             updateCheckoutView: function () {
                 var price = checkoutViewModel.getTotalPrice();
                 $("#total-price").text("RM "+ price);
-                $("#tax").text("RM "+ parent.tax);
+                $("#tax").text("RM "+ parseFloat(parent.tax).toFixed(2));
                 $("#total-point").text(parent.totalPoint);
                 $("#earn-point").text(parent.earnPoint);
             }

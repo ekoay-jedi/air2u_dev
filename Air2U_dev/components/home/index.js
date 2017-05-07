@@ -281,6 +281,7 @@ function processImage(img) {
     }
 
     parent.set('onShow', function(e) {
+        app.keepActiveStateItem('#menu00');
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,
             backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),
