@@ -109,15 +109,15 @@ app.myProfileView = kendo.observable({
 
 
 
-                            if (introduceName != "") {
+                            if(introduceName =="undefined" || introduceName =="N/A"|| introduceName =="n/a" ){
                                 app.myProfileView.set("introduce_name", introduceName);
                             }
 
-                            if (introduceContact != "") {
+                            if(introduceContact =="undefined" || introduceContact =="N/A"|| introduceContact =="n/a") {
                                 app.myProfileView.set("introduce_contact", introduceContact);
                             }
 
-                            if (introduceEmail != "") {
+                            if(introduceEmail =="undefined"|| introduceEmail =="N/A"|| introduceEmail =="n/a" ) {
                                 app.myProfileView.set("introduce_email", introduceEmail);
                             }
 
