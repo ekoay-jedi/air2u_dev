@@ -166,7 +166,7 @@ MOLPay.prototype.startMolpay = function(a, b) {
     var d = function(a) {
         mainUiFrame.contentWindow.updateSdkData(JSON.stringify(molpayPaymentDetails), inAppCallback), mainUiFrame.removeEventListener("load", d)
     };
-    mainUiFrame.style.border = "0px", mainUiFrame.style.padding = "0px", mainUiFrame.style.width = "100%", mainUiFrame.style.height = "100%", mainUiFrame.id = "mainUiFrame", mainUiFrame.allowScriptAccess = "always", mainUiFrame.setAttribute("src", molpaySdkUrl), molpayDiv.appendChild(mainUiFrame), mainUiFrame.addEventListener("load", d)
+    mainUiFrame.style.border = "0px", mainUiFrame.style.padding = "0px", mainUiFrame.style.width = "100%", mainUiFrame.style.height = "100%", mainUiFrame.id = "mainUiFrame", mainUiFrame.allowScriptAccess = "always", mainUiFrame.setAttribute("src", molpaySdkUrl), molpayDiv.appendChild(mainUiFrame), mainUiFrame.addEventListener("load", d);
 }, MOLPay.prototype.transactionRequest = function(a, b) {
     try {
         molpayPaymentDetails = JSON.parse(a)
