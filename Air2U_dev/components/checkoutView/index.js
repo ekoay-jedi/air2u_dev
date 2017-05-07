@@ -97,20 +97,20 @@ app.localization.registerView('checkoutView');
                     parent.paymentDetails.mp_bill_mobile = phone;
                 }
 
-                // app.mobileApp.navigate('components/checkoutView/payment.html');
-                $("#paymentModal").data("kendoMobileModalView").open();
-                window.molpay.startMolpay(parent.paymentDetails, function (transactionResult) {
-                    var ret = JSON.parse(transactionResult);
-                    var status_code  = ret.status_code || "00";
-                    window.molpay.closeMolpay();
-                    $("#paymentModal").data("kendoMobileModalView").close();
-                    // app.navigate("#:back");
-                    if (status_code == "00") {
-                        alert("Payment Failed");
-                    }else {
-                        checkoutViewModel.updateInfo(transactionResult);
-                    }
-                });
+                app.mobileApp.navigate('components/checkoutView/payment.html');
+                // $("#paymentModal").data("kendoMobileModalView").open();
+                // window.molpay.startMolpay(parent.paymentDetails, function (transactionResult) {
+                //     var ret = JSON.parse(transactionResult);
+                //     var status_code  = ret.status_code || "00";
+                //     window.molpay.closeMolpay();
+                //     $("#paymentModal").data("kendoMobileModalView").close();
+                //     // app.navigate("#:back");
+                //     if (status_code == "00") {
+                //         alert("Payment Failed");
+                //     }else {
+                //         checkoutViewModel.updateInfo(transactionResult);
+                //     }
+                // });
             },
 
             updateInfo: function (transaction) {
@@ -184,7 +184,6 @@ app.localization.registerView('checkoutView');
         });
 
     parent.set('onPaymentShow', function () {
-        alert("open: " + window.open);
         window.molpay.startMolpay(parent.paymentDetails, function (transactionResult) {
             var ret = JSON.parse(transactionResult);
             var status_code  = ret.status_code || "00";
