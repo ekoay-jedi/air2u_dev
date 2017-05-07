@@ -78,8 +78,8 @@
     <script type="text/x-kendo-template" id="shoppingCartViewModelTemplate">
         <div class="image-with-text" id="cartProduct" style="height: 100px">
             <input style="float: left; position: inherit; margin-right: 10px;margin-top: 30px;-webkit-appearance: normal;" type="checkbox" data-bind="checked: cchecked"/>
-            <img style="height: auto; width:auto; max-height: 100px; max-width: 80px; vertical-align: middle" src="#: productIdUrl #" onerror="this.src='resources/default.png'">
-            <div style="font-size: 18px; margin-left: 100px" >
+            <img style="float: left; height: auto; width:auto;  max-width: 80px; vertical-align: middle" src="#: productIdUrl #" onerror="this.src='resources/default.png'">
+            <div style="font-size: 18px; margin-left: 130px" >
                 <p style="max-height: 38px;text-overflow:ellipsis; overflow: hidden;"><b>#: product['ProductName'] #</b></p>
                 # if (product['pvPrice'] > 0) { #
                 <p>Air pt: <span>#: product['pvPrice'] #</span></p>
