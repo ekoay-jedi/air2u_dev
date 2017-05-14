@@ -32,7 +32,7 @@ app.checkoutView = kendo.observable({
         'mp_bill_name' : 'AQUA POWER SDN BHD',
         'mp_bill_email' : 'support@air2u.com.my',
         'mp_bill_mobile' : '012-2215511',
-        'mp_sandbox_mode': true
+        'mp_sandbox_mode': false
     }
 });
 app.localization.registerView('checkoutView');
