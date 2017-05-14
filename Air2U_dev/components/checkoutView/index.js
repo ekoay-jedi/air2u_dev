@@ -31,8 +31,8 @@ app.checkoutView = kendo.observable({
         'mp_bill_description' : 'Bill description',
         'mp_bill_name' : 'AQUA POWER SDN BHD',
         'mp_bill_email' : 'support@air2u.com.my',
-        'mp_bill_mobile' : '012-2215511',
-        'mp_sandbox_mode': true
+        'mp_bill_mobile' : '012-2215511'
+        // 'mp_sandbox_mode': false
     }
 });
 app.localization.registerView('checkoutView');
@@ -90,6 +90,9 @@ app.localization.registerView('checkoutView');
                 if (phone) {
                     parent.paymentDetails.mp_bill_mobile = phone;
                 }
+                if (parent.orderid) {
+					parent.paymentDetails.mp_order_ID = parent.orderid;
+				}
 
                 app.mobileApp.navigate('components/checkoutView/payment.html');
                 // $("#paymentModal").data("kendoMobileModalView").open();
@@ -179,6 +182,7 @@ app.localization.registerView('checkoutView');
 
     parent.set('onPaymentShow', function () {
         $(".molpay").empty();
+		window.open=cordova.InAppBrowser.open;
         window.molpay.startMolpay(parent.paymentDetails, function (transactionResult) {
             var ret = JSON.parse(transactionResult);
             var status_code  = ret.status_code || "00";
@@ -191,6 +195,10 @@ app.localization.registerView('checkoutView');
                 parent.checkoutViewModel.updateInfo(transactionResult);
             }
         });
+		var height = $("#paymentScreen").height() - 34;
+		$("#molpay").parent().height(height);
+		$("#molpay").height(height);
+		$("#molpay iframe").height(height);
     });
 
     parent.set('onShow', function _onShow(e) {
