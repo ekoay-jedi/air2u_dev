@@ -81,11 +81,20 @@ app.localization.registerView('checkoutView');
                 var username = app.currentUser.Username;
                 var email = app.currentUser.Email;
                 var phone = app.currentUser.ContactNumber;
+                var fullname = app.currentUser.FullName;
+                var billDesc = parent.orderid;
                 if (username) {
                     parent.paymentDetails.mp_bill_name = username;
                 }
+
+                if (fullname) {
+                    parent.paymentDetails.mp_bill_name = fullname;
+                    billDesc = billDesc + " , " + fullname;
+                }
+
                 if (email) {
                     parent.paymentDetails.mp_bill_email = email;
+                    billDesc = billDesc + " , " + email;
                 }
                 if (phone) {
                     parent.paymentDetails.mp_bill_mobile = phone;
@@ -94,6 +103,11 @@ app.localization.registerView('checkoutView');
                 if (parent.orderid) {
                     parent.paymentDetails.mp_order_ID = parent.orderid;
                 }
+
+                if (billDesc) {
+                    parent.paymentDetails.mp_bill_description = billDesc;
+                }
+
 
                 app.mobileApp.navigate('components/checkoutView/payment.html');
                 // $("#paymentModal").data("kendoMobileModalView").open();
@@ -122,7 +136,7 @@ app.localization.registerView('checkoutView');
                     function (data) {
                         checkoutViewModel.updateUserWithOrder(function (error, data) {
                             app.hideLoading();
-                            if (error) {
+                            if (error && !$.isEmptyObject(error)) {
                                 alert(JSON.stringify(error));
                             }else {
                                 alert( "Order  Created Successfully");
@@ -197,7 +211,7 @@ app.localization.registerView('checkoutView');
             }else if(transactionResult["Error"]){
                 alert(transactionResult["Error"]);
             }else {
-                alert("Unknown Error");
+                // alert("Unknown Error");
             }
         });
         var height = $("#paymentScreen").height() - 34;
