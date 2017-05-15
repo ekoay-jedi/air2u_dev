@@ -10,6 +10,7 @@ app.checkoutView = kendo.observable({
 
     },
     orderid: null,
+    ordernumber: null,
     totalPrice: 0,
     totalPoint: 0,
     earnPoint: 0,
@@ -82,20 +83,18 @@ app.localization.registerView('checkoutView');
                 var email = app.currentUser.Email;
                 var phone = app.currentUser.ContactNumber;
                 var fullname = app.currentUser.FullName;
-                var billDesc = parent.orderid;
                 if (username) {
                     parent.paymentDetails.mp_bill_name = username;
                 }
 
                 if (fullname) {
                     parent.paymentDetails.mp_bill_name = fullname;
-                    billDesc = billDesc + " , " + fullname;
                 }
 
                 if (email) {
                     parent.paymentDetails.mp_bill_email = email;
-                    billDesc = billDesc + " , " + email;
                 }
+
                 if (phone) {
                     parent.paymentDetails.mp_bill_mobile = phone;
                 }
@@ -104,8 +103,10 @@ app.localization.registerView('checkoutView');
                     parent.paymentDetails.mp_order_ID = parent.orderid;
                 }
 
-                if (billDesc) {
-                    parent.paymentDetails.mp_bill_description = billDesc;
+                if (parent.ordernumber) {
+                    parent.paymentDetails.mp_bill_description = parent.ordernumber;
+                }else {
+                    parent.paymentDetails.mp_bill_description = parent.orderid;
                 }
 
 
@@ -229,6 +230,7 @@ app.localization.registerView('checkoutView');
         var deAddress = app.currentUser.HomeAddress;
 
         parent.orderid = orderId;
+        parent.ordernumber = e.view.params.orderNumber;
         parent.totalPrice = totalPrice;
         parent.totalPoint = totalPoint;
         parent.earnPoint = earnPoint;

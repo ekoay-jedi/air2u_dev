@@ -19,7 +19,9 @@
 
             <h4>#: data['OrderNumber'] #</h4>
             <p>Total Price: #: data['totalPrice'] # RM</p>
-            <p align="right">#: data['status'] #</p>
+            <div><p style="float: left;" align="left">#: kendo.toString(data['ModifiedAt'], 'G') #</p>
+                <p style="float: right" align="right">#: data['status'] #</p>
+            </div>
         </div>
     </script>
 </div>

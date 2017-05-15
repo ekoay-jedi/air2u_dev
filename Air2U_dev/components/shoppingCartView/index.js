@@ -289,6 +289,7 @@ app.localization.registerView('shoppingCartView');
                                      shoppingCartViewModel.updateProductOrders(retOrder, retP, function(error, data) {
                                          app.hideLoading();
                                          var query = 'orderId=' + retOrder.Id
+                                             + '&orderNumber=' + retOrder.OrderNumber
                                              + '&price=' + totalP
                                              + '&point=' + totalPV
                                              // + '&tax=' + tax
@@ -374,6 +375,7 @@ app.localization.registerView('shoppingCartView');
                     function(data){
                             var retOrder = data['result'];
                             retOrder.Point = point;
+                            retOrder.OrderNumber = onumber;
                             callback(null, retOrder);
                     },
                     function(error){
