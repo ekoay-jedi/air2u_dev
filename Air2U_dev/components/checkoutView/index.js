@@ -186,14 +186,18 @@ app.localization.registerView('checkoutView');
         window.open=cordova.InAppBrowser.open;
         window.molpay.startMolpay(parent.paymentDetails, function (transactionResult) {
             var ret = JSON.parse(transactionResult);
-            var status_code  = ret.status_code || "00";
+            var status_code  = ret.status_code || "";
             app.mobileApp.navigate("#:back");
             if (status_code == "00") {
+                parent.checkoutViewModel.updateInfo(transactionResult);
+            }else if (status_code == "11") {
                 alert("Payment Failed");
+            }else if (status_code == "22") {
+                alert("Pending");
             }else if(transactionResult["Error"]){
                 alert(transactionResult["Error"]);
             }else {
-                parent.checkoutViewModel.updateInfo(transactionResult);
+                alert("Unknown Error");
             }
         });
         var height = $("#paymentScreen").height() - 34;
