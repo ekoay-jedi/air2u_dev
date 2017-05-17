@@ -15,6 +15,7 @@
                         if (data["count"] > 0) {
                             var item = data["result"][0];
                             var query = 'orderId=' + orderID
+                                    + '&orderNumber=' + item["OrderNumber"]
                                 + '&price=' + item["totalPrice"]
                                 + '&point=' + item["totalPV"]
                                 + '&gotPoint=' + item["Point"];
