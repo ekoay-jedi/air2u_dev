@@ -82,7 +82,7 @@ app.localization.registerView('purchaseHistoryView');
                         this.data().remove(dataItem);
                     }
                     var status;
-                    switch (dataItem.Status) {
+                    switch (parseInt(dataItem.Status)) {
                         case 0:
                             status = "Wait for pay";
                             break;
