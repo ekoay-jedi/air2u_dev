@@ -12,24 +12,10 @@
     <!-- START_CUSTOM_CODE_deliveryPoliciesView -->
     <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
     <div style="padding-left: 15px; padding-top: 10px"><img src="resources/delivery_truck.png"></div>
-    <h1><b>DELIVERY POLICIES</b></h1>
-    <h2>Please Note The Following Delivery Policies:</h2>
-    <br/>
-    <h2><b>OFFICE</b></h2>
-    <p>In an office environment, basic utilities like drinking water has been taken for granted by many employers and employees alike.
-        However, many of us work for long hours in offices with dehydrated environment. Clearly, quality supply of water matters.
-        Pure water benefits health in many ways and thus brings positive effect in the workplace. Healthy employees will definitely translate to profitability.
-        No matter how big or small your organization could be, there is something for your office from Aqua Power.
-        Choose from a wide array of products to suit your employee’s needs, and ensure they stay hydrated, healthy and effective.</p>
-    <br/>
-    <h2><b>HOME</b></h2>
-    <p>Why take chances when you can provide the best for your family? In this day and age, with high degree of pollutants in our water, a simple boil is not enough.
-        Aqua Power provides pure water for your family at your convenience.
-        Our team of people work diligently to renew your water supply. Now with Aqua Power, quality water can be enjoyed with just a touch of a button.</p>
-    <br/>
-    <h2><b>INDUSTRY</b></h2>
-    <p>Water filters for all industrial uses. In a strict environment like an industrial one, your organization needs the most efficient of machines.
-        Aqua Power aims to provide you world-class industrial standards water filtration system for your manufacturing needs.
-        Rest assured of quality of Aqua Power products and their ability to cope with the rigorous daily grind of work. Because when we say clean, we mean industrial clean.</p>
+	<h1><b data-bind="text: strings.deliveryPoliciesView.title"></b></h1>
+	<div style="white-space: pre-wrap;"><p data-bind="text: strings.deliveryPoliciesView.policies"></p></div>
+	<div class="button-group button-group-vertical">
+		<a data-role="button" data-rel="external" href="#" onclick="app.openLink('http://www.air2u.com.my');" data-bind="buttonText: strings.aboutUsView.aboutUsViewModel.webLabel"></a>
+	</div>
     <!-- END_CUSTOM_CODE_deliveryPoliciesView -->
 </div>

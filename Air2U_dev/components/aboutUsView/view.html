@@ -3,7 +3,7 @@
     <div class="about-view screen__content screen__content--about" data-bind="invisible:error">
         <div class="icon-group">
             <div class="app-icon">
-                <img src="resources/aquapower-logo.png">
+                <img src="resources/AIR2U-LOGO-17042017.jpg">
             </div>
 
             <div class="app-details">
@@ -12,11 +12,12 @@
             </div>
         </div>
 
-        <p data-bind="text: strings.aboutUsView.aboutUsViewModel.appDescription"></p>
+        <div style="white-space: pre-wrap;"><p data-bind="text: strings.aboutUsView.aboutUsViewModel.appDescription"></p></div>
 
         <div class="button-group button-group-vertical">
             <a data-role="button" data-rel="external" href="mailto:enquiry@aquapowerwater.com" data-bind="buttonText: strings.aboutUsView.aboutUsViewModel.contactLabel"></a>
             <a data-role="button" data-rel="external" href="tel:603-77856761" data-bind="buttonText: strings.aboutUsView.aboutUsViewModel.phoneLabel"></a>
+            <a data-role="button" data-rel="external" href="#" onclick="app.openLink('http://www.air2u.com.my');" data-bind="buttonText: strings.aboutUsView.aboutUsViewModel.webLabel"></a>
             <!--<a data-role="button" data-rel="external" href="#" onclick="app.openLink('https://www.facebook.com/aquapowersystems');" data-bind="buttonText: strings.aboutUsView.aboutUsViewModel.facebookLabel"></a>-->
             <!--<a data-role="button" data-rel="external" href="#" onclick="app.openLink('https://twitter.com/aquapowersystem');" data-bind="buttonText: strings.aboutUsView.aboutUsViewModel.twitterLabel"></a>-->
         </div>

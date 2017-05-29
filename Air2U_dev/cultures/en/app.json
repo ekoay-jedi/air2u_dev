@@ -32,16 +32,18 @@
     "purchaseHistoryViewModel": {}
   },
   "deliveryPoliciesView": {
-    "title": "Delivery Policies"
+    "title": "Delivery Policies",
+	"policies": "We aim to deliver within the time agreed upon at purchase. The total delivery time for your order is the period of time from when you place your order until the time you receive it. It is comprised of two parts:\n\n(a) Processing time for an item is the time from when you submit your order to when the item leaves the warehouse. We take 3 working days to process your orders.\n(b) Shipping time is from when the item leaves the warehouse to when it arrives at your door and it varies by shipping methods. We offer the following shipping methods for most items:\n\n\u25b6 Skynet, Citylink, DHL, POSLaju And etc. ( 3 to 5 working days & depend on the shipping company)\n\n\nPlease note:\n\u25b6 Shipping methods cannot be changed once your order has observed been placed.\n\u25b6 Weather-related shipping delays are not within our control regionally.\n\u25b6 Public holidays or any other holidays are not inconclusive in the delivery period.\n\u25b6 If there is a dispute Seller Member, Buyer Member and delivery company, something regard delivering incidence or exchange or return of products, 3 parties should resolve among themselves. The company shall not involve in any dispute not shall it be held liable thereto.\n\u25b6 On any issues arising, the Buyer Member should directly solve the problem with the Seller Member. Air2u will act as a co-ordinator.\n\nWhen to Expect Your Order to Arrive:\nIf we are unable to meet the estimated delivery date we shall not be liable for any losses, liabilities, costs, damages, charges or expenses arising out of late delivery."
   },
   "aboutUsView": {
     "title": "About Us",
     "aboutUsViewModel": {
       "appName": "Air2U",
       "appVersion": "Version 1.0",
-      "appDescription": "Aqua Power was established in 2003 from a small proprietary business operating under the name of United Marketing, promoting water dispenser and filtration system. Since then, the business has expanded and transformed into one of the major water solution specialists in Malaysia, marketing water products ranging from bottled water, water dispenser and Reverse Osmosis (RO) and other filtration system.\n \nAqua Power Sdn Bhd was incorporated on 18th Jun 2003, with the principle activities of marketing and servicing of water dispenser and filtration system. The company manufacturing plants use its own RO system, which are designed and commissioned to produce RO water packaged in bottle sizes ranging from 230ml bottle size to 5 gallon bottle size.",
+      "appDescription": "Air2u is a trusted and secured online marketplace where you can buy and point redeem on mobile anytime, anywhere! Shopping and point redeem can never be easier! Download now and join Air2u's mobile marketplace with us! \n\n\"Your Exciting Experience In Online Shopping\"\n\nAir2u is a community marketplace that lets you Buy and point redeem everything from fashion, clothes, accessories, beauty products, furniture, art, books, branded goods, watches, shoes, cars, bikes, services, antiques to houses and properties. Air2u not only provide a value and best price products but also have a great bonus point rewards to their values customer to redeem it.",
       "contactLabel": "Contact us",
       "facebookLabel": "Like us on Facebook",
+	  "webLabel": "www.air2u.com.my",
       "twitterLabel": "Follow us on Twitter",
       "phoneLabel": "Call us"
     }
