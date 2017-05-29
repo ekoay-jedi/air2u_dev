@@ -76,6 +76,7 @@ app.localization.registerView('productListView');
                 typeName: 'Product',
                 dataProvider: dataProvider
             },
+            sort: { field: "ProductName", dir: "asc" },
             change: function(e) {
                 var data = this.data();
                 filter = $("#filterSelected").val();

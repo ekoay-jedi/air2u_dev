@@ -69,6 +69,7 @@ app.localization.registerView('subCategoryView');
                 typeName: 'Category',
                 dataProvider: dataProvider
             },
+            sort: { field: "Categoryname", dir: "asc" },
             change: function(e) {
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
