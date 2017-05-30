@@ -38,7 +38,7 @@
     <key>CFBundleName</key>
     <string>Air2U_dev</string>
     <key>CFBundleDisplayName</key>
-    <string>Air2U_dev</string>
+    <string>Air2U</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundlePackageType</key>
@@ -46,9 +46,9 @@
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleVersion</key>
-    <string>2017.529.1107</string>
+    <string>2017.529.1518</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0409</string>
+    <string>1.0.0</string>
     <key>LSRequiresIPhoneOS</key>
     <true />
     <key>UILaunchImages</key>

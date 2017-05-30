@@ -6,7 +6,7 @@
   "DisplayName": "Air2U",
   "Author": "",
   "Description": "Air2U_dev",
-  "BundleVersion": "1.0409",
+  "BundleVersion": "1.0.0",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1",
