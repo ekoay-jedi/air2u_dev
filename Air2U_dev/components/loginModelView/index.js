@@ -2,7 +2,8 @@
 
 var el = app.data.backendServices;
 var delayTime = "10";//delay loading time value.
-var customerRoleId = "3cd6f410-da39-11e6-a8d2-5562bb8ecdac";
+var customerRoleId = "6eef4710-1b78-11e7-9db6-6f96120ca80c";
+// var customerRoleId = "3cd6f410-da39-11e6-a8d2-5562bb8ecdac";
 
 app.loginModelView = kendo.observable({
     onShow: function() {
