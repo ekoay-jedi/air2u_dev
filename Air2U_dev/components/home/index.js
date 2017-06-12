@@ -96,6 +96,8 @@ function processImage(img) {
                     }
                 }
             },
+			serverPaging: true,
+			pageSize: 50,
             sort: { field: "Categoryname", dir: "asc" },
             change: function(e) {
                 var data = this.data();
@@ -133,6 +135,7 @@ function processImage(img) {
                 }
             },
             schema: {
+				total: "Count",
                 model: {
                     fields: {
                         'Categoryname': {
@@ -150,7 +153,7 @@ function processImage(img) {
                     }
                 }
             },
-            serverFiltering: true,
+            // serverFiltering: true,
         },
         /// start data sources
         /// end data sources

@@ -68,6 +68,7 @@ app.localization.registerView('purchaseHistoryView');
                 typeName: 'Order',
                 dataProvider: dataProvider
             },
+			serverPaging: true,
             change: function(e) {
                 var data = this.data();
                 var date = new Date().getTime();

@@ -76,6 +76,8 @@ app.localization.registerView('productListView');
                 typeName: 'Product',
                 dataProvider: dataProvider
             },
+			serverPaging: true,
+			pageSize: 30,
             sort: { field: "ProductName", dir: "asc" },
             change: function(e) {
                 var data = this.data();
@@ -125,6 +127,7 @@ app.localization.registerView('productListView');
                 }
             },
             schema: {
+				total: "Count",
                 model: {
                     fields: {
                         'ProductName': {
