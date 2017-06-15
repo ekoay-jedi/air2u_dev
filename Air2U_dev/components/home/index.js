@@ -135,7 +135,6 @@ function processImage(img) {
                 }
             },
             schema: {
-				total: "Count",
                 model: {
                     fields: {
                         'Categoryname': {
