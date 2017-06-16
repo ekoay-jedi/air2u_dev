@@ -38,49 +38,48 @@
             <button data-role="button" data-align="right" data-bind="click: editprofile" id="rightview"
                     name="rightview"></button>
         </div>
+        <div style="padding: 10px;/*background-image: url(/resources/infobg.png);*/background-color: #f5907c">
+            <!-- <div class="teamMate">
+                 <img src="/resources/head.png" name="userheadview" data-bind="click: changePhoto" id="userheadview"
+                      class="imgstyle" >
+             </div>-->
+
+            <div class="teamMate">
+                <a data-role="button"
+                   data-rel="actionsheet"
+                   href="#inboxActions"
+                   style="background: inherit; border: hidden">
+                    <img src="/resources/head.png" name="userheadview" data-bind="value:userhead" id="userheadview"
+                         class="imgstyle" >
+                </a>
+                <ul data-role="actionsheet" id="inboxActions" data-open="onOpen" data-popup='{"direction": "left"}'>
+                    <li><a data-bind="click: takePhoto">Camera</a></li>
+                    <li><a data-bind="click: selfctLibrary">From Alumn Library</a></li>
+                </ul>
+            </div>
+
+
+
+
+            <div class="teamMate">
+                <input style="width: 100%;background: none;color: white;border: none;font-size: 18px;text-align: center"
+                       type="text" id="usernameinfo" name="usernameinfo" data-bind="value: usernameinfo"/>
+            </div>
+            <div  >
+                <a href="#myloyaltypoint"  >
+                    <div  style=" vertical-align: middle; text-align: center;">
+                        <span id="layout_point" name="layout_point" style="width: 30px;height: 30px;color: white;font-size: 18px;"></span>
+                        <span>&gt;&gt;</span><!--<img src="/resources/go_to_point_page.png" style="width: 30px;height: 30px; margin-top: 10px;">-->
+                    </div>
+                </a>
+
+                <!--<button style="width: 47%;background: none;color: white;border: none;height: 20px;font-size: 18px;"
+                        data-role="button" data-bind="click: viewpoint">View Loyalty Point
+                </button>-->
+            </div>
+
+        </div>
     </header>
-
-    <div style="padding: 10px;/*background-image: url(/resources/infobg.png);*/background-color: #f5907c">
-       <!-- <div class="teamMate">
-            <img src="/resources/head.png" name="userheadview" data-bind="click: changePhoto" id="userheadview"
-                 class="imgstyle" >
-        </div>-->
-
-        <div class="teamMate">
-            <a data-role="button"
-               data-rel="actionsheet"
-               href="#inboxActions"
-            style="background: inherit; border: hidden">
-                <img src="/resources/head.png" name="userheadview" data-bind="value:userhead" id="userheadview"
-                     class="imgstyle" >
-            </a>
-            <ul data-role="actionsheet" id="inboxActions" data-open="onOpen" data-popup='{"direction": "left"}'>
-                <li><a data-bind="click: takePhoto">Camera</a></li>
-                <li><a data-bind="click: selfctLibrary">From Alumn Library</a></li>
-            </ul>
-        </div>
-
-
-
-
-        <div class="teamMate">
-            <input style="width: 100%;background: none;color: white;border: none;font-size: 18px;text-align: center"
-                   type="text" id="usernameinfo" name="usernameinfo" data-bind="value: usernameinfo"/>
-        </div>
-        <div  >
-            <a href="#myloyaltypoint"  >
-                <div  style=" vertical-align: middle; text-align: center;">
-                    <span id="layout_point" name="layout_point" style="width: 30px;height: 30px;color: white;font-size: 18px;"></span>
-                    <span>&gt;&gt;</span><!--<img src="/resources/go_to_point_page.png" style="width: 30px;height: 30px; margin-top: 10px;">-->
-                </div>
-            </a>
-
-            <!--<button style="width: 47%;background: none;color: white;border: none;height: 20px;font-size: 18px;"
-                    data-role="button" data-bind="click: viewpoint">View Loyalty Point
-            </button>-->
-        </div>
-
-    </div>
 
     <div>
         <ul data-role="listview">
