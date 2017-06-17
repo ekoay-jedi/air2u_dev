@@ -72,6 +72,7 @@ app.localization.registerView('subCategoryView');
 			serverPaging: true,
 			pageSize: 50,
             sort: { field: "Categoryname", dir: "asc" },
+            serverFiltering: true,
             change: function(e) {
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
@@ -114,8 +115,7 @@ app.localization.registerView('subCategoryView');
                         },
                     }
                 }
-            },
-            serverFiltering: true,
+            }
         },
         /// start data sources
         /// end data sources

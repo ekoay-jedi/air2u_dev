@@ -77,8 +77,9 @@ app.localization.registerView('productListView');
                 dataProvider: dataProvider
             },
 			serverPaging: true,
-			pageSize: 30,
+			pageSize: 50,
             sort: { field: "ProductName", dir: "asc" },
+            serverFiltering: true,
             change: function(e) {
                 var data = this.data();
                 filter = $("#filterSelected").val();
@@ -127,7 +128,6 @@ app.localization.registerView('productListView');
                 }
             },
             schema: {
-				total: "Count",
                 model: {
                     fields: {
                         'ProductName': {
@@ -164,8 +164,7 @@ app.localization.registerView('productListView');
                         }
                     }
                 }
-            },
-            serverFiltering: true,
+            }
         },
         /// start data sources
         /// end data sources
