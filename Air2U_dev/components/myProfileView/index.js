@@ -168,7 +168,7 @@ app.myProfileView = kendo.observable({
             sourceType: Camera.PictureSourceType.CAMERA,
             encodingType: Camera.EncodingType.JPEG,
             mediaType: Camera.MediaType.PICTURE,
-            allowEdit: true,
+            allowEdit: false,
             correctOrientation: true
         };
         that._getImageWithOptions(options);
@@ -182,7 +182,7 @@ app.myProfileView = kendo.observable({
             sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
             encodingType: Camera.EncodingType.JPEG,
             mediaType: Camera.MediaType.PICTURE,
-            allowEdit: true,
+            allowEdit: false,
             correctOrientation: true
         };
         that._getImageWithOptions(options);
