@@ -160,7 +160,8 @@ app.myProfileView = kendo.observable({
         
     },
 
-    takePhoto: function(){
+    takePhoto: function(e){
+		e.preventDefault();
         var that=app.myProfileView;
         var options =  {
             quality: 50,
@@ -168,13 +169,14 @@ app.myProfileView = kendo.observable({
             sourceType: Camera.PictureSourceType.CAMERA,
             encodingType: Camera.EncodingType.JPEG,
             mediaType: Camera.MediaType.PICTURE,
-            allowEdit: false,
+            // allowEdit: false,
             correctOrientation: true
         };
         that._getImageWithOptions(options);
     },
 
-    selfctLibrary: function(){
+    selfctLibrary: function(e){
+		e.preventDefault();
         var that=app.myProfileView;
         var options =  {
             quality: 50,
@@ -182,7 +184,7 @@ app.myProfileView = kendo.observable({
             sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
             encodingType: Camera.EncodingType.JPEG,
             mediaType: Camera.MediaType.PICTURE,
-            allowEdit: false,
+            // allowEdit: false,
             correctOrientation: true
         };
         that._getImageWithOptions(options);

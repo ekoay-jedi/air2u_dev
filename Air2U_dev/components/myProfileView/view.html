@@ -16,6 +16,21 @@
         text-align: center;
     }
 
+	#inboxActions > li > span {
+		display: block;
+		text-decoration: none;
+		border-radius: 0;
+		border-width: 0 0 1px;
+		border-style: solid;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+		font-size: 1.2em;
+		line-height: 1.5em;
+		padding: 1.14em .7em;
+		color: #32364c;
+		background: #fff;
+	}
+
     .yj {
         padding: 10px;
         width: 100%;
@@ -53,8 +68,8 @@
                          class="imgstyle" >
                 </a>
                 <ul data-role="actionsheet" id="inboxActions" data-open="onOpen" data-popup='{"direction": "left"}'>
-                    <li><a data-bind="click: takePhoto">Camera</a></li>
-                    <li><a data-bind="click: selfctLibrary">From Alumn Library</a></li>
+                    <li><span data-bind="click: takePhoto">Camera</span></li>
+                    <li><span data-bind="click: selfctLibrary">From Alumn Library</span></li>
                 </ul>
             </div>
 
