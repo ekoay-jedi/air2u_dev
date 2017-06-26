@@ -96,7 +96,7 @@ app.localization.registerView('productListView');
                         }else if (filter == '01' && parseInt(dataItem["cvPrice"])>0) {
                             this.data().remove(dataItem);
                             continue;
-                        }else if (filter == '11' && parseInt(dataItem["cvPrice"])==0 && parseInt(dataItem["pvPrice"])==0) {
+                        }else if (filter == '11' && (parseInt(dataItem["cvPrice"])==0 || parseInt(dataItem["pvPrice"])==0)) {
                             this.data().remove(dataItem);
                             continue;
                         }
