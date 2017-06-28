@@ -92,15 +92,17 @@ function processImage(img) {
                             "Pid": {
                                 "TargetTypeName": "Category"
                             }
-                        })
+                        }),
+                        "X-Everlive-Filter" : JSON.stringify({"Pid" : {"$eq": "0"}})
                     }
                 }
             },
 			serverPaging: true,
 			pageSize: 50,
-            sort: { field: "Categoryname", dir: "asc" },
-            serverFiltering: true,
-            filter: { field: "Pid", operator: "isnull"},
+            serverSorting: true,
+            sort: {field: "Categoryname", dir: "asc" },
+            // serverFiltering: true,
+            // filter: {field: "Pid", operator: "isnull"},
             change: function(e) {
                 var data = this.data();
                 for (var i = 0; i < data.length; i++) {
@@ -286,6 +288,7 @@ function processImage(img) {
 
     parent.set('onShow', function(e) {
         app.keepActiveStateItem('#menu00');
+        $("#home_list").empty();
         var param = e.view.params.filter ? JSON.parse(e.view.params.filter) : null,
             isListmenu = false,
             backbutton = e.view.element && e.view.element.find('header [data-role="navbar"] .backButtonWrapper'),

@@ -462,6 +462,7 @@ app.localization.registerView('productListView');
     parent.set('onShow', function(e) {
         keyword = "";
         open = false;
+        $("#resultListView").empty();
         $("#search").val('');
         $("#filterSelected").val('00');
         if (!pointRule){
