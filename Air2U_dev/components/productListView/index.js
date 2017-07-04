@@ -78,6 +78,7 @@ app.localization.registerView('productListView');
             },
 			serverPaging: true,
 			pageSize: 50,
+            serverSorting: true,
             sort: { field: "ProductName", dir: "asc" },
             serverFiltering: true,
             change: function(e) {
