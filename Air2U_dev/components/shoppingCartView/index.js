@@ -294,7 +294,6 @@ app.localization.registerView('shoppingCartView');
                                              + '&point=' + totalPV
                                              // + '&tax=' + tax
                                              + '&gotPoint=' + earnPoint;
-                                         console.log("query: " + query);
                                          app.mobileApp.navigate("components/checkoutView/view.html?" + query);
                                      });
                                  }
@@ -311,7 +310,6 @@ app.localization.registerView('shoppingCartView');
                     var productCard = productCarts[i];
                     var newQty = productCard.stock-productCard.qty;
                     if (newQty >=0){
-                        console.log("productCart: " + JSON.stringify(productCard));
                         shoppingCartViewModel.updateProduct(productCard.productId,newQty,null);
                         var productPrice = parseFloat(productCard.qty) * parseFloat(productCard.cvPrice);
                         var earnedPoint = shoppingCartViewModel.getPointFromPrice(productPrice);

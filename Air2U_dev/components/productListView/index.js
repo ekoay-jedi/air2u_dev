@@ -293,10 +293,10 @@ app.localization.registerView('productListView');
 
                 var tiptemp = "";
                 var imgtemp = "";
-                var content = document.getElementById('gallery');
+                var content = document.getElementById('product_gallery');
                 if (curItem['ProductImages']){
-                    imgtemp = '<div id="gallery">';
-                    tiptemp = '<ul id="tips">';
+                    imgtemp = '<div id="product_gallery">';
+                    tiptemp = '<ul id="product_tips">';
                     for (var i = 0; i < curItem['ProductImages'].length; i++) {
                         var imgPath = processImage(curItem["ProductImages"][i]);
                         imgtemp += '<li style="width: 300px; height: 200px"><img style="width: auto; height: 100%" src="'+ imgPath +'" alt=""></li>';
@@ -307,18 +307,16 @@ app.localization.registerView('productListView');
                     tiptemp += "</ul>"
                     var size = curItem['ProductImages'].length;
                 }else{
-                    imgtemp = '<div id="gallery" style="width: 300px;height: 200px"><li style="width: 300px; height: 200px"><img style="width: auto; height: 100%" src="resources/default.png" alt=""></li></div>';
-                    tiptemp = '<ul id="tips"><li>1</li></ul>';
+                    imgtemp = '<div id="product_gallery" style="width: 300px;height: 200px"><li style="width: 300px; height: 200px"><img style="width: auto; height: 100%" src="resources/default.png" alt=""></li></div>';
+                    tiptemp = '<ul id="product_tips"><li>1</li></ul>';
                     // photoPaths.append("resources/default.png");
                 }
-                // console.log(imgtemp);
-
-                $("#gallery").replaceWith(imgtemp);
-                $("#tips").replaceWith(tiptemp);
+                $("#product_gallery").replaceWith(imgtemp);
+                $("#product_tips").replaceWith(tiptemp);
 
 
                 var content = document.getElementById('content');
-                var tips = document.getElementById('tips');
+                var tips = document.getElementById('product_tips');
                 aLi = tips.getElementsByTagName('li');
                 now = 0;
                 for (var i = 0; i < aLi.length; i++) {
