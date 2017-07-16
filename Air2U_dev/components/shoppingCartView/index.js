@@ -271,6 +271,15 @@ app.localization.registerView('shoppingCartView');
                 if (checkedProducts.length == 0) {
                     return;
                 }
+
+                for(var i = 0; i < checkedProducts.length; i++) {
+                    var productCard = checkedProducts[i];
+                    var newQty = parseInt(productCard.stock) - parseInt(productCard.qty);
+                    if (newQty < 0) {
+                        alert("Qty is not enough for "+productCard.product.ProductName);
+                        return;
+                    }
+                }
                 app.showLoading();
                 source.one('sync', function() {
                      shoppingCartViewModel.createProductOrders(checkedProducts, function(error, pdata, length) {
@@ -308,7 +317,7 @@ app.localization.registerView('shoppingCartView');
                 var pOrders = [];
                 for(var i = 0; i < productCarts.length; i++) {
                     var productCard = productCarts[i];
-                    var newQty = productCard.stock-productCard.qty;
+                    var newQty = parseInt(productCard.stock) - parseInt(productCard.qty);
                     if (newQty >=0){
                         shoppingCartViewModel.updateProduct(productCard.productId,newQty,null);
                         var productPrice = parseFloat(productCard.qty) * parseFloat(productCard.cvPrice);
@@ -322,7 +331,7 @@ app.localization.registerView('shoppingCartView');
                         pOrders.push(pOrder);
                     }else{
                         app.hideLoading();
-                        alert("Qty is not enough for '"+productCard.ProductName+'"');
+                        alert("Qty is not enough for "+productCard.product.ProductName);
                     }
                 }
 
