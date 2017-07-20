@@ -34,7 +34,8 @@ app.checkoutView = kendo.observable({
         'mp_bill_email' : '',
         'mp_bill_mobile' : '',
         'mp_sandbox_mode': false
-    }
+    },
+    preOrderId : null
 });
 app.localization.registerView('checkoutView');
 
@@ -78,6 +79,10 @@ app.localization.registerView('checkoutView');
             },
 
             makePayment: function (price) {
+                if (parent.preOrderId && parent.preOrderId == parent.orderid) {
+                    alert("The order has been finished");
+                    return;
+                }
                 parent.paymentDetails.mp_amount = price;
                 var username = app.currentUser.Username;
                 var email = app.currentUser.Email;
@@ -109,7 +114,7 @@ app.localization.registerView('checkoutView');
                     parent.paymentDetails.mp_bill_description = parent.orderid;
                 }
 
-
+                parent.preOrderId = parent.orderid;
                 app.mobileApp.navigate('components/checkoutView/payment.html');
                 // $("#paymentModal").data("kendoMobileModalView").open();
                 // window.molpay.startMolpay(parent.paymentDetails, function (transactionResult) {
