@@ -263,6 +263,17 @@ app.localization.registerView('shoppingCartView');
                 for (var i = 0; i <opItems.length; i++) {
                     var item = opItems[i];
                     if (item.cchecked) {
+                        var newQty = parseInt(item.stock) - parseInt(item.qty);
+                        if (isNaN(newQty) || newQty < 0) {
+                            alert("Qty is not enough for "+item.product.ProductName);
+                            return;
+                        }
+                    }
+                }
+
+                for (var i = 0; i <opItems.length; i++) {
+                    var item = opItems[i];
+                    if (item.cchecked) {
                         checkedProducts.push(item);
                         source.remove(item);
                     }
@@ -272,14 +283,6 @@ app.localization.registerView('shoppingCartView');
                     return;
                 }
 
-                for(var i = 0; i < checkedProducts.length; i++) {
-                    var productCard = checkedProducts[i];
-                    var newQty = parseInt(productCard.stock) - parseInt(productCard.qty);
-                    if (newQty < 0) {
-                        alert("Qty is not enough for "+productCard.product.ProductName);
-                        return;
-                    }
-                }
                 app.showLoading();
                 source.one('sync', function() {
                      shoppingCartViewModel.createProductOrders(checkedProducts, function(error, pdata, length) {
