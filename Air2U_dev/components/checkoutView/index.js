@@ -70,6 +70,11 @@ app.localization.registerView('checkoutView');
                     return;
                 }
 
+                if (parent.preOrderId && parent.preOrderId == parent.orderid) {
+                    alert("This order had been finished");
+                    return;
+                }
+
                 var price = checkoutViewModel.getTotalPrice();
                 if (price > 0) {
                    checkoutViewModel.makePayment(price);
@@ -79,10 +84,7 @@ app.localization.registerView('checkoutView');
             },
 
             makePayment: function (price) {
-                if (parent.preOrderId && parent.preOrderId == parent.orderid) {
-                    alert("The order has been finished");
-                    return;
-                }
+
                 parent.paymentDetails.mp_amount = price;
                 var username = app.currentUser.Username;
                 var email = app.currentUser.Email;
@@ -132,11 +134,7 @@ app.localization.registerView('checkoutView');
             },
 
             updateInfo: function (transaction) {
-                if (parent.preOrderId && parent.preOrderId == parent.orderid) {
-                    alert("The order has been finished");
-                    return;
-                }
-
+                
                 var el = app.data.backendServices;
                 app.showLoading();
                 el.data('Order').updateSingle({Id: parent.orderid,
