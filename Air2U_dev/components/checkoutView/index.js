@@ -132,6 +132,11 @@ app.localization.registerView('checkoutView');
             },
 
             updateInfo: function (transaction) {
+                if (parent.preOrderId && parent.preOrderId == parent.orderid) {
+                    alert("The order has been finished");
+                    return;
+                }
+
                 var el = app.data.backendServices;
                 app.showLoading();
                 el.data('Order').updateSingle({Id: parent.orderid,
@@ -145,6 +150,7 @@ app.localization.registerView('checkoutView');
                             if (error && !$.isEmptyObject(error)) {
                                 alert(JSON.stringify(error));
                             }else {
+                                parent.preOrderId = parent.orderid;
                                 alert( "Order  Created Successfully");
                                 app.mobileApp.navigate('components/purchaseHistoryView/view.html');
                             }
