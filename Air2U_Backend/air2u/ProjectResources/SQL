@@ -1,0 +1,20 @@
+CREATE DATABASE `lunch_app` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+CREATE TABLE `users` (
+  `guid` varchar(45) NOT NULL,
+  `username` varchar(45) NOT NULL,
+  `password` varchar(64) DEFAULT NULL,
+  `email` varchar(120) NOT NULL,
+  PRIMARY KEY (`guid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `lunch_app`.`users`
+(`guid`,
+`username`,
+`password`,
+`email`)
+VALUES
+("4145a9b9-5784-47e4-8951-e0e38b3074f4",
+"admin",
+"",
+"testAdmin@testAdmin.com");
