@@ -11,7 +11,7 @@
                 <option value="00" selected="selected">All</option>
                 <option value="10">Cash only</option>
                 <option value="01">Points only</option>
-                <option value="11">Cash & Points</option>
+                <option value="11">Cash + Points</option>
             </select>
             <input style="width: 50%" type="search" name="search" id="search" placeholder="Name..."/>
             <button style="height: 28px; width: 20%; padding: 0px" data-role="button" data-click="searchResult">Search</button>
@@ -59,12 +59,14 @@
             <img style="height: auto; width:auto; max-height: 100px; max-width: 80px; vertical-align: middle" src="#: data['ProductImagesUrl'] #" onerror="this.src='resources/default.png'">
             <div style="font-size: 18px; margin-left: 100px">
                 <p style="max-height: 42px;text-overflow:ellipsis; overflow: hidden;"><b>#: data['ProductName'] #</b></p>
-                # if (data['pvPrice'] > 0) { #
+                # if (data['pvPrice'] > 0 && parseInt(data['cvPrice']) == 0) { #
                 <p>Air pt: <span>#: data['pvPrice'] #</span></p>
-                #}#
-                # if (data['cvPrice'] > 0) { #
+                #} else if (data['cvPrice'] > 0 && parseInt(data['pvPrice']) == 0) { #
                 <p>Cash: RM#: data['cvPrice'] #</p>
+                #} else {#
+                <p>Air pt: <span>#: data['pvPrice'] #</span> + Cash: RM#: data['cvPrice'] #</p>
                 #}#
+
                 <p>Stock: #: data['QTY'] #</p>
             </div>
         </div>

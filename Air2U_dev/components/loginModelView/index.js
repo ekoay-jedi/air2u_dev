@@ -1,4 +1,4 @@
-
+var apiKey = "emqn75r4njlqhrtx";
 
 var el = app.data.backendServices;
 var delayTime = "10";//delay loading time value.
@@ -122,12 +122,12 @@ app.passwordView = kendo.observable({
             data: JSON.stringify({ Email: this.email }),
             success: function () {
                 //navigator.notification.alert("Your password was successfully reset. Please check your email for instructions on choosing a new password.");
-                alert("Your password was successfully reset. Please check your email for instructions on choosing a new password.");
+                navigator.notification.alert("Your password was successfully reset. Please check your email for instructions on choosing a new password.");
                 window.location.href = "#loginModelViewScreen";
             },
             error: function () {
                 //navigator.notification.alert("Unfortunately, an error occurred resetting your password.");
-                alert("Unfortunately, an error occurred resetting your password.");
+                navigator.notification.alert("Unfortunately, an error occurred resetting your password.");
             }
         });
     }

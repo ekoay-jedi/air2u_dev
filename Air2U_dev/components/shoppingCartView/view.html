@@ -81,11 +81,18 @@
             <img style="float: left; height: auto; width:auto;  max-width: 80px; vertical-align: middle" src="#: productIdUrl #" onerror="this.src='resources/default.png'">
             <div style="font-size: 18px; margin-left: 130px" >
                 <p style="max-height: 42px;text-overflow:ellipsis; overflow: hidden;"><b>#: product['ProductName'] #</b></p>
-                # if (product['pvPrice'] > 0) { #
+              <!--  # if (product['pvPrice'] > 0) { #
                 <p>Air pt: <span>#: product['pvPrice'] #</span></p>
                 #}#
                 # if (product['cvPrice'] > 0) { #
                 <p>Cash: RM#: product['cvPrice'] #</p>
+                #}#-->
+                # if (product['pvPrice'] > 0 && parseInt(product['cvPrice']) == 0) { #
+                <p>Air pt: <span>#: product['pvPrice'] #</span></p>
+                #} else if (product['cvPrice'] > 0 && parseInt(product['pvPrice']) == 0) { #
+                <p>Cash: RM#: product['cvPrice'] #</p>
+                #} else {#
+                <p>Air pt: <span>#: product['pvPrice'] #</span> + Cash: RM#: product['cvPrice'] #</p>
                 #}#
                 <p>Qty: <input type="text"
                                name="qtyField"

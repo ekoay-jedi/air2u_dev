@@ -93,7 +93,7 @@ app.myProfileView = kendo.observable({
                             //app.myProfileView.set("card", card);
 
 
-                            $('#layout_point').html("PV "+currentPoint);
+                            $('#layout_point').html("Air Point "+currentPoint);
                             $("#save").attr("disabled", true);
                             $("#usernameinfo").attr("disabled", true);
                             $("#emailinfo").attr("disabled", true);
