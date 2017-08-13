@@ -60,11 +60,11 @@
             <div style="font-size: 18px; margin-left: 100px">
                 <p style="max-height: 42px;text-overflow:ellipsis; overflow: hidden;"><b>#: data['ProductName'] #</b></p>
                 # if (data['pvPrice'] > 0 && parseInt(data['cvPrice']) == 0) { #
-                <p>Air pt: <span>#: data['pvPrice'] #</span></p>
+                <p>Airpoint: <span>#: data['pvPrice'] #</span></p>
                 #} else if (data['cvPrice'] > 0 && parseInt(data['pvPrice']) == 0) { #
                 <p>Cash: RM#: data['cvPrice'] #</p>
                 #} else {#
-                <p>Air pt: <span>#: data['pvPrice'] #</span> + Cash: RM#: data['cvPrice'] #</p>
+                <p>Airpoint: <span>#: data['pvPrice'] #</span> + Cash: RM#: data['cvPrice'] #</p>
                 #}#
 
                 <p>Stock: #: data['QTY'] #</p>

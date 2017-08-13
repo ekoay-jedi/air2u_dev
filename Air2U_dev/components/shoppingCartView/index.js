@@ -263,10 +263,17 @@ app.localization.registerView('shoppingCartView');
                 for (var i = 0; i <opItems.length; i++) {
                     var item = opItems[i];
                     if (item.cchecked) {
-                        var newQty = parseInt(item.stock) - parseInt(item.qty);
-                        if (isNaN(newQty) || newQty < 0) {
-                            alert("Qty is not enough for "+item.product.ProductName);
+                        var qty = item.qty + "";
+                        var r = /^\+?[1-9][0-9]*$/;
+                        if (!r.test(qty)){
+                            alert("Invalid Qty value! Please enter only numeric value.");
                             return;
+                        } else {
+                            var newQty = parseInt(item.stock) - parseInt(item.qty);
+                            if (isNaN(newQty) || newQty < 0) {
+                                alert("Qty is not enough for " + item.product.ProductName);
+                                return;
+                            }
                         }
                     }
                 }
@@ -320,21 +327,25 @@ app.localization.registerView('shoppingCartView');
                 var pOrders = [];
                 for(var i = 0; i < productCarts.length; i++) {
                     var productCard = productCarts[i];
-                    var newQty = parseInt(productCard.stock) - parseInt(productCard.qty);
-                    if (newQty >=0){
-                        shoppingCartViewModel.updateProduct(productCard.productId,newQty,null);
-                        var productPrice = parseFloat(productCard.qty) * parseFloat(productCard.cvPrice);
-                        var earnedPoint = shoppingCartViewModel.getPointFromPrice(productPrice);
-                        var pOrder = {
-                            OrderQTY : productCard.qty,
-                            Product: productCard.product.Id,
-                            EarnedPV: earnedPoint,
-                            Owner: app.currentUser.Id
-                        };
-                        pOrders.push(pOrder);
-                    }else{
-                        app.hideLoading();
-                        alert("Qty is not enough for "+productCard.product.ProductName);
+                    if (parseInt(productCard.qty)==0){
+                        alert("Invalid Qty value! Please enter only numeric value.");
+                    } else {
+                        var newQty = parseInt(productCard.stock) - parseInt(productCard.qty);
+                        if (newQty >= 0) {
+                            shoppingCartViewModel.updateProduct(productCard.productId, newQty, null);
+                            var productPrice = parseFloat(productCard.qty) * parseFloat(productCard.cvPrice);
+                            var earnedPoint = shoppingCartViewModel.getPointFromPrice(productPrice);
+                            var pOrder = {
+                                OrderQTY: parseInt(productCard.qty),
+                                Product: productCard.product.Id,
+                                EarnedPV: earnedPoint,
+                                Owner: app.currentUser.Id
+                            };
+                            pOrders.push(pOrder);
+                        } else {
+                            app.hideLoading();
+                            alert("Qty is not enough for " + productCard.product.ProductName);
+                        }
                     }
                 }
 

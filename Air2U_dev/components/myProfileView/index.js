@@ -93,7 +93,7 @@ app.myProfileView = kendo.observable({
                             //app.myProfileView.set("card", card);
 
 
-                            $('#layout_point').html("Air Point "+currentPoint);
+                            $('#layout_point').html("Airpoint "+currentPoint);
                             $("#save").attr("disabled", true);
                             $("#usernameinfo").attr("disabled", true);
                             $("#emailinfo").attr("disabled", true);
@@ -361,8 +361,8 @@ app.myloyaltypointView = kendo.observable({
     onShow: function () {
         $("#current_point").attr("disabled", true);
         $("#last_awarded").attr("disabled", true);
-        app.myloyaltypointView.set("current_point", "PV "+currentPoint);
-        app.myloyaltypointView.set("last_awarded", "PV "+lastqwarded);
+        app.myloyaltypointView.set("current_point", "Airpoint "+currentPoint);
+        app.myloyaltypointView.set("last_awarded", "Airpoint "+lastqwarded);
 
         JsBarcode("#barcode4", userid, {displayValue: true});
 

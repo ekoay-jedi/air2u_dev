@@ -233,7 +233,7 @@ app.localization.registerView('orderDetailView');
                         pointRule = ret;
                         console.log("point rule: pv: " + ret.pv + " cv: " + ret.cv + " price: ");
                     }else {
-                        alert("get point rule: " + JSON.stringify(data));
+                        alert("get Airpoint rule: " + JSON.stringify(data));
                     }
                 }, function (error) {
                     pointRule = null;
